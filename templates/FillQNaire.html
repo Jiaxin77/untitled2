@@ -35,7 +35,7 @@
 		<div id="listApp">
 			<div id="myList">
 				<li v-for="item in list" :class="item==active?'active':'unactive'">
-				{{ item }}
+				{% verbatim %}{{ item }}{% endverbatim %}
 				</li>
 			</div>
 		</div>
@@ -47,49 +47,49 @@
 
 			<div v-if="que.type=='SingleChoose'">
 				<div class="previewTitle">
-				{{ que.id }}. <span>[单选题]</span> {{ que.title }}
+				{% verbatim %}{{ que.id }}{% endverbatim %}. <span>[单选题]</span> {% verbatim %}{{ que.title }}{% endverbatim %}
 				</div>
 				
-				<input v-if="que.ChooseA!=''" name="choose" type="radio" value="A" />{{ que.ChooseA }} <br>
+				<input v-if="que.ChooseA!=''" name="choose" type="radio" value="A" />{% verbatim %}{{ que.ChooseA }}{% endverbatim %} <br>
 				
-				<input v-if="que.ChooseB!=''" name="choose" type="radio" value="B" />{{ que.ChooseB }}<br>
-				<input v-if="que.ChooseC!=''" name="choose" type="radio" value="C" />{{ que.ChooseC }}<br>
-				<input v-if="que.ChooseD!=''" name="choose" type="radio" value="D" />{{ que.ChooseD }}<br>
+				<input v-if="que.ChooseB!=''" name="choose" type="radio" value="B" />{% verbatim %}{{ que.ChooseB }}{% endverbatim %}<br>
+				<input v-if="que.ChooseC!=''" name="choose" type="radio" value="C" />{% verbatim %}{{ que.ChooseC }}{% endverbatim %}<br>
+				<input v-if="que.ChooseD!=''" name="choose" type="radio" value="D" />{% verbatim %}{{ que.ChooseD }}{% endverbatim %}<br>
 			</div>
 
 			<div v-else-if="que.type=='MultiChoose'">
 				<div class="previewTitle">
-				{{ que.id }}. <span>[多选题]</span> {{ que.title }}
+				{% verbatim %}{{ que.id }}{% endverbatim %}. <span>[多选题]</span> {% verbatim %}{{ que.title }}{% endverbatim %}
 				</div>
-				<input v-if="que.ChooseA!=''" name="choose" type="checkbox" value="A" />{{ que.ChooseA }}<br>
-				<input v-if="que.ChooseB!=''" name="choose" type="checkbox" value="B" />{{ que.ChooseB }}<br>
-				<input v-if="que.ChooseC!=''" name="choose" type="checkbox" value="C" />{{ que.ChooseC }}<br>
-				<input v-if="que.ChooseD!=''" name="choose" type="checkbox" value="D" />{{ que.ChooseD }}<br>
+				<input v-if="que.ChooseA!=''" name="choose" type="checkbox" value="A" />{% verbatim %}{{ que.ChooseA }}{% endverbatim %}<br>
+				<input v-if="que.ChooseB!=''" name="choose" type="checkbox" value="B" />{% verbatim %}{{ que.ChooseB }}{% endverbatim %}<br>
+				<input v-if="que.ChooseC!=''" name="choose" type="checkbox" value="C" />{% verbatim %}{{ que.ChooseC }}{% endverbatim %}<br>
+				<input v-if="que.ChooseD!=''" name="choose" type="checkbox" value="D" />{% verbatim %}{{ que.ChooseD }}{% endverbatim %}<br>
 			 </div>
 
 			 <div v-else-if="que.type=='FillInBlank'">
 			 	<div class="previewTitle">
-				{{ que.id }}.  {{ que.title }}
+				{% verbatim %}{{ que.id }}{% endverbatim %}.  {% verbatim %}{{ que.title }}{% endverbatim %}
 				</div>	
 				<input type="text" name="blank" style="width: 300px;height: 25px;" placeholder="请回答问题">
 			</div>
 
 			<div v-else-if="que.type=='Scale'">
 				<div class="previewTitle">
-				{{ que.id }}.  {{ que.title }}
+				{% verbatim %}{{ que.id }}{% endverbatim %}.  {% verbatim %}{{ que.title }}{% endverbatim %}
 				</div>	
 				<div class="scaleContent">
-				<span> {{ que.lowest }}</span>
+				<span> {% verbatim %}{{ que.lowest }}{% endverbatim %}</span>
 				<div  class="step" v-for="n in que.ScaleCount">
-					<input name="scale" type="radio" value="n" />{{ n }}
+					<input name="scale" type="radio" value="n" />{% verbatim %}{{ n }}{% endverbatim %}
 				</div>
-				<span> {{ que.highest }}</span>
+				<span> {% verbatim %}{{ que.highest }}{% endverbatim %}</span>
 				</div>
 				
 			</div>
 			<div v-else>
 				<div class="Paragraph">
-				{{ que.title }}
+				{% verbatim %}{{ que.title }}{% endverbatim %}
 				</div>
 			</div>
 

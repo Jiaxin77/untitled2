@@ -4,6 +4,7 @@
 	<title>
 		指标库与方法库
 	</title>
+    <!--报错不用管-->
 </head>
 <body>
 
@@ -29,7 +30,7 @@
 			<div id="set">设置</div>
 			<div id="mine">个人中心</div>
 		</div>
-		<!--<div id="out">	
+		<!--<div id="out">
 			<a href="#" >Log Out</a>
 		</div>-->
 	</div>
@@ -84,18 +85,18 @@
 		<div id="contentText">
 			<p>巴拉巴拉从数据库中取得</p>
 		</div>
-			
-		
-	
+
+
+
 	</div>
 
 -->
 <div id="thisPage">
 	<div id="dynamic-component-demo">
-		
-		<button v-for="tab in tabs" v-bind:key="tab" v-bind:class="['tab-button',{active:currentTab === tab}]" v-on:click="currentTab = tab">{{tab}}
+
+		<button v-for="tab in tabs" v-bind:key="tab" v-bind:class="['tab-button',{active:currentTab === tab}]" v-on:click="currentTab = tab">{% verbatim %}{{tab}}{% endverbatim %}
 		</button>
-		
+
 		<keep-alive>
 			<component v-bind:is="currentTabComponent" class="tab"></component>
 		</keep-alive>
@@ -108,23 +109,23 @@
 <script type="text/javascript" src="/static/js/IndexAndMethod.js"></script>
 
 <script type="text/x-template" id="myTemplate">
-	
+
 	<div class="post-tab">
 		<ul class="post-sidebar">
-			<li v-for="post in posts" v-bind:key="post.id" v-bind:class="{selected:post === selectedPost}" v-on:click="selectedPost=post"> {{post.title}} 
-			</li> 
-		</ul> 
-		<div class="selected-post-container"> 
-			<div v-if="selectedPost" class="selected-post" > 
-				<h3>{{ selectedPost.title }}</h3> 
+			<li v-for="post in posts" v-bind:key="post.id" v-bind:class="{selected:post === selectedPost}" v-on:click="selectedPost=post"> {% verbatim %}{{post.title}}{% endverbatim %}
+			</li>
+		</ul>
+		<div class="selected-post-container">
+			<div v-if="selectedPost" class="selected-post" >
+				<h3>{% verbatim %}{{ selectedPost.title }}{% endverbatim %}</h3>
 				<div v-html="selectedPost.content">
-					
-				</div> 
+
+				</div>
 			</div>
-			<strong v-else> 请点击某个标签页 </strong> 
-		</div> 
+			<strong v-else> 请点击某个标签页 </strong>
+		</div>
 	</div>
-	
+
 </script>
 
 <link rel="stylesheet" type="text/css" href="/static/css/IndexAndMethod.css">

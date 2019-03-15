@@ -25,7 +25,7 @@
 			}
 		},
 		template:'#myTemplate'
-			
+
 	});
 
 	var MethodMessage=[
@@ -43,7 +43,7 @@
 		id:3,
 		title:'可用性测试法',
 		content:'可用性测试法balabala'
-	}	
+	}
 	];
 
 	Vue.component('tab-archive',{
@@ -54,10 +54,10 @@
 			}
 		},
 		template:'#myTemplate'
-		
+
 	});
-	
-	new Vue({
+
+	var DCD=new Vue({
 		el:'#dynamic-component-demo',
 		data:{
 			currentTab:'Posts',
@@ -75,7 +75,7 @@
 				{
 					return 'tab-archive';
 				}
-				
+
 			}
 		}
 	});

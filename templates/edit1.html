@@ -25,7 +25,7 @@
 			<div id="SoftWareHCI">
 				<div id="" v-for="data in datas">
 
-					<input  type="checkbox" :id="data.name":checked="isAllChecked(data)"  value="" @change="changeAllChecked($event,data)"/>  {{ data.name }}
+					<input  type="checkbox" :id="data.name":checked="isAllChecked(data)"  value="" @change="changeAllChecked($event,data)"/> {% verbatim %} {{ data.name }}{% endverbatim %}
 
 					<div id="" v-for="first in data.FirstList" class="father">
 						<!--遍历父的-->
@@ -33,7 +33,7 @@
 						@change="changeTitleChecked(first,$event)"
 
 
-						/>{{first.listTitle}}
+						/>{% verbatim %}{{first.listTitle}}{% endverbatim %}
 
 						<div class="er" v-for="item in first.SecondList">
 							<!--遍历子的-->
@@ -43,7 +43,7 @@
 							v-model="first.selected"
 							v-model="mySelected"
 							/>
-							{{item.listTitle}}
+							{% verbatim %}{{item.listTitle}}{% endverbatim %}
 						</div>
 					</div>
 
@@ -57,8 +57,8 @@
 				<ul v-for =" uuu in vvv.FirstList">
 					
 					<li v-for= "iii in uuu.selected">
-						{{ iii.listTitle }}
-						{{ iii.method }}
+						{% verbatim %}{{ iii.listTitle }}{% endverbatim %}
+						{% verbatim %}{{ iii.method }}{% endverbatim %}
 					</li> 
 				</ul>
 			</ul>

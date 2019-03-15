@@ -65,18 +65,18 @@
 				<p>Task</p>
 			</div>
 			<div class="EvaText">
-                <!--加那个！！！-->
+
 			<p class="EvaName"> {% verbatim %}{{ eva.name }}{% endverbatim %}</p>
-			<p class="EvaOne">{{ eva.InShort }}</p>
-			<p class="PersonName">发起者		{{ eva.person }}</p>
-			<p class="EvaStartTime">开始时间  {{ eva.BeginTime }}</p>
+			<p class="EvaOne">{% verbatim %}{{ eva.InShort }}{% endverbatim %}</p>
+			<p class="PersonName">发起者		{% verbatim %}{{ eva.person }}{% endverbatim %}</p>
+			<p class="EvaStartTime">开始时间  {% verbatim %}{{ eva.BeginTime }}{% endverbatim %}</p>
 			</div>
 
 			<div class="EvaProcessBar">
 				<div class="container">
  				 <div class="skills">
  				 	<div class="html" :style="'width:'+eva.process+'%'">
- 				 		{{ eva.process }}%
+ 				 		{% verbatim %}{{ eva.process }}{% endverbatim %}%
  				 	</div>
  				 </div>
 				</div>
@@ -110,19 +110,19 @@
 			<div class="evaPic">
 				<p>Task</p>
 			</div>
-			<div class="EvaText">
-			<p class="EvaName">{{ eva.name }}</p>
-			<p class="EvaOne">{{ eva.InShort }}</p>
-			<p class="PersonName">发起者		{{ eva.person }}</p>
-			<p class="EvaStartTime">开始时间  {{ eva.BeginTime }}</p>
+            <div class="EvaText">
+			<p class="EvaName"> {% verbatim %}{{ eva.name }}{% endverbatim %}</p>
+			<p class="EvaOne">{% verbatim %}{{ eva.InShort }}{% endverbatim %}</p>
+			<p class="PersonName">发起者		{% verbatim %}{{ eva.person }}{% endverbatim %}</p>
+			<p class="EvaStartTime">开始时间  {% verbatim %}{{ eva.BeginTime }}{% endverbatim %}</p>
 			</div>
 
 			<div class="EvaProcessBar">
 				<div class="container">
- 				 <!--<div class="skills html" >{{ eva.process }}%</div>-->
+
  				 <div class="skills">
  				 	<div class="html" :style="'width:'+eva.process+'%'">
- 				 		{{ eva.process }}%
+ 				 		{% verbatim %}{{ eva.process }}{% endverbatim %}%
  				 	</div>
  				 </div>
 				</div>
@@ -157,17 +157,17 @@
 				<p>Task</p>
 			</div>
 			<div class="EvaText">
-			<p class="EvaName">{{ eva.name }}</p>
-			<p class="EvaOne">{{ eva.InShort }}</p>
-			<p class="PersonName">发起者		{{eva.person}}</p>
-			<p class="EvaStartTime">开始时间  {{ eva.BeginTime }}</p>
+			<p class="EvaName">{% verbatim %}{{ eva.name }}{% endverbatim %}</p>
+			<p class="EvaOne">{% verbatim %}{{ eva.InShort }}{% endverbatim %}</p>
+			<p class="PersonName">发起者		{% verbatim %}{{eva.person}}{% endverbatim %}</p>
+			<p class="EvaStartTime">开始时间  {% verbatim %}{{ eva.BeginTime }}{% endverbatim %}</p>
 			</div>
 
 			<div class="EvaProcessBar">
 				<div class="container">
  				 <div class="skills">
  				 	<div class="html" :style="'width:'+eva.process+'%'">
- 				 		{{ eva.process }}%
+ 				 		{% verbatim %}{{ eva.process }}{% endverbatim %}%
  				 	</div>
  				 </div>
 				</div>

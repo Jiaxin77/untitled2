@@ -35,20 +35,20 @@
 	<div id="listApp">
 			<div id="myList">
 				<li v-for="item in list" :class="item==active?'active':'unactive'">
-				{{ item }}
+				{% verbatim %}{{ item }}{% endverbatim %}
 				</li>
 			</div>
 		</div>
 
 <div id="InfoDiv">
 	<div id="Information">
-	{{ InfoList }}
+	{% verbatim %}{{ InfoList }}{% endverbatim %}
 		
 		<div class="inputInfo" v-for="info in InfoList">
 
-			<span class="name">{{ info.name }}</span>
+			<span class="name">{% verbatim %}{{ info.name }}{% endverbatim %}</span>
 			<input type="text" v-model="info.value">
-			<span class="unit">{{ info.unit }}</span>
+			<span class="unit">{% verbatim %}{{ info.unit }}{% endverbatim %}</span>
 		</div>
 
 	</div>

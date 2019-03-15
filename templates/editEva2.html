@@ -36,10 +36,10 @@
 	<div id="showInform">
 		<label>评估指标：  
 			<span v-for="item in myIndex">
-				{{ item.name }}
+				{% verbatim %}{{ item.name }}{% endverbatim %}
 				(
 				<span v-for="first in item.FirstList" v-if="first.selected!=''">
-					{{ first.listTitle }}
+					{% verbatim %}{{ first.listTitle }}{% endverbatim %}
 					
 				</span>
 				)
@@ -48,7 +48,7 @@
 		</label><br>
 		<label>人员安排：  
 			<span v-for="p in people">
-				{{ p }}
+				{% verbatim %}{{ p }}{% endverbatim %}
 			</span>
 		</label><br>
 		<label>评估模块：  </label>
@@ -61,11 +61,11 @@
 			<th>数据处理</th>
 		 </tr>
 		 <tr v-for="thisIndex in IndexBox">
-		 	<td>{{ thisIndex.EvaMethod }}</td>
-		 	<td>{{ thisIndex.EvaObject }}</td>
-		 	<td>{{ thisIndex.indexName }}</td>
-		 	<td>{{ thisIndex.dataSource }}</td>
-		 	<td>{{ thisIndex.dataDeal }}</td>
+		 	<td>{% verbatim %}{{ thisIndex.EvaMethod }}{% endverbatim %}</td>
+		 	<td>{% verbatim %}{{ thisIndex.EvaObject }}{% endverbatim %}</td>
+		 	<td>{% verbatim %}{{ thisIndex.indexName }}{% endverbatim %}</td>
+		 	<td>{% verbatim %}{{ thisIndex.dataSource }}{% endverbatim %}</td>
+		 	<td>{% verbatim %}{{ thisIndex.dataDeal }}{% endverbatim %}</td>
 		 </tr>	
 		</table>
 	</div>

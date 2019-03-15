@@ -35,7 +35,7 @@
 	<div id="listApp">
 		<div id="myList">
 			<li v-for="item in list" :class="item==active?'active':'unactive'">
-				{{ item }}
+				{% verbatim %}{{ item }}{% endverbatim %}
 			</li>
 		</div>
 	</div>
@@ -47,16 +47,18 @@
 		<table class="useTable" v-for="ut in UseTables">
 			<tr>
 				<th>可用性问题编号</th>
-				<td>{{ ut.id }}</td>
+				<td>{% verbatim %}{{ ut.id }}{% endverbatim %}</td>
 			</tr>
 			<tr>
 				<th>界面位置和功能</th>
 				<td><input type="text" name="position" v-model="ut.local"></td>
 			</tr>
+
 			<tr>
 				<th>可用性问题</th>
 				<td><input type="text" name="useProblem" v-model="ut.problem"></td>
 			</tr>
+
 			<tr>
 				<th>严重程度</th>
 				<td><input type="text" name="serious" v-model="ut.serious"></td>
@@ -66,7 +68,7 @@
 				<td><input type="text" name="serious" v-model="ut.advice" width="400px"></td>
 			</tr>
 		</table>
-		{{ UseTables }}
+		{% verbatim %}{{ UseTables }}{% endverbatim %}
 		</div>
 
 
