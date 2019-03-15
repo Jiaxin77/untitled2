@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>AllChooseTest</title>
+	
+</head>
+<body>
+
+	<div id="naviProcess">
+		<h4>评估名称</h4>
+		<div id="Process">
+			<ul>
+				<li class="now">定义指标和方法————</li>
+				<li>————编辑方案————</li>
+				<li>————建立方案完成</li>
+			</ul>	
+		</div>
+		<button>下一步</button>
+
+	</div>
+	<div id="app">
+		<div id="chooseIndex">
+			<h3>选择指标</h3>
+
+			<div id="SoftWareHCI">
+				<div id="" v-for="data in datas">
+
+					<input  type="checkbox" :id="data.name":checked="isAllChecked(data)"  value="" @change="changeAllChecked($event,data)"/>  {{ data.name }}
+
+					<div id="" v-for="first in data.FirstList" class="father">
+						<!--遍历父的-->
+						<input type="checkbox"  :id="first.listTitle" value="" :checked="isTitleChecked(first)" 
+						@change="changeTitleChecked(first,$event)"
+
+
+						/>{{first.listTitle}}
+
+						<div class="er" v-for="item in first.SecondList">
+							<!--遍历子的-->
+							<input
+							type="checkbox"
+							:value="item"
+							v-model="first.selected"
+							v-model="mySelected"
+							/>
+							{{item.listTitle}}
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+		<div id="resultArea">
+
+			<ul v-for = "vvv in datas">
+				<ul v-for =" uuu in vvv.FirstList">
+					
+					<li v-for= "iii in uuu.selected">
+						{{ iii.listTitle }}
+						{{ iii.method }}
+					</li> 
+				</ul>
+			</ul>
+		</div>
+
+		
+
+
+		
+
+
+	</div>
+
+</body>
+
+<link rel="stylesheet" type="text/css" href="/static/css/edit1.css">
+<script type="text/javascript" src="/static/js/vue.js"></script>
+<script type="text/javascript" src="/static/js/edit1.js"></script>
+</html>

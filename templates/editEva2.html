@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		评估-编辑方案-首页
+	</title>
+<!--	<link rel="stylesheet" type="text/css" href="css/editEva2.css">-->
+</head>
+
+<body>
+	<div id="app">
+	<div id="naviProcess">
+		<h4>评估名称</h4>
+		<div id="Process">
+			<ul>
+				<li>定义指标和方法————</li>
+				<li class="now">————编辑方案————</li>
+				<li>————建立方案完成</li>
+			</ul>	
+		</div>
+		<button id="last">上一步</button>
+		<button id="next">下一步</button>
+	</div>
+	<div id="Details">
+	<div id="InputForm">
+		<div id="saveNavi">
+		<h3>方案介绍及执行策略</h3>
+		<button id="save">保存</button>
+		</div>
+		<br>
+		<span>方案名称：  <input type="text" name="PlanName" id="PlanName"></span><br>
+		<span>评估描述：  <input type="text" name="EvaDetail" id="EvaDetail"></span><br>
+		<span>评估对象：  <input type="text" name="EvaObject" id="EvaObject"></span><br>
+	</div>
+
+	<div id="showInform">
+		<label>评估指标：  
+			<span v-for="item in myIndex">
+				{{ item.name }}
+				(
+				<span v-for="first in item.FirstList" v-if="first.selected!=''">
+					{{ first.listTitle }}
+					
+				</span>
+				)
+					
+			</span>
+		</label><br>
+		<label>人员安排：  
+			<span v-for="p in people">
+				{{ p }}
+			</span>
+		</label><br>
+		<label>评估模块：  </label>
+		<table id="EvaTable">
+		 <tr>	
+			<th>评估方法</th>
+			<th>评估对象</th>
+			<th>指标</th>
+			<th>收集数据</th>
+			<th>数据处理</th>
+		 </tr>
+		 <tr v-for="thisIndex in IndexBox">
+		 	<td>{{ thisIndex.EvaMethod }}</td>
+		 	<td>{{ thisIndex.EvaObject }}</td>
+		 	<td>{{ thisIndex.indexName }}</td>
+		 	<td>{{ thisIndex.dataSource }}</td>
+		 	<td>{{ thisIndex.dataDeal }}</td>
+		 </tr>	
+		</table>
+	</div>
+	</div>
+	</div>
+</body>
+
+<script type="text/javascript" src="/static/js/vue.js"></script>
+
+<script type="text/javascript" src="/static/js/editEva2.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/static/css/editEva2.css">
+</html>

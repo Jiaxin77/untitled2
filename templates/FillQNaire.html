@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>FillInQNaire</title>
+</head>
+<body>
+
+	<div id="title">
+		<div id="logo">
+		<!--<img id="titlePic" src="css\img\titleLog.png">-->
+			<h4 id="titleText">人机工效评估系统</h4>
+		</div>
+		<div id="chooseUse">
+			<div id="ManageEva">
+				<a href="">评估管理</a>
+			</div>
+			<div id="ManageModel">
+				<a href="">模板管理</a>
+			</div>
+			<div id="IndexAndMethod">
+				<a href="">指标库与方法库</a>
+			</div>
+		</div>
+
+		<div id="buttons">
+			<div id="message">消息</div>
+			<div id="set">设置</div>
+			<div id="mine">个人中心</div>
+		</div>
+		<!--<div id="out">	
+			<a href="#" >Log Out</a>
+		</div>-->
+	</div>
+
+		<div id="listApp">
+			<div id="myList">
+				<li v-for="item in list" :class="item==active?'active':'unactive'">
+				{{ item }}
+				</li>
+			</div>
+		</div>
+
+
+
+		<div class="preview"  id="previewDiv">
+		<div  class="previewQuestion" v-for="que in questions" >
+
+			<div v-if="que.type=='SingleChoose'">
+				<div class="previewTitle">
+				{{ que.id }}. <span>[单选题]</span> {{ que.title }}
+				</div>
+				
+				<input v-if="que.ChooseA!=''" name="choose" type="radio" value="A" />{{ que.ChooseA }} <br>
+				
+				<input v-if="que.ChooseB!=''" name="choose" type="radio" value="B" />{{ que.ChooseB }}<br>
+				<input v-if="que.ChooseC!=''" name="choose" type="radio" value="C" />{{ que.ChooseC }}<br>
+				<input v-if="que.ChooseD!=''" name="choose" type="radio" value="D" />{{ que.ChooseD }}<br>
+			</div>
+
+			<div v-else-if="que.type=='MultiChoose'">
+				<div class="previewTitle">
+				{{ que.id }}. <span>[多选题]</span> {{ que.title }}
+				</div>
+				<input v-if="que.ChooseA!=''" name="choose" type="checkbox" value="A" />{{ que.ChooseA }}<br>
+				<input v-if="que.ChooseB!=''" name="choose" type="checkbox" value="B" />{{ que.ChooseB }}<br>
+				<input v-if="que.ChooseC!=''" name="choose" type="checkbox" value="C" />{{ que.ChooseC }}<br>
+				<input v-if="que.ChooseD!=''" name="choose" type="checkbox" value="D" />{{ que.ChooseD }}<br>
+			 </div>
+
+			 <div v-else-if="que.type=='FillInBlank'">
+			 	<div class="previewTitle">
+				{{ que.id }}.  {{ que.title }}
+				</div>	
+				<input type="text" name="blank" style="width: 300px;height: 25px;" placeholder="请回答问题">
+			</div>
+
+			<div v-else-if="que.type=='Scale'">
+				<div class="previewTitle">
+				{{ que.id }}.  {{ que.title }}
+				</div>	
+				<div class="scaleContent">
+				<span> {{ que.lowest }}</span>
+				<div  class="step" v-for="n in que.ScaleCount">
+					<input name="scale" type="radio" value="n" />{{ n }}
+				</div>
+				<span> {{ que.highest }}</span>
+				</div>
+				
+			</div>
+			<div v-else>
+				<div class="Paragraph">
+				{{ que.title }}
+				</div>
+			</div>
+
+	</div>
+
+	</div>
+
+</body>
+
+<script type="text/javascript" src="/static/js/vue.js"></script>
+<script type="text/javascript" src="/static/js/FillQNaire.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/css/FillQNaire.css">
+
+</html>

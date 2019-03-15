@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>启发式评估</title>
+</head>
+<body>
+
+		<div id="title">
+		<div id="logo">
+		<!--<img id="titlePic" src="css\img\titleLog.png">-->
+			<h4 id="titleText">人机工效评估系统</h4>
+		</div>
+		<div id="chooseUse">
+			<div id="ManageEva">
+				<a href="">评估管理</a>
+			</div>
+			<div id="ManageModel">
+				<a href="">模板管理</a>
+			</div>
+			<div id="IndexAndMethod">
+				<a href="">指标库与方法库</a>
+			</div>
+		</div>
+
+		<div id="buttons">
+			<div id="message">消息</div>
+			<div id="set">设置</div>
+			<div id="mine">个人中心</div>
+		</div>
+		<!--<div id="out">	
+			<a href="#" >Log Out</a>
+		</div>-->
+	</div>
+
+	<div id="listApp">
+		<div id="myList">
+			<li v-for="item in list" :class="item==active?'active':'unactive'">
+				{{ item }}
+			</li>
+		</div>
+	</div>
+
+	<div id="app">
+		<button @click="newTable()">新建表格</button>
+		<div id="tables">
+			
+		<table class="useTable" v-for="ut in UseTables">
+			<tr>
+				<th>可用性问题编号</th>
+				<td>{{ ut.id }}</td>
+			</tr>
+			<tr>
+				<th>界面位置和功能</th>
+				<td><input type="text" name="position" v-model="ut.local"></td>
+			</tr>
+			<tr>
+				<th>可用性问题</th>
+				<td><input type="text" name="useProblem" v-model="ut.problem"></td>
+			</tr>
+			<tr>
+				<th>严重程度</th>
+				<td><input type="text" name="serious" v-model="ut.serious"></td>
+			</tr>
+			<tr>
+				<th>改进建议</th>
+				<td><input type="text" name="serious" v-model="ut.advice" width="400px"></td>
+			</tr>
+		</table>
+		{{ UseTables }}
+		</div>
+
+
+	</div>
+
+</body>
+
+<script type="text/javascript" src="/static/js/vue.js"></script>
+<script type="text/javascript" src="/static/js/UsabilityIssue.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/css/UsabilityIssue.css">
+
+
+</html>

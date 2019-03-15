@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>信息填写界面</title>
+</head>
+<body>
+
+<div id="title">
+		<div id="logo">
+		<!--<img id="titlePic" src="css\img\titleLog.png">-->
+			<h4 id="titleText">人机工效评估系统</h4>
+		</div>
+		<div id="chooseUse">
+			<div id="ManageEva">
+				<a href="">评估管理</a>
+			</div>
+			<div id="ManageModel">
+				<a href="">模板管理</a>
+			</div>
+			<div id="IndexAndMethod">
+				<a href="">指标库与方法库</a>
+			</div>
+		</div>
+
+		<div id="buttons">
+			<div id="message">消息</div>
+			<div id="set">设置</div>
+			<div id="mine">个人中心</div>
+		</div>
+		<!--<div id="out">	
+			<a href="#" >Log Out</a>
+		</div>-->
+	</div>
+
+	<div id="listApp">
+			<div id="myList">
+				<li v-for="item in list" :class="item==active?'active':'unactive'">
+				{{ item }}
+				</li>
+			</div>
+		</div>
+
+<div id="InfoDiv">
+	<div id="Information">
+	{{ InfoList }}
+		
+		<div class="inputInfo" v-for="info in InfoList">
+
+			<span class="name">{{ info.name }}</span>
+			<input type="text" v-model="info.value">
+			<span class="unit">{{ info.unit }}</span>
+		</div>
+
+	</div>
+</div>
+
+
+</body>
+
+<script type="text/javascript" src="/static/js/vue.js"></script>
+<script type="text/javascript" src="/static/js/FillInfo.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/css/FillInfo.css">
+
+
+</html>

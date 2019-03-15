@@ -19,5 +19,5 @@ from MyEva import views
 
 
 urlpatterns = [
-    path(r'^admin/', admin.site.urls),
+   path('index/',views.index)
 ]
