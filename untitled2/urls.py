@@ -19,5 +19,7 @@ from MyEva import views
 
 
 urlpatterns = [
-   path('index/',views.index)
+   path('index/',views.index),
+   path('login/',views.login),
+   path('register/',views.register)
 ]

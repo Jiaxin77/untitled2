@@ -31,7 +31,7 @@
 		<input type="submit" name="register" id="register" value="Register" onclick="openRegister()"  >
 		
 	</div>
-    <!--<form method="post" action="/login/" class="form1">-->
+    <form method="post" action="/login/" class="form1">
 	<div class="loginBox" id="loginBox">
 
 
@@ -42,10 +42,10 @@
 
 		
 		<a href="#" id="close" onclick="closeLogin()" >X</a>
-		<div id="Logtip"></div>
+
 	</div>
-   <!-- </form>-->
-   <!-- <form method="post" action="/login/" class="form1">-->
+   </form>
+   <form method="post" action="/register/" class="form1">
 	<div class="RegisterBox" id="RegisterBox">
 		<h3>Register</h3>
 		<input type="text" name="Regusername" id="RegUsername" placeholder="Username">
@@ -57,8 +57,9 @@
 		<input type="submit" name="RegSub" value="注册" onclick="registerSubmit()">
 		
 		<a href="#" id="closeReg" onclick="closeRegister()" >X</a>
+
 	</div>
-   <!-- </form>-->
+   </form>
 
 </body>
 <!--<script type="text/javascript" src="/static/js/first.js"></script>-->
@@ -66,5 +67,12 @@
 <script type="text/javascript" src="/static/js/login.js"></script>
 <link rel="stylesheet" type="text/css" href="/static/css/login.css">
 
+ {% if messages %}
+        <script>
+            {% for msg in messages %}
+                alert('{{ msg.message }}');
+            {% endfor %}
+        </script>
+    {% endif %}
 
 </html>

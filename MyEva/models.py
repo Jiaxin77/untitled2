@@ -5,14 +5,14 @@ from django.db import models
 
 #用户列表
 class UserList(models.Model):
-    UserId = models.CharField(max_length=50,primary_key=True)
+    UserId = models.AutoField(primary_key=True)
     UserName = models.CharField(max_length=50)
     Password = models.CharField(max_length=50)
     Status = models.IntegerField(default=0)
 
 #问卷列表
 class SurveyList(models.Model):
-    SurveyId = models.CharField(max_length=50,primary_key=True)
+    SurveyId = models.AutoField(primary_key=True)
     AssessId = models.CharField(max_length=50)
     SurveyName = models.CharField(max_length=50)
     SurveyPro = models.IntegerField(default=0)
@@ -20,7 +20,7 @@ class SurveyList(models.Model):
 
 #问题列表
 class QuestionList(models.Model):
-    QuestionId = models.CharField(max_length=50,primary_key=True)
+    QuestionId = models.AutoField(primary_key=True)
     QueDescription = models.CharField(max_length=500,null=True)
     QuestionType = models.IntegerField(default=0)
     isMust = models.BooleanField(blank=True)
@@ -44,14 +44,14 @@ class ScaleList(models.Model):
 
 #答卷列表
 class PaperList(models.Model):
-    PaperId = models.CharField(max_length=50,primary_key=True)
+    PaperId = models.AutoField(primary_key=True)
     SurveyId = models.CharField(max_length=50)
     UserId = models.CharField(max_length=50)
     UserName = models.CharField(max_length=50)
 
 #答案列表
 class AnswerList(models.Model):
-    AnswerId = models.CharField(max_length=50,primary_key=True)
+    AnswerId = models.AutoField(primary_key=True)
     QuestionType = models.IntegerField(default=0)
     isMust = models.BooleanField(blank=True)
     PaperId = models.ForeignKey('PaperList',on_delete=models.CASCADE)
@@ -83,7 +83,7 @@ class ScaleAnswerList(models.Model):
 
 #指标库
 class IndexList(models.Model):
-    IndexId = models.CharField(max_length=50,primary_key=True)
+    IndexId = models.AutoField(primary_key=True)
     IndexName = models.CharField(max_length=50)
     FatherName = models.CharField(max_length=50)
     FamilyName = models.CharField(max_length=50)
@@ -91,19 +91,19 @@ class IndexList(models.Model):
 
 #方法库
 class MethodList(models.Model):
-    MethodId = models.CharField(max_length=50,primary_key=True)
+    MethodId = models.AutoField(primary_key=True)
     MethodName = models.CharField(max_length=50)
     Description = models.CharField(max_length=500)
 
 #模板库
 class ModelList(models.Model):
-    ModelId = models.CharField(max_length=50,primary_key=True)
+    ModelId = models.AutoField(primary_key=True)
     ModelType = models.IntegerField(default=1)
     AssessId = models.CharField(max_length=50)
 
 #评估列表
 class AssessList(models.Model):
-    AssessId = models.CharField(max_length=50,primary_key=True)
+    AssessId = models.AutoField(primary_key=True)
     AssessName = models.CharField(max_length=50)
     AssessOneDes = models.CharField(max_length=200)
     UserId = models.ForeignKey('UserList',on_delete=models.CASCADE)
@@ -117,7 +117,7 @@ class AssessList(models.Model):
 
 #方案列表
 class PlanList(models.Model):
-    PlanId = models.CharField(max_length=50,primary_key=True)
+    PlanId = models.AutoField(primary_key=True)
     PlanName = models.CharField(max_length=59)
     PlanDescription = models.CharField(max_length=500)
     PlanTypeId = models.CharField(max_length=50)
@@ -125,7 +125,7 @@ class PlanList(models.Model):
 
 #启发式评估表格
 class HeuEvaResult(models.Model):
-    HeuEvaId = models.CharField(max_length=50,primary_key=True)
+    HeuEvaId = models.AutoField(primary_key=True)
     PlanId = models.CharField(max_length=50)
     IndexId = models.CharField(max_length=50)
     Interface = models.CharField(max_length=50)
@@ -137,7 +137,7 @@ class HeuEvaResult(models.Model):
 
 #记录绩效表格
 class PerformanceRecord(models.Model):
-    RecordId = models.CharField(max_length=50,primary_key=True)
+    RecordId = models.AutoField(primary_key=True)
     ErrorRate = models.FloatField(default=0)
     FinishTime = models.FloatField(default=0)
     SuccessRate = models.FloatField(default=0)
