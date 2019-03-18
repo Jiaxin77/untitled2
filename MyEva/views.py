@@ -11,23 +11,31 @@ import json
 
 
 
+
+
 def index(request):
       return render(request, "login.html", {"message": ""})
 
 def login(request):
     result = ""
+    global USER
     if request.method == "POST":
         username = request.POST.get("username",None)
         password = request.POST.get("password",None)
-        if UserList.objects.filter(UserName=username):
-            if UserList.objects.filter(Password=password):
-                result = "登录成功"
-                #messages.success(request,"登录成功")
-                return render(request, "chooseEva.html", {"user": username})
-
-            else:
-                messages.error(request,"密码错误")
-                result = "密码错误"
+        thisUser = UserList.objects.filter(UserName=username)
+        print(type(thisUser))
+        print(thisUser)
+        #判断是否为空
+        if thisUser.exists():
+            for user in thisUser:
+                if user.Password == password:
+                    result = "登录成功"
+                    #messages.success(request,"登录成功")
+                    USER = user
+                    return render(request, "chooseEva.html", {"user": username})
+                else:
+                    messages.error(request,"密码错误")
+                    result = "密码错误"
         else:
             messages.error(request,"用户不存在")
             result = "用户不存在"
@@ -109,11 +117,25 @@ def indexandmethod(request):
         HtmlMethodList.append(tempMethod)
     return render(request, "IndexAndMethod.html",{'IndexList':json.dumps(HtmlIndexList),'MethodList':json.dumps(HtmlMethodList)})
 
+def newEva(request):
+    return render(request, "newEva.html")
+
 def newBlankEva(request):
+    global USER
     if request.method == "POST":
         EvaType=request.POST.get("eva",None)
         EvaName=request.POST.get("name",None)
         EvaDetail=request.POST.get("detail",None)
+        EvaUseNum=request.POST.get("peopleNum",None)
+
         if EvaType == "survey":
+            #新建评估 插入新建的
 
+            AssessList.objects.create(AssessName=EvaName,AssessOneDes=EvaDetail,AssessType=0, AssessUseNum=EvaUseNum, UserId=USER)
+            #获取新建的这个id
+            thisAssess=AssessList.objects.get(AssessName=EvaName)
+            thisAssessId=thisAssess.AssessId
+            SurveyList.objects.create(AssessId=thisAssessId,SurveyName=EvaName,SurveyUseNum=EvaUseNum)
+            return render(request, "newQNaire.html",{'QNaireName':EvaName})
 
+    return render(request, "newEva.html")

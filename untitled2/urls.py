@@ -22,5 +22,7 @@ urlpatterns = [
    path('index/',views.index),
    path('login/',views.login),
    path('register/',views.register),
-   path('indexandmethod/',views.indexandmethod)
+   path('indexandmethod/',views.indexandmethod),
+   path('newBlankEva/',views.newBlankEva),
+   path('newEva/',views.newEva)
 ]

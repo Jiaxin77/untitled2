@@ -1605,8 +1605,9 @@ model</ColNames>
     </key>
     <column id="388" parent="287" name="AnswerId">
       <Position>1</Position>
-      <DataType>varchar(50)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="389" parent="287" name="QuestionType">
@@ -1623,11 +1624,11 @@ model</ColNames>
     </column>
     <column id="391" parent="287" name="PaperId_id">
       <Position>4</Position>
-      <DataType>varchar(50)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="392" parent="287" name="MyEva_answerlist_PaperId_id_37a1a237_fk_MyEva_paperlist_PaperId">
+    <index id="392" parent="287" name="MyEva_answerlist_PaperId_id_37a1a237_fk">
       <ColNames>PaperId_id</ColNames>
       <Type>btree</Type>
     </index>
@@ -1636,7 +1637,7 @@ model</ColNames>
       <ColNames>AnswerId</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="394" parent="287" name="MyEva_answerlist_PaperId_id_37a1a237_fk_MyEva_paperlist_PaperId">
+    <foreign-key id="394" parent="287" name="MyEva_answerlist_PaperId_id_37a1a237_fk">
       <ColNames>PaperId_id</ColNames>
       <RefSchemaName>eva</RefSchemaName>
       <RefTableName>myeva_paperlist</RefTableName>
@@ -1644,8 +1645,9 @@ model</ColNames>
     </foreign-key>
     <column id="395" parent="288" name="AssessId">
       <Position>1</Position>
-      <DataType>varchar(50)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="396" parent="288" name="AssessName">
@@ -1657,7 +1659,6 @@ model</ColNames>
     <column id="397" parent="288" name="AssessOneDes">
       <Position>3</Position>
       <DataType>varchar(200)|0s</DataType>
-      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="398" parent="288" name="AssessPro">
@@ -1675,13 +1676,11 @@ model</ColNames>
     <column id="400" parent="288" name="AssessDes">
       <Position>6</Position>
       <DataType>varchar(500)|0s</DataType>
-      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="401" parent="288" name="AssessObject">
       <Position>7</Position>
       <DataType>varchar(300)|0s</DataType>
-      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="402" parent="288" name="AssessIndexNum">
@@ -1693,13 +1692,11 @@ model</ColNames>
     <column id="403" parent="288" name="People">
       <Position>9</Position>
       <DataType>varchar(300)|0s</DataType>
-      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="404" parent="288" name="AssessIndexId">
       <Position>10</Position>
       <DataType>varchar(1000)|0s</DataType>
-      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="405" parent="288" name="UserId_id">
@@ -1708,674 +1705,695 @@ model</ColNames>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="406" parent="288" name="MyEva_assesslist_UserId_id_20ec23c0_fk">
+    <column id="406" parent="288" name="AssessUseNum">
+      <Position>12</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="407" parent="288" name="MyEva_assesslist_UserId_id_20ec23c0_fk">
       <ColNames>UserId_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="407" parent="288" name="PRIMARY">
+    <key id="408" parent="288" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>AssessId</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="408" parent="288" name="MyEva_assesslist_UserId_id_20ec23c0_fk">
+    <foreign-key id="409" parent="288" name="MyEva_assesslist_UserId_id_20ec23c0_fk">
       <ColNames>UserId_id</ColNames>
       <RefSchemaName>eva</RefSchemaName>
       <RefTableName>myeva_userlist</RefTableName>
       <RefColNames>UserId</RefColNames>
     </foreign-key>
-    <column id="409" parent="289" name="id">
+    <column id="410" parent="289" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="410" parent="289" name="SCQorMCQ">
+    <column id="411" parent="289" name="SCQorMCQ">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="411" parent="289" name="ChoiceA">
+    <column id="412" parent="289" name="ChoiceA">
       <Position>3</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="412" parent="289" name="ChoiceB">
+    <column id="413" parent="289" name="ChoiceB">
       <Position>4</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="413" parent="289" name="ChoiceC">
+    <column id="414" parent="289" name="ChoiceC">
       <Position>5</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="414" parent="289" name="ChoiceD">
+    <column id="415" parent="289" name="ChoiceD">
       <Position>6</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="415" parent="289" name="QuestionId_id">
+    <column id="416" parent="289" name="QuestionId_id">
       <Position>7</Position>
-      <DataType>varchar(50)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="416" parent="289" name="MyEva_choicelist_QuestionId_id_000b2bb5_fk_MyEva_que">
+    <index id="417" parent="289" name="MyEva_choicelist_QuestionId_id_000b2bb5_fk">
       <ColNames>QuestionId_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="417" parent="289" name="PRIMARY">
+    <key id="418" parent="289" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="418" parent="289" name="MyEva_choicelist_QuestionId_id_000b2bb5_fk_MyEva_que">
+    <foreign-key id="419" parent="289" name="MyEva_choicelist_QuestionId_id_000b2bb5_fk">
       <ColNames>QuestionId_id</ColNames>
       <RefSchemaName>eva</RefSchemaName>
       <RefTableName>myeva_questionlist</RefTableName>
       <RefColNames>QuestionId</RefColNames>
     </foreign-key>
-    <column id="419" parent="290" name="id">
+    <column id="420" parent="290" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="420" parent="290" name="QuestionId">
+    <column id="421" parent="290" name="QuestionId">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="421" parent="290" name="FIBAnswer">
+    <column id="422" parent="290" name="FIBAnswer">
       <Position>3</Position>
       <DataType>varchar(100)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="422" parent="290" name="AnswerId_id">
+    <column id="423" parent="290" name="AnswerId_id">
       <Position>4</Position>
-      <DataType>varchar(50)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="423" parent="290" name="MyEva_fibanswerlist_AnswerId_id_4bed941b_fk_MyEva_ans">
+    <index id="424" parent="290" name="MyEva_fibanswerlist_AnswerId_id_4bed941b_fk">
       <ColNames>AnswerId_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="424" parent="290" name="PRIMARY">
+    <key id="425" parent="290" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="425" parent="290" name="MyEva_fibanswerlist_AnswerId_id_4bed941b_fk_MyEva_ans">
+    <foreign-key id="426" parent="290" name="MyEva_fibanswerlist_AnswerId_id_4bed941b_fk">
       <ColNames>AnswerId_id</ColNames>
       <RefSchemaName>eva</RefSchemaName>
       <RefTableName>myeva_answerlist</RefTableName>
       <RefColNames>AnswerId</RefColNames>
     </foreign-key>
-    <column id="426" parent="291" name="HeuEvaId">
+    <column id="427" parent="291" name="HeuEvaId">
       <Position>1</Position>
-      <DataType>varchar(50)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="427" parent="291" name="PlanId">
+    <column id="428" parent="291" name="PlanId">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="428" parent="291" name="IndexId">
+    <column id="429" parent="291" name="IndexId">
       <Position>3</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="429" parent="291" name="Interface">
+    <column id="430" parent="291" name="Interface">
       <Position>4</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="430" parent="291" name="HeuProblem">
+    <column id="431" parent="291" name="HeuProblem">
       <Position>5</Position>
       <DataType>varchar(300)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="431" parent="291" name="SeriousDegree">
+    <column id="432" parent="291" name="SeriousDegree">
       <Position>6</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="432" parent="291" name="Advice">
+    <column id="433" parent="291" name="Advice">
       <Position>7</Position>
       <DataType>varchar(200)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="433" parent="291" name="ScreenShot">
+    <column id="434" parent="291" name="ScreenShot">
       <Position>8</Position>
       <DataType>varchar(300)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="434" parent="291" name="UserId_id">
+    <column id="435" parent="291" name="UserId_id">
       <Position>9</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="435" parent="291" name="MyEva_heuevaresult_UserId_id_a69d6131_fk">
+    <index id="436" parent="291" name="MyEva_heuevaresult_UserId_id_a69d6131_fk">
       <ColNames>UserId_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="436" parent="291" name="PRIMARY">
+    <key id="437" parent="291" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>HeuEvaId</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="437" parent="291" name="MyEva_heuevaresult_UserId_id_a69d6131_fk">
+    <foreign-key id="438" parent="291" name="MyEva_heuevaresult_UserId_id_a69d6131_fk">
       <ColNames>UserId_id</ColNames>
       <RefSchemaName>eva</RefSchemaName>
       <RefTableName>myeva_userlist</RefTableName>
       <RefColNames>UserId</RefColNames>
     </foreign-key>
-    <column id="438" parent="292" name="IndexId">
-      <Position>1</Position>
-      <DataType>varchar(50)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="439" parent="292" name="IndexName">
-      <Position>2</Position>
-      <DataType>varchar(50)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="440" parent="292" name="FatherName">
-      <Position>3</Position>
-      <DataType>varchar(50)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="441" parent="292" name="FamilyName">
-      <Position>4</Position>
-      <DataType>varchar(50)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="442" parent="292" name="Description">
-      <Position>5</Position>
-      <DataType>varchar(500)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <key id="443" parent="292" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>IndexId</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <column id="444" parent="293" name="id">
+    <column id="439" parent="292" name="IndexId">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="445" parent="293" name="QuestionId">
+    <column id="440" parent="292" name="IndexName">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="446" parent="293" name="ChoiceNum">
+    <column id="441" parent="292" name="FatherName">
       <Position>3</Position>
-      <DataType>int(11)|0s</DataType>
+      <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="447" parent="293" name="ChoiceAnswer">
+    <column id="442" parent="292" name="FamilyName">
       <Position>4</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="448" parent="293" name="AnswerId_id">
+    <column id="443" parent="292" name="Description">
       <Position>5</Position>
+      <DataType>varchar(500)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="444" parent="292" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>IndexId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="445" parent="293" name="id">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="446" parent="293" name="QuestionId">
+      <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="449" parent="293" name="MyEva_mcalist_AnswerId_id_c7f7f735_fk_MyEva_answerlist_AnswerId">
+    <column id="447" parent="293" name="ChoiceNum">
+      <Position>3</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="448" parent="293" name="ChoiceAnswer">
+      <Position>4</Position>
+      <DataType>varchar(50)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="449" parent="293" name="AnswerId_id">
+      <Position>5</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="450" parent="293" name="MyEva_mcalist_AnswerId_id_c7f7f735_fk">
       <ColNames>AnswerId_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="450" parent="293" name="PRIMARY">
+    <key id="451" parent="293" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="451" parent="293" name="MyEva_mcalist_AnswerId_id_c7f7f735_fk_MyEva_answerlist_AnswerId">
+    <foreign-key id="452" parent="293" name="MyEva_mcalist_AnswerId_id_c7f7f735_fk">
       <ColNames>AnswerId_id</ColNames>
       <RefSchemaName>eva</RefSchemaName>
       <RefTableName>myeva_answerlist</RefTableName>
       <RefColNames>AnswerId</RefColNames>
     </foreign-key>
-    <column id="452" parent="294" name="MethodId">
+    <column id="453" parent="294" name="MethodId">
       <Position>1</Position>
-      <DataType>varchar(50)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="453" parent="294" name="MethodName">
+    <column id="454" parent="294" name="MethodName">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="454" parent="294" name="Description">
+    <column id="455" parent="294" name="Description">
       <Position>3</Position>
       <DataType>varchar(500)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="455" parent="294" name="PRIMARY">
+    <key id="456" parent="294" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>MethodId</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="456" parent="295" name="ModelId">
+    <column id="457" parent="295" name="ModelId">
       <Position>1</Position>
-      <DataType>varchar(50)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="457" parent="295" name="ModelType">
+    <column id="458" parent="295" name="ModelType">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="458" parent="295" name="AssessId">
+    <column id="459" parent="295" name="AssessId">
       <Position>3</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="459" parent="295" name="PRIMARY">
+    <key id="460" parent="295" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>ModelId</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="460" parent="296" name="PaperId">
+    <column id="461" parent="296" name="PaperId">
       <Position>1</Position>
-      <DataType>varchar(50)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="461" parent="296" name="SurveyId">
+    <column id="462" parent="296" name="SurveyId">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="462" parent="296" name="UserId">
+    <column id="463" parent="296" name="UserId">
       <Position>3</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="463" parent="296" name="UserName">
+    <column id="464" parent="296" name="UserName">
       <Position>4</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="464" parent="296" name="PRIMARY">
+    <key id="465" parent="296" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>PaperId</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="465" parent="297" name="RecordId">
+    <column id="466" parent="297" name="RecordId">
       <Position>1</Position>
-      <DataType>varchar(50)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="466" parent="297" name="ErrorRate">
+    <column id="467" parent="297" name="ErrorRate">
       <Position>2</Position>
       <DataType>double|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="467" parent="297" name="FinishTime">
+    <column id="468" parent="297" name="FinishTime">
       <Position>3</Position>
       <DataType>double|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="468" parent="297" name="SuccessRate">
+    <column id="469" parent="297" name="SuccessRate">
       <Position>4</Position>
       <DataType>double|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="469" parent="297" name="LookingTime">
+    <column id="470" parent="297" name="LookingTime">
       <Position>5</Position>
       <DataType>double|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="470" parent="297" name="PlanId_id">
+    <column id="471" parent="297" name="PlanId_id">
       <Position>6</Position>
-      <DataType>varchar(50)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="471" parent="297" name="UserId_id">
+    <column id="472" parent="297" name="UserId_id">
       <Position>7</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="472" parent="297" name="MyEva_performancerec_PlanId_id_cc9001d3_fk_MyEva_pla">
+    <index id="473" parent="297" name="MyEva_performancerecord_PlanId_id_cc9001d3_fk">
       <ColNames>PlanId_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="473" parent="297" name="MyEva_performancerecord_UserId_id_35551ffb_fk">
+    <index id="474" parent="297" name="MyEva_performancerecord_UserId_id_35551ffb_fk">
       <ColNames>UserId_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="474" parent="297" name="PRIMARY">
+    <key id="475" parent="297" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>RecordId</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="475" parent="297" name="MyEva_performancerec_PlanId_id_cc9001d3_fk_MyEva_pla">
+    <foreign-key id="476" parent="297" name="MyEva_performancerecord_PlanId_id_cc9001d3_fk">
       <ColNames>PlanId_id</ColNames>
       <RefSchemaName>eva</RefSchemaName>
       <RefTableName>myeva_planlist</RefTableName>
       <RefColNames>PlanId</RefColNames>
     </foreign-key>
-    <foreign-key id="476" parent="297" name="MyEva_performancerecord_UserId_id_35551ffb_fk">
+    <foreign-key id="477" parent="297" name="MyEva_performancerecord_UserId_id_35551ffb_fk">
       <ColNames>UserId_id</ColNames>
       <RefSchemaName>eva</RefSchemaName>
       <RefTableName>myeva_userlist</RefTableName>
       <RefColNames>UserId</RefColNames>
     </foreign-key>
-    <column id="477" parent="298" name="PlanId">
+    <column id="478" parent="298" name="PlanId">
       <Position>1</Position>
-      <DataType>varchar(50)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="478" parent="298" name="PlanName">
+    <column id="479" parent="298" name="PlanName">
       <Position>2</Position>
       <DataType>varchar(59)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="479" parent="298" name="PlanDescription">
+    <column id="480" parent="298" name="PlanDescription">
       <Position>3</Position>
       <DataType>varchar(500)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="480" parent="298" name="PlanTypeId">
+    <column id="481" parent="298" name="PlanTypeId">
       <Position>4</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="481" parent="298" name="AssessId">
+    <column id="482" parent="298" name="AssessId">
       <Position>5</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="482" parent="298" name="PRIMARY">
+    <key id="483" parent="298" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>PlanId</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="483" parent="299" name="QuestionId">
+    <column id="484" parent="299" name="QuestionId">
       <Position>1</Position>
-      <DataType>varchar(50)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="484" parent="299" name="QueDescription">
+    <column id="485" parent="299" name="QueDescription">
       <Position>2</Position>
       <DataType>varchar(500)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="485" parent="299" name="QuestionType">
+    <column id="486" parent="299" name="QuestionType">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="486" parent="299" name="isMust">
+    <column id="487" parent="299" name="isMust">
       <Position>4</Position>
       <DataType>tinyint(1)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="487" parent="299" name="SurveyId_id">
+    <column id="488" parent="299" name="SurveyId_id">
       <Position>5</Position>
-      <DataType>varchar(50)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="488" parent="299" name="MyEva_questionlist_SurveyId_id_205b7104_fk_MyEva_sur">
+    <index id="489" parent="299" name="MyEva_questionlist_SurveyId_id_205b7104_fk">
       <ColNames>SurveyId_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="489" parent="299" name="PRIMARY">
+    <key id="490" parent="299" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>QuestionId</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="490" parent="299" name="MyEva_questionlist_SurveyId_id_205b7104_fk_MyEva_sur">
+    <foreign-key id="491" parent="299" name="MyEva_questionlist_SurveyId_id_205b7104_fk">
       <ColNames>SurveyId_id</ColNames>
       <RefSchemaName>eva</RefSchemaName>
       <RefTableName>myeva_surveylist</RefTableName>
       <RefColNames>SurveyId</RefColNames>
     </foreign-key>
-    <column id="491" parent="300" name="id">
+    <column id="492" parent="300" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="492" parent="300" name="QuestionId">
+    <column id="493" parent="300" name="QuestionId">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="493" parent="300" name="DegreeAnswer">
+    <column id="494" parent="300" name="DegreeAnswer">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="494" parent="300" name="AnswerId_id">
+    <column id="495" parent="300" name="AnswerId_id">
       <Position>4</Position>
-      <DataType>varchar(50)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="495" parent="300" name="MyEva_scaleanswerlis_AnswerId_id_4a954530_fk_MyEva_ans">
+    <index id="496" parent="300" name="MyEva_scaleanswerlist_AnswerId_id_4a954530_fk">
       <ColNames>AnswerId_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="496" parent="300" name="PRIMARY">
+    <key id="497" parent="300" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="497" parent="300" name="MyEva_scaleanswerlis_AnswerId_id_4a954530_fk_MyEva_ans">
+    <foreign-key id="498" parent="300" name="MyEva_scaleanswerlist_AnswerId_id_4a954530_fk">
       <ColNames>AnswerId_id</ColNames>
       <RefSchemaName>eva</RefSchemaName>
       <RefTableName>myeva_answerlist</RefTableName>
       <RefColNames>AnswerId</RefColNames>
     </foreign-key>
-    <column id="498" parent="301" name="id">
+    <column id="499" parent="301" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="499" parent="301" name="BeginIndex">
+    <column id="500" parent="301" name="BeginIndex">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="500" parent="301" name="EndIndex">
+    <column id="501" parent="301" name="EndIndex">
       <Position>3</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="501" parent="301" name="DegreeNum">
+    <column id="502" parent="301" name="DegreeNum">
       <Position>4</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="502" parent="301" name="QuestionId_id">
+    <column id="503" parent="301" name="QuestionId_id">
       <Position>5</Position>
-      <DataType>varchar(50)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="503" parent="301" name="MyEva_scalelist_QuestionId_id_cf5f6efe_fk_MyEva_que">
+    <index id="504" parent="301" name="MyEva_scalelist_QuestionId_id_cf5f6efe_fk">
       <ColNames>QuestionId_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="504" parent="301" name="PRIMARY">
+    <key id="505" parent="301" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="505" parent="301" name="MyEva_scalelist_QuestionId_id_cf5f6efe_fk_MyEva_que">
+    <foreign-key id="506" parent="301" name="MyEva_scalelist_QuestionId_id_cf5f6efe_fk">
       <ColNames>QuestionId_id</ColNames>
       <RefSchemaName>eva</RefSchemaName>
       <RefTableName>myeva_questionlist</RefTableName>
       <RefColNames>QuestionId</RefColNames>
     </foreign-key>
-    <column id="506" parent="302" name="id">
+    <column id="507" parent="302" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="507" parent="302" name="QuestionId">
+    <column id="508" parent="302" name="QuestionId">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="508" parent="302" name="ChoiceAnswer">
+    <column id="509" parent="302" name="ChoiceAnswer">
       <Position>3</Position>
       <DataType>varchar(5)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="509" parent="302" name="AnswerId_id">
+    <column id="510" parent="302" name="AnswerId_id">
       <Position>4</Position>
-      <DataType>varchar(50)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="510" parent="302" name="MyEva_scalist_AnswerId_id_176f7ce0_fk_MyEva_answerlist_AnswerId">
+    <index id="511" parent="302" name="MyEva_scalist_AnswerId_id_176f7ce0_fk">
       <ColNames>AnswerId_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="511" parent="302" name="PRIMARY">
+    <key id="512" parent="302" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="512" parent="302" name="MyEva_scalist_AnswerId_id_176f7ce0_fk_MyEva_answerlist_AnswerId">
+    <foreign-key id="513" parent="302" name="MyEva_scalist_AnswerId_id_176f7ce0_fk">
       <ColNames>AnswerId_id</ColNames>
       <RefSchemaName>eva</RefSchemaName>
       <RefTableName>myeva_answerlist</RefTableName>
       <RefColNames>AnswerId</RefColNames>
     </foreign-key>
-    <column id="513" parent="303" name="SurveyId">
-      <Position>1</Position>
-      <DataType>varchar(50)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="514" parent="303" name="AssessId">
-      <Position>2</Position>
-      <DataType>varchar(50)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="515" parent="303" name="SurveyName">
-      <Position>3</Position>
-      <DataType>varchar(50)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="516" parent="303" name="SurveyPro">
-      <Position>4</Position>
-      <DataType>int(11)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="517" parent="303" name="SurveyQueNum">
-      <Position>5</Position>
-      <DataType>int(11)|0s</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <key id="518" parent="303" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>SurveyId</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <column id="519" parent="304" name="UserId">
+    <column id="514" parent="303" name="SurveyId">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="520" parent="304" name="UserName">
+    <column id="515" parent="303" name="AssessId">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="521" parent="304" name="Password">
+    <column id="516" parent="303" name="SurveyName">
       <Position>3</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="522" parent="304" name="Status">
+    <column id="517" parent="303" name="SurveyPro">
       <Position>4</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="523" parent="304" name="PRIMARY">
+    <column id="518" parent="303" name="SurveyQueNum">
+      <Position>5</Position>
+      <DataType>int(11)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="519" parent="303" name="SurveyUseNum">
+      <Position>6</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="520" parent="303" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>SurveyId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="521" parent="304" name="UserId">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="522" parent="304" name="UserName">
+      <Position>2</Position>
+      <DataType>varchar(50)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="523" parent="304" name="Password">
+      <Position>3</Position>
+      <DataType>varchar(50)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="524" parent="304" name="Status">
+      <Position>4</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="525" parent="304" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>UserId</ColNames>
       <Primary>1</Primary>

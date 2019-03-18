@@ -106,15 +106,16 @@ class ModelList(models.Model):
 class AssessList(models.Model):
     AssessId = models.AutoField(primary_key=True)
     AssessName = models.CharField(max_length=50)
-    AssessOneDes = models.CharField(max_length=200)
+    AssessOneDes = models.CharField(max_length=200,null=True)
     UserId = models.ForeignKey('UserList',on_delete=models.CASCADE)
     AssessPro = models.IntegerField(default=0)
     AssessType = models.IntegerField(default=1)
-    AssessDes = models.CharField(max_length=500)
-    AssessObject = models.CharField(max_length=300)
+    AssessDes = models.CharField(max_length=500,null=True)
+    AssessObject = models.CharField(max_length=300,null=True)
     AssessIndexNum = models.IntegerField(default=0)
-    People = models.CharField(max_length=300)
-    AssessIndexId = models.CharField(max_length=1000)
+    People = models.CharField(max_length=300,null=True)
+    AssessUseNum = models.IntegerField(default=0)
+    AssessIndexId = models.CharField(max_length=1000,null=True)
 
 #方案列表
 class PlanList(models.Model):
