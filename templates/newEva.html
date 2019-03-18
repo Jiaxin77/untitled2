@@ -187,13 +187,15 @@
 
 	</div>
 
+
+<form method="post" action="/newBlankEva/" id="BlankEva" name="BlankEva">
 	<div id="newEvaBox" style="visibility: hidden;">
 		<br>
 		<h4>新建评估</h4>
 		<br>
 		<div id="chooseEvaType">
-			<label><input type="radio" name="eva">单一问卷</label>
-			<label><input type="radio" name="eva">综合评估</label>
+			<label><input type="radio" name="eva" value="survey">单一问卷</label>
+			<label><input type="radio" name="eva" value="comprehensive">综合评估</label>
 		</div>
 		<br>
 		<p>评估名称   <input id="EvaNameInput" type="text" name="name"></p>
@@ -203,9 +205,10 @@
 		<br>
 		<div id="evaButtons">
 			<button id="cancel" @click="closeNewBox()">取消</button>
-			<button id="yes">确定</button>
+			<button id="yes" @click="submitForm()">确定</button>
 		</div>
 	</div>
+</form>
 </div>
 
 

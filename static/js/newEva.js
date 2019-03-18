@@ -126,6 +126,17 @@
 					document.getElementById('newEvaBox').style.visibility='hidden';
 				}	
 			},
+			submitForm:function()
+			{
+				if (document.getElementById('EvaNameInput').value!=null)
+				{
+					document.BlankEva.submit();
+				}
+				else
+				{
+					alert("名称不能为空！")
+				}
+			},
 			changeList()
 			{
 				document.getElementById('AllModelEvaluation').style.visibility="hidden";

@@ -16,6 +16,7 @@ class SurveyList(models.Model):
     AssessId = models.CharField(max_length=50)
     SurveyName = models.CharField(max_length=50)
     SurveyPro = models.IntegerField(default=0)
+    SurveyUseNum = models.IntegerField(default=0)
     SurveyQueNum = models.IntegerField(default=0,null=True)
 
 #问题列表

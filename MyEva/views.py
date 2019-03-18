@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from MyEva.models import UserList
 from MyEva.models import MethodList
 from MyEva.models import IndexList
+from MyEva.models import SurveyList
+from MyEva.models import AssessList
 from django.contrib import  messages
 import json
 # Create your views here.
@@ -87,20 +89,15 @@ def register(request):
 # 	}
 # 	];
 def indexandmethod(request):
-    print("laile!!")
     HtmlIndexList=[]
     HtmlMethodList=[]
     MyIndexList = IndexList.objects.values('FatherName', 'Description').distinct()
     MyMethodList = MethodList.objects.values('MethodName','Description').distinct()
-   # print(type(MyIndexList))
-   # print(MyIndexList)
     i=0
     for index in MyIndexList:
-       # print(index)
         tempIndex={'id':i,'title':'title','content':'content'}
         tempIndex['title']=index['FatherName']
         tempIndex['content']=index['Description'].replace("\n","<br/>")
-      #  print(tempIndex)
         i=i+1
         HtmlIndexList.append(tempIndex)
     j=0
@@ -110,8 +107,13 @@ def indexandmethod(request):
         tempMethod['content']=method['Description'].replace("\n","<br/>")
         j=j+1
         HtmlMethodList.append(tempMethod)
-    print(HtmlIndexList)
-    print(HtmlMethodList)
     return render(request, "IndexAndMethod.html",{'IndexList':json.dumps(HtmlIndexList),'MethodList':json.dumps(HtmlMethodList)})
+
+def newBlankEva(request):
+    if request.method == "POST":
+        EvaType=request.POST.get("eva",None)
+        EvaName=request.POST.get("name",None)
+        EvaDetail=request.POST.get("detail",None)
+        if EvaType == "survey":
 
 
