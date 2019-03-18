@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from MyEva.models import UserList
+from MyEva.models import MethodList
+from MyEva.models import IndexList
 from django.contrib import  messages
+import json
 # Create your views here.
 
 
@@ -47,6 +50,68 @@ def register(request):
             messages.success(request,"注册成功")
     return render(request, "login.html")
 
+# var IndexMessage= [
+# 				{
+# 					id:1,
+# 					title:'易学性',
+# 					content:'易学性巴拉巴拉'
+# 				},
+# 				{
+# 					id:2,
+# 					title:'容错性',
+# 					content:'容错性balabala'
+# 				},
+# 				{
+# 					id:3,
+# 					title:'便捷性',
+# 					content:'便捷性巴拉巴拉'
+# 				}
+# 				];
 
+
+# var MethodMessage=[
+# 	{
+# 		id:1,
+# 		title:'层次分析法',
+# 		content:'层次分析法babala'
+# 	},
+# 	{
+# 		id:2,
+# 		title:'启发式评估法',
+# 		content:'启发式评估法balabala'
+# 	},
+# 	{
+# 		id:3,
+# 		title:'可用性测试法',
+# 		content:'可用性测试法balabala'
+# 	}
+# 	];
+def indexandmethod(request):
+    print("laile!!")
+    HtmlIndexList=[]
+    HtmlMethodList=[]
+    MyIndexList = IndexList.objects.values('FatherName', 'Description').distinct()
+    MyMethodList = MethodList.objects.values('MethodName','Description').distinct()
+   # print(type(MyIndexList))
+   # print(MyIndexList)
+    i=0
+    for index in MyIndexList:
+       # print(index)
+        tempIndex={'id':i,'title':'title','content':'content'}
+        tempIndex['title']=index['FatherName']
+        tempIndex['content']=index['Description'].replace("\n","<br/>")
+      #  print(tempIndex)
+        i=i+1
+        HtmlIndexList.append(tempIndex)
+    j=0
+    for method in MyMethodList:
+        tempMethod={'id':j,'title':'title','content':'content'}
+        tempMethod['title']=method['MethodName']
+        tempMethod['content']=method['Description'].replace("\n","<br/>")
+        j=j+1
+        HtmlMethodList.append(tempMethod)
+    print(HtmlIndexList)
+    print(HtmlMethodList)
+    return render(request, "IndexAndMethod.html",{'IndexList':json.dumps(HtmlIndexList),'MethodList':json.dumps(HtmlMethodList)})
 
 

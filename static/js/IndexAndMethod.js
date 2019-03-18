@@ -1,22 +1,22 @@
+/*		 var IndexMessage= [
+				{
+				id:1,
+ 					title:'易学性',
+ 					content:'易学性巴拉巴拉aaaaaaaaaaaaa'
+ 				},
+ 				{
+ 					id:2,
+ 					title:'容错性',
+ 					content:'容错性balabala'
+ 				},
+			 	{
+ 					id:3,
+ 					title:'便捷性',
+ 					content:'便捷性巴拉巴拉'
+ 				}
+ 				];
+*/
 
-
-	var IndexMessage= [
-				{
-					id:1,
-					title:'易学性',
-					content:'易学性巴拉巴拉'
-				},
-				{
-					id:2,
-					title:'容错性',
-					content:'容错性balabala'
-				},
-				{
-					id:3,
-					title:'便捷性',
-					content:'便捷性巴拉巴拉'
-				}
-				];
 		Vue.component('tab-posts',{
 		data:function(){
 			return{
@@ -27,7 +27,7 @@
 		template:'#myTemplate'
 
 	});
-
+/*
 	var MethodMessage=[
 	{
 		id:1,
@@ -45,7 +45,7 @@
 		content:'可用性测试法balabala'
 	}
 	];
-
+*/
 	Vue.component('tab-archive',{
 		data:function(){
 			return{
