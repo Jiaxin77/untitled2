@@ -248,3 +248,26 @@ def chooseEva(request):
         HtmlEvaList.append(tempeva)
     return render(request,"chooseEva.html",{'EvaList':json.dumps(HtmlEvaList)})
 
+#录入数据——得到问卷
+def getAssess(request):
+    #先get到assess的id
+    #判断类型 如果是问卷
+    #从问卷列表中查询此assessid 得到问卷id
+    #从问题列表中查询此问卷id的所有问题
+    #逐个问题判断类型，完善成数据格式，传回
+
+def AnswerQNaire(request):
+    #有问卷id
+    #录入答卷列表
+    #问卷和assess的process要增加
+
+def deleteAssess(request):
+    #get assessid
+    #删除对应assessid
+    #回到chooseEva 的url？
+
+def AnalysisData(request):
+    #获取问卷id
+    #获取问卷所有问题
+    #对应问题类型if
+    #根据问题id找答卷答案 统计
