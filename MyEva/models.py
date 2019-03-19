@@ -113,6 +113,7 @@ class AssessList(models.Model):
     AssessDes = models.CharField(max_length=500,null=True)
     AssessObject = models.CharField(max_length=300,null=True)
     AssessIndexNum = models.IntegerField(default=0)
+    AssessBeginTime = models.DateTimeField(auto_now_add=True)
     People = models.CharField(max_length=300,null=True)
     AssessUseNum = models.IntegerField(default=0)
     AssessIndexId = models.CharField(max_length=1000,null=True)

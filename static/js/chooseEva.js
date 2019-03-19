@@ -1,42 +1,43 @@
 
-	var AllAssess=[
-		{
-			id:1,
-			name:"评估名称1",
-			person:"曲丽丽",
-			InShort:"我是评估1一句话描述",
-			BeginTime:"2018-06-16 14:03",
-			process:90,
-			condition:"ing"
-		},
-		{
-			id:2,
-			name:"评估名称2",
-			person:"丁程鑫",
-			InShort:"我是评估2一句话描述",
-			BeginTime:"2018-06-18 17:03",
-			process:30,
-			condition:"ing"	
-		},
-		{
-			id:3,
-			name:"评估名称3",
-			person:"马嘉祺",
-			InShort:"我是评估3一句话描述",
-			BeginTime:"2018-03-18 17:03",
-			process:100,
-			condition:"End"
-		},
-		{
-			id:4,
-			name:"评估名称3",
-			person:"李汶翰",
-			InShort:"我是评估4一句话描述",
-			BeginTime:"2017-03-18 17:03",
-			process:100,
-			condition:"End"
-		}
-	]
+
+	// var AllAssess=[
+	// 	{
+	// 		id:1,
+	// 		name:"评估名称1",
+	// 		person:"曲丽丽",
+	// 		InShort:"我是评估1一句话描述",
+	// 		BeginTime:"2018-06-16 14:03",
+	// 		process:90,
+	// 		condition:"ing"
+	// 	},
+	// 	{
+	// 		id:2,
+	// 		name:"评估名称2",
+	// 		person:"丁程鑫",
+	// 		InShort:"我是评估2一句话描述",
+	// 		BeginTime:"2018-06-18 17:03",
+	// 		process:30,
+	// 		condition:"ing"
+	// 	},
+	// 	{
+	// 		id:3,
+	// 		name:"评估名称3",
+	// 		person:"马嘉祺",
+	// 		InShort:"我是评估3一句话描述",
+	// 		BeginTime:"2018-03-18 17:03",
+	// 		process:100,
+	// 		condition:"End"
+	// 	},
+	// 	{
+	// 		id:4,
+	// 		name:"评估名称3",
+	// 		person:"李汶翰",
+	// 		InShort:"我是评估4一句话描述",
+	// 		BeginTime:"2017-03-18 17:03",
+	// 		process:100,
+	// 		condition:"End"
+	// 	}
+	// ]
 
 
 	var app=new Vue({

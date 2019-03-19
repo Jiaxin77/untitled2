@@ -25,5 +25,6 @@ urlpatterns = [
    path('indexandmethod/',views.indexandmethod),
    path('newBlankEva/',views.newBlankEva),
    path('newEva/',views.newEva),
-   path('addQNaire/',views.addQNaire)
+   path('addQNaire/',views.addQNaire),
+   path('chooseEva/',views.chooseEva)
 ]
