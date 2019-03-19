@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
 	<title>EditQNaire</title>
 </head>
@@ -21,7 +21,7 @@
 
 		<div id="FunctionButtons">
 			<button id="preview" @click='displayPreview()'>预览</button>
-			<button id="ok">完成编辑</button>
+			<button id="ok" @click='saveQNaire()'>完成编辑</button>
 		</div>
 
 
@@ -29,6 +29,13 @@
 	<div id="zhezhao" style="display: none;">
 		
 	</div>
+   <!-- <form method="post" action="/addQNaire/" id="addQNaire" name="addQNaire">
+        <div style="visibility:visible">
+
+            <input  v-for="que in questions" type="text" name="questions"  :value="">
+
+        </div>
+    </form>-->
 	<div id="questions">
 		{% verbatim %}{{ questions }}{% endverbatim %}
 		<div class="question" v-for="que in questions">
@@ -118,8 +125,9 @@
 	</div>
 </div>
 </body>
-
+<!--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>-->
 <script type="text/javascript" src="/static/js/vue.js"></script>
+<script type="text/javascript" src="/static/js/axios.min.js"></script>
 <script type="text/javascript" src="/static/js/newQNaire.js"></script>
 <link rel="stylesheet" type="text/css" href="/static/css/newQNaire.css">
 

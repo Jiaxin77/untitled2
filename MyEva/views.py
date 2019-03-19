@@ -139,3 +139,18 @@ def newBlankEva(request):
             return render(request, "newQNaire.html",{'QNaireName':EvaName})
 
     return render(request, "newEva.html")
+
+def addQNaire(request):
+    print('newQuestions')
+    print(request.body)
+    obj=json.loads(request.body)
+    print(obj)
+    if request.method == "POST":
+        Questions=[]
+        Questions=obj
+        print(type(Questions))
+        print(Questions)
+        for que in Questions:
+            print(que)
+            print(que['type'])
+    return render(request, "newEva.html")

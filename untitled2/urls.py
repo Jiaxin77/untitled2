@@ -24,5 +24,6 @@ urlpatterns = [
    path('register/',views.register),
    path('indexandmethod/',views.indexandmethod),
    path('newBlankEva/',views.newBlankEva),
-   path('newEva/',views.newEva)
+   path('newEva/',views.newEva),
+   path('addQNaire/',views.addQNaire)
 ]

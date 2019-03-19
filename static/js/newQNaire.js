@@ -1,6 +1,9 @@
+/*
+import axios from 'axios'
 
-
-
+axios.defaults.baseURL = 'http://localhost:8000'
+Vue.prototype.$axios = axios
+*/
 	var SingleChoose={
 		id:0,
 		title:"xxx",
@@ -174,6 +177,21 @@
 
 				}
 
+			},
+		saveQNaire:function()
+			{
+
+				//	document.addQNaire.submit();
+
+				axios.post('http://127.0.0.1:8000/addQNaire/',
+
+					JSON.stringify(this.questions))
+					.then(function(response) {
+						console.log(response);
+					})
+					.catch(function(error){
+						console.log(error);
+			})
 			}
 
 		}
