@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'untitled2.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME' : 'eva',#数据库名称
+        'NAME' : 'myeva',#数据库名称
         'USER' : 'root',#用户名
         'PASSWORD' : '19971019',#密码
         'HOST' : '127.0.0.1',#IP地址
