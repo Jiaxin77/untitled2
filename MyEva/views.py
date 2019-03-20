@@ -248,25 +248,85 @@ def chooseEva(request):
         HtmlEvaList.append(tempeva)
     return render(request,"chooseEva.html",{'EvaList':json.dumps(HtmlEvaList)})
 
+
+#	var Question=[ { "id": 1, "title": "丁程鑫帅不帅", "type": "SingleChoose", "ChooseA": "超帅", "ChooseB": "特别帅", "ChooseC": "帅炸了", "ChooseD": "巨帅" }, { "id": 2, "title": "李汶翰能不能出道", "type": "MultiChoose", "ChooseA": "C位出道", "ChooseB": "必须top", "ChooseC": "一位必须的", "ChooseD": "当然可以" }, { "id": 3, "title": "嘻嘻嘻嘻", "type": "Paragraph" }, { "id": 4, "title": "爱不爱我", "type": "Scale", "lowest": "不爱", "highest": "爱", "ScaleCount": 5 }, { "id": 5, "title": "你猜我是谁", "type": "FillInBlank" } ];
+
 #录入数据——得到问卷
-def getAssess(request):
+def getFillAssess(request):
+    assessId=json.loads(request.GET['assess'])
     #先get到assess的id
+    Assess=AssessList.objects.get(AssessId=assessId)
+    if Assess.AssessType == 0:
+        HtmlQuestionsList=[]
+        Survey=SurveyList.objects.get(AssessId=Assess.AssessId)
+        Questions=QuestionList.objects.filter(SurveyId=Survey)
+        print(type(Questions))
+        for que in Questions:
+            j=1
+            if que.QuestionType == 1:
+                tempQue={'id':j,'queId':'','title':'title','type':'SingleChoose','ChooseA':'','ChooseB':'','ChooseC':'','ChooseD':''}
+                tempQue['queId']=que.QuestionId
+                tempQue['title']=que.QueDescription
+                choices=ChoiceList.objects.get(QuestionId=que)
+                tempQue['ChooseA']=choices.ChoiceA
+                tempQue['ChooseB']=choices.ChoiceB
+                tempQue['ChooseC']=choices.ChoiceC
+                tempQue['ChooseD']=choices.ChoiceD
+                HtmlQuestionsList.append(tempQue)
+                j=j+1
+            elif que.QuestionType == 2:
+                tempQue={'id':j,'queId':'','title':'title','type':'MultiChoose','ChooseA':'','ChooseB':'','ChooseC':'','ChooseD':''}
+                tempQue['queId']=que.QuestionId
+                tempQue['title']=que.QueDescription
+                choices=ChoiceList.objects.get(QuestionId=que)
+                tempQue['ChooseA']=choices.ChoiceA
+                tempQue['ChooseB']=choices.ChoiceB
+                tempQue['ChooseC']=choices.ChoiceC
+                tempQue['ChooseD']=choices.ChoiceD
+                HtmlQuestionsList.append(tempQue)
+                j=j+1
+            elif que.QuestionType == 3:
+                tempQue={ 'id':j,'queId':'','title':'title','type': 'FillInBlank'}
+                tempQue['queId']=que.QuestionId
+                tempQue['title']=que.QueDescription
+                HtmlQuestionsList.append(tempQue)
+                j=j+1
+            elif que.QuestionType == 4:
+                tempQue={'id':j,'queId':'','title':'title','type':'Scale','lowest': 'lowest','highest':'highest', 'ScaleCount': 0 }
+                tempQue['queId']=que.QuestionId
+                tempQue['title']=que.QueDescription
+                scale=ScaleList.objects.get(QuestionId=que)
+                tempQue['lowest']=scale.BeginIndex
+                tempQue['highest']=scale.EndIndex
+                tempQue['ScaleCount']=scale.DegreeNum
+                HtmlQuestionsList.append(tempQue)
+                j=j+1
+            elif que.QuestionType == 5:
+                #"id": 3, "title": "嘻嘻嘻嘻", "type": "Paragraph"
+                tempQue={'id':j,'queId':'','title':'title','type':'Paragraph'}
+                tempQue['queId']=que.QuestionId
+                tempQue['title']=que.QueDescription
+                HtmlQuestionsList.append(tempQue)
+                j=j+1
+        print(HtmlQuestionsList)
+        return render(request,"FillQNaire.html",{'QuestionList':json.dumps(HtmlQuestionsList)})
+    return render(request,"chooseEva.html")
     #判断类型 如果是问卷
     #从问卷列表中查询此assessid 得到问卷id
     #从问题列表中查询此问卷id的所有问题
     #逐个问题判断类型，完善成数据格式，传回
 
-def AnswerQNaire(request):
+#def AnswerQNaire(request):
     #有问卷id
     #录入答卷列表
     #问卷和assess的process要增加
 
-def deleteAssess(request):
+#def deleteAssess(request):
     #get assessid
     #删除对应assessid
     #回到chooseEva 的url？
 
-def AnalysisData(request):
+#def AnalysisData(request):
     #获取问卷id
     #获取问卷所有问题
     #对应问题类型if

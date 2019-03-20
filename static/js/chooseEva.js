@@ -113,7 +113,21 @@
 				getProcessbar:function(data)
 				{
 					return data.process;
-				}
+				},
+                getFillEva:function (EvaData)
+                {
+                    axios.get('http://127.0.0.1:8000/getFillAssess/',{
+                        params:{
+                            assess:EvaData.id
+                        }
+                    })
+                        .then(function(response){
+                            console.log(response);
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        })
+                }
 
 
 		}

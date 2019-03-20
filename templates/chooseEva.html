@@ -5,6 +5,7 @@
 		选择评估_____________进度条有问题  进行中和结束还没有做
 	</title>
 	<link rel="stylesheet" type="text/css" href="/static/css/chooseEva.css">
+    <script type="text/javascript" src="/static/js/axios.min.js"></script>
     <script type="text/javascript" src="/static/js/vue.js"></script>
     <script>
         var AllAssess={{ EvaList|safe }}
@@ -94,7 +95,7 @@
 
 			<div class ="moreInfo" :id="getMoreId(eva,'All')" style="visibility: hidden;">
 				<ul>
-					<li>录入数据</li>
+					<li @click="getFillEva(eva)">录入数据</li>
 					<li>分析数据</li>
 					<li>复制评估</li>
 					<li>删除评估</li>
