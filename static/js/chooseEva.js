@@ -116,6 +116,8 @@
 				},
                 getFillEva:function (EvaData)
                 {
+                    //因为是向后台get，所以在这里做跳转
+                    console.log(EvaData)
                     axios.get('http://127.0.0.1:8000/getFillAssess/',{
                         params:{
                             assess:EvaData.id
@@ -123,10 +125,16 @@
                     })
                         .then(function(response){
                             console.log(response);
+                           window.location.href='/getFillAssess/?assess='+EvaData.id;
                         })
                         .catch(function(error) {
                             console.log(error);
                         })
+
+                },
+                getid(eva)
+                {
+                    return eva.id;
                 }
 
 

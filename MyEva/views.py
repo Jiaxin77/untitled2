@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect,reverse,render_to_response
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from MyEva.models import UserList
 from MyEva.models import MethodList
 from MyEva.models import IndexList
@@ -9,12 +10,11 @@ from MyEva.models import QuestionList
 from MyEva.models import ChoiceList
 from MyEva.models import ScaleList
 from django.contrib import  messages
-
+import os
 import json
 # Create your views here.
 
-
-
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def index(request):
@@ -36,7 +36,8 @@ def login(request):
                     result = "登录成功"
                     #messages.success(request,"登录成功")
                     USER = user
-                    return render(request, "chooseEva.html", {"user": username})
+                    #return render(request, "chooseEva.html", {"user": username})
+                    return HttpResponseRedirect(reverse('chooseEva'))
                 else:
                     messages.error(request,"密码错误")
                     result = "密码错误"
@@ -253,6 +254,7 @@ def chooseEva(request):
 
 #录入数据——得到问卷
 def getFillAssess(request):
+    #assessId = json.loads(request.body)
     assessId=json.loads(request.GET['assess'])
     #先get到assess的id
     Assess=AssessList.objects.get(AssessId=assessId)
@@ -310,7 +312,8 @@ def getFillAssess(request):
                 j=j+1
         print(HtmlQuestionsList)
         return render(request,"FillQNaire.html",{'QuestionList':json.dumps(HtmlQuestionsList)})
-    return render(request,"chooseEva.html")
+    else:
+        return render(request,"chooseEva.html")
     #判断类型 如果是问卷
     #从问卷列表中查询此assessid 得到问卷id
     #从问题列表中查询此问卷id的所有问题

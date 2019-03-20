@@ -52,7 +52,7 @@
 		</div>
 
 		<div id="newEva">
-			<input type="buttons" name="newEva" value="+ 新建评估" readonly="readonly">
+			<input type="buttons" name="newEva" value="+ 新建评估" readonly="readonly" onclick="window.location.href={% url 'newEva' %}">
 		</div>
 
 		<div id="changeOrder">
@@ -95,7 +95,8 @@
 
 			<div class ="moreInfo" :id="getMoreId(eva,'All')" style="visibility: hidden;">
 				<ul>
-					<li @click="getFillEva(eva)">录入数据</li>
+
+					<li @click="getFillEva(eva)" >录入数据</li>
 					<li>分析数据</li>
 					<li>复制评估</li>
 					<li>删除评估</li>

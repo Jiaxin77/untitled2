@@ -19,14 +19,14 @@ from MyEva import views
 
 
 urlpatterns = [
-   path('index/',views.index),
-   path('login/',views.login),
-   path('register/',views.register),
-   path('indexandmethod/',views.indexandmethod),
-   path('newBlankEva/',views.newBlankEva),
-   path('newEva/',views.newEva),
-   path('addQNaire/',views.addQNaire),
-   path('chooseEva/',views.chooseEva),
-   path('getFillAssess/',views.getFillAssess)
+   path('index/',views.index,name="index"),
+   path('login/',views.login,name="login"),
+   path('register/',views.register,name="register"),
+   path('indexandmethod/',views.indexandmethod,name="indexandmethod"),
+   path('newBlankEva/',views.newBlankEva,name="newBlankEva"),
+   path('newEva/',views.newEva,name="newEva"),
+   path('addQNaire/',views.addQNaire,name="addQNaire"),
+   path('chooseEva/',views.chooseEva,name="chooseEva"),
+   path('getFillAssess/',views.getFillAssess,name="getFillAssess")
 
 ]

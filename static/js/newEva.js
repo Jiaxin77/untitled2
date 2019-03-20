@@ -124,13 +124,15 @@
 				{
 					document.getElementById('shadow').style.visibility='hidden';
 					document.getElementById('newEvaBox').style.visibility='hidden';
-				}	
+				}
+				location.href='/newEva/';
 			},
 			submitForm:function()
 			{
 				if (document.getElementById('EvaNameInput').value!=null)
 				{
 					document.BlankEva.submit();
+
 				}
 				else
 				{
