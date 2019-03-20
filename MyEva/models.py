@@ -13,7 +13,7 @@ class UserList(models.Model):
 #问卷列表
 class SurveyList(models.Model):
     SurveyId = models.AutoField(primary_key=True)
-    AssessId = models.CharField(max_length=50)
+    AssessId = models.ForeignKey('AssessList',on_delete=models.CASCADE)
     SurveyName = models.CharField(max_length=50)
     SurveyPro = models.IntegerField(default=0)
     SurveyUseNum = models.IntegerField(default=0)
@@ -46,40 +46,36 @@ class ScaleList(models.Model):
 #答卷列表
 class PaperList(models.Model):
     PaperId = models.AutoField(primary_key=True)
-    SurveyId = models.CharField(max_length=50)
-    UserId = models.CharField(max_length=50)
-    UserName = models.CharField(max_length=50)
+    SurveyId = models.ForeignKey('SurveyList',on_delete=models.CASCADE)
+    UserId = models.ForeignKey('UserList',on_delete=models.CASCADE)
 
 #答案列表
 class AnswerList(models.Model):
     AnswerId = models.AutoField(primary_key=True)
     QuestionType = models.IntegerField(default=0)
+    QuestionId = models.ForeignKey('QuestionList',on_delete=models.CASCADE)
     isMust = models.BooleanField(blank=True)
     PaperId = models.ForeignKey('PaperList',on_delete=models.CASCADE)
 
 #单选题答案列表
 class SCAList(models.Model):
     AnswerId = models.ForeignKey('AnswerList',on_delete=models.CASCADE)
-    QuestionId = models.CharField(max_length=50)
     ChoiceAnswer = models.CharField(max_length=5)
 
 #多选题答案列表
 class  MCAList(models.Model):
     AnswerId = models.ForeignKey('AnswerList',on_delete=models.CASCADE)
-    QuestionId = models.CharField(max_length=50)
     ChoiceNum = models.IntegerField(default=1)
     ChoiceAnswer = models.CharField(max_length=50)
 
 #填空题答案列表
 class FIBAnswerList(models.Model):
     AnswerId = models.ForeignKey('AnswerList',on_delete=models.CASCADE)
-    QuestionId = models.CharField(max_length=50)
     FIBAnswer = models.CharField(max_length=100)
 
 #量表题答案列表
 class ScaleAnswerList(models.Model):
     AnswerId = models.ForeignKey('AnswerList',on_delete=models.CASCADE)
-    QuestionId = models.CharField(max_length=50)
     DegreeAnswer = models.IntegerField(default=1)
 
 #指标库
@@ -100,7 +96,7 @@ class MethodList(models.Model):
 class ModelList(models.Model):
     ModelId = models.AutoField(primary_key=True)
     ModelType = models.IntegerField(default=1)
-    AssessId = models.CharField(max_length=50)
+    AssessId = models.ForeignKey('AssessList',on_delete=models.CASCADE)
 
 #评估列表
 class AssessList(models.Model):
@@ -124,13 +120,13 @@ class PlanList(models.Model):
     PlanName = models.CharField(max_length=59)
     PlanDescription = models.CharField(max_length=500)
     PlanTypeId = models.CharField(max_length=50)
-    AssessId = models.CharField(max_length=50)
+    AssessId = models.ForeignKey('AssessList',on_delete=models.CASCADE)
 
 #启发式评估表格
 class HeuEvaResult(models.Model):
     HeuEvaId = models.AutoField(primary_key=True)
-    PlanId = models.CharField(max_length=50)
-    IndexId = models.CharField(max_length=50)
+    PlanId = models.ForeignKey('PlanList',on_delete=models.CASCADE)
+    IndexId = models.ForeignKey('IndexList',on_delete=models.CASCADE)
     Interface = models.CharField(max_length=50)
     HeuProblem = models.CharField(max_length=300)
     SeriousDegree = models.IntegerField(default=0)

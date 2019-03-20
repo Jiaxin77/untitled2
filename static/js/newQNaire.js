@@ -178,7 +178,7 @@ Vue.prototype.$axios = axios
 				}
 
 			},
-		saveQNaire:function()
+			saveQNaire:function()
 			{
 
 				//	document.addQNaire.submit();

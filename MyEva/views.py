@@ -9,6 +9,13 @@ from MyEva.models import AssessList
 from MyEva.models import QuestionList
 from MyEva.models import ChoiceList
 from MyEva.models import ScaleList
+from MyEva.models import PaperList
+from MyEva.models import AnswerList
+from MyEva.models import FIBAnswerList
+from MyEva.models import SCAList
+from MyEva.models import MCAList
+from MyEva.models import ScaleAnswerList
+
 from django.contrib import  messages
 import os
 import json
@@ -138,11 +145,11 @@ def newBlankEva(request):
 
             AssessList.objects.create(AssessName=EvaName,AssessOneDes=EvaDetail,AssessType=0, AssessUseNum=EvaUseNum,UserId=USER)
             #获取新建的这个id
-            thisAssess=AssessList.objects.get(AssessName=EvaName)
-            thisAssessId=thisAssess.AssessId
-            SurveyList.objects.create(AssessId=thisAssessId,SurveyName=EvaName,SurveyUseNum=EvaUseNum)
+            thisAssess=AssessList.objects.get(AssessName=EvaName,AssessOneDes=EvaDetail,AssessType=0, AssessUseNum=EvaUseNum,UserId=USER)
+            #thisAssessId=thisAssess.AssessId
+            SurveyList.objects.create(AssessId=thisAssess,SurveyName=EvaName,SurveyUseNum=EvaUseNum)
             global ThisQNaire
-            ThisQNaire=SurveyList.objects.get(AssessId=thisAssessId,SurveyName=EvaName)
+            ThisQNaire=SurveyList.objects.get(AssessId=thisAssess,SurveyName=EvaName)
             return render(request, "newQNaire.html",{'QNaireName':EvaName})
 
     return render(request, "newEva.html")
@@ -266,7 +273,7 @@ def getFillAssess(request):
         for que in Questions:
             j=1
             if que.QuestionType == 1:
-                tempQue={'id':j,'queId':'','title':'title','type':'SingleChoose','ChooseA':'','ChooseB':'','ChooseC':'','ChooseD':''}
+                tempQue={'id':j,'queId':'','title':'title','type':'SingleChoose','ChooseA':'','ChooseB':'','ChooseC':'','ChooseD':'',"answer":''}
                 tempQue['queId']=que.QuestionId
                 tempQue['title']=que.QueDescription
                 choices=ChoiceList.objects.get(QuestionId=que)
@@ -277,7 +284,7 @@ def getFillAssess(request):
                 HtmlQuestionsList.append(tempQue)
                 j=j+1
             elif que.QuestionType == 2:
-                tempQue={'id':j,'queId':'','title':'title','type':'MultiChoose','ChooseA':'','ChooseB':'','ChooseC':'','ChooseD':''}
+                tempQue={'id':j,'queId':'','title':'title','type':'MultiChoose','ChooseA':'','ChooseB':'','ChooseC':'','ChooseD':'','answer':[]}
                 tempQue['queId']=que.QuestionId
                 tempQue['title']=que.QueDescription
                 choices=ChoiceList.objects.get(QuestionId=que)
@@ -288,13 +295,13 @@ def getFillAssess(request):
                 HtmlQuestionsList.append(tempQue)
                 j=j+1
             elif que.QuestionType == 3:
-                tempQue={ 'id':j,'queId':'','title':'title','type': 'FillInBlank'}
+                tempQue={ 'id':j,'queId':'','title':'title','type': 'FillInBlank','answer':''}
                 tempQue['queId']=que.QuestionId
                 tempQue['title']=que.QueDescription
                 HtmlQuestionsList.append(tempQue)
                 j=j+1
             elif que.QuestionType == 4:
-                tempQue={'id':j,'queId':'','title':'title','type':'Scale','lowest': 'lowest','highest':'highest', 'ScaleCount': 0 }
+                tempQue={'id':j,'queId':'','title':'title','type':'Scale','lowest': 'lowest','highest':'highest', 'ScaleCount': 0 ,'answer':''}
                 tempQue['queId']=que.QuestionId
                 tempQue['title']=que.QueDescription
                 scale=ScaleList.objects.get(QuestionId=que)
@@ -311,7 +318,7 @@ def getFillAssess(request):
                 HtmlQuestionsList.append(tempQue)
                 j=j+1
         print(HtmlQuestionsList)
-        return render(request,"FillQNaire.html",{'QuestionList':json.dumps(HtmlQuestionsList)})
+        return render(request,"FillQNaire.html",{'QuestionList':json.dumps(HtmlQuestionsList),'SurveyId':Survey.SurveyId})
     else:
         return render(request,"chooseEva.html")
     #判断类型 如果是问卷
@@ -319,7 +326,61 @@ def getFillAssess(request):
     #从问题列表中查询此问卷id的所有问题
     #逐个问题判断类型，完善成数据格式，传回
 
-#def AnswerQNaire(request):
+def FillQNaire(request):
+    Messages=json.loads(request.body)
+    Answers=Messages['AllQuestions']
+    thisSurveyId=Messages['Survey']
+    global USER
+    print(USER.UserName)
+    thisSurvey=SurveyList.objects.get(SurveyId=thisSurveyId)
+    thisPaper = PaperList.objects.filter(UserId=USER, SurveyId=thisSurvey)
+    if  thisPaper.exists():
+        print("您已填过该问卷！不可重复填写！")
+        messages.error(request,"您已填过该问卷！不可重复填写！")
+        return render(request,"FillQNaire.html")
+    else:
+        #增加一个填问卷的人
+        surveyedNum=thisSurvey.SurveyUseNum * thisSurvey.SurveyPro
+        print(surveyedNum)
+        surveyedNum=surveyedNum+1
+        print(surveyedNum)
+        pro=surveyedNum*100/thisSurvey.SurveyUseNum
+        print(pro)
+        thisSurvey.SurveyPro=pro
+        thisSurvey.save()
+        assessId=thisSurvey.AssessId
+
+        PaperList.objects.create(UserId=USER,SurveyId=thisSurvey)
+        thisPaper=PaperList.objects.get(UserId=USER,SurveyId=thisSurvey)
+        for ans in Answers:
+            print(type(ans))
+            print(ans['queId'])
+            if ans['type']=='SingleChoose':#单选题
+                thisQuestion=QuestionList.objects.get(QuestionId=ans['queId'])
+                AnswerList.objects.create(QuestionType=1, isMust=1, PaperId=thisPaper,QuestionId=thisQuestion)
+                thisAnswer = AnswerList.objects.get(QuestionType=1, isMust=1, PaperId=thisPaper,QuestionId=thisQuestion)
+                SCAList.objects.create(ChoiceAnswer=ans['answer'],AnswerId=thisAnswer)
+            elif ans['type']=='MultiChoose':#多选题
+                AnswerList.objects.create(QuestionType=2, isMust=1, PaperId=thisPaper,QuestionId=thisQuestion)
+                thisAnswer = AnswerList.objects.get(QuestionType=2, isMust=1, PaperId=thisPaper,QuestionId=thisQuestion)
+                MCAanswers=','.join(ans['answer'])
+                MCAList.objects.create(ChoiceAnswer=MCAanswers,ChoiceNum=len(ans['answer']),AnswerId=thisAnswer)
+            elif ans['type']=='FillInBlank':#填空题
+                AnswerList.objects.create(QuestionType=3, isMust=1, PaperId=thisPaper,QuestionId=thisQuestion)
+                thisAnswer = AnswerList.objects.get(QuestionType=3, isMust=1, PaperId=thisPaper,QuestionId=thisQuestion)
+                FIBAnswerList.objects.create(FIBAnswer=ans['answer'],AnswerId=thisAnswer)
+            elif ans['type']=='Scale':#量表题
+                AnswerList.objects.create(QuestionType=4, isMust=1, PaperId=thisPaper,QuestionId=thisQuestion)
+                thisAnswer = AnswerList.objects.get(QuestionType=4, isMust=1, PaperId=thisPaper,QuestionId=thisQuestion)
+                ScaleAnswerList.objects.create(DegreeAnswer=ans['answer'],AnswerId=thisAnswer)
+            elif ans['type']=='Paragraph':
+                print("段落")
+
+        messages.success(request,"成功提交！")
+        return render(request,"chooseEva.html")
+    return render(request, "chooseEva.html")
+
+
     #有问卷id
     #录入答卷列表
     #问卷和assess的process要增加

@@ -12,7 +12,27 @@
 
 	var preview=new Vue({
 		el:'#previewDiv',
-		data:{
-			questions:Question
+		data: {
+			questions: Question,
+			surveyId: SurveyId
+		},
+		methods:{
+			submitQNaire:function () {
+				axios.post('http://127.0.0.1:8000/FillQNaire/',
+
+					JSON.stringify({
+						AllQuestions:this.questions,
+						Survey:this.surveyId
+
+					}))
+					.then(function(response) {
+						//alert("保存成功，感谢您的填写！");
+						windows.location.href='/FillQNaire/'
+						console.log(response);
+					})
+					.catch(function(error){
+						console.log(error);
+			})
+			}
 		}
 	})
