@@ -340,7 +340,7 @@ def FillQNaire(request):
         return render(request,"FillQNaire.html")
     else:
         #增加一个填问卷的人
-        surveyedNum=thisSurvey.SurveyUseNum * thisSurvey.SurveyPro
+        surveyedNum=thisSurvey.SurveyUseNum * thisSurvey.SurveyPro/100
         print(surveyedNum)
         surveyedNum=surveyedNum+1
         print(surveyedNum)
@@ -349,6 +349,11 @@ def FillQNaire(request):
         thisSurvey.SurveyPro=pro
         thisSurvey.save()
         assessId=thisSurvey.AssessId
+        assessedNum=assessId.AssessUseNum*assessId.AssessPro/100
+        assessedNum=assessedNum+1
+        assessPro=assessedNum*100/assessId.AssessUseNum
+        assessId.AssessPro=assessPro
+        assessId.save()
 
         PaperList.objects.create(UserId=USER,SurveyId=thisSurvey)
         thisPaper=PaperList.objects.get(UserId=USER,SurveyId=thisSurvey)

@@ -81,7 +81,7 @@ DATABASES = {
         'NAME' : 'myeva',#数据库名称
         'USER' : 'root',#用户名
         'PASSWORD' : '19971019',#密码
-        'HOST' : '127.0.0.1',#IP地址
+        'HOST' : 'localhost',#IP地址
         'PORT' : '3306',#端口号
     }
 }

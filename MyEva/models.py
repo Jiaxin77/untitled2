@@ -10,14 +10,31 @@ class UserList(models.Model):
     Password = models.CharField(max_length=50)
     Status = models.IntegerField(default=0)
 
+
+#评估列表
+class AssessList(models.Model):
+    AssessId = models.AutoField(primary_key=True)
+    AssessName = models.CharField(max_length=50)
+    AssessOneDes = models.CharField(max_length=200,null=True)
+    UserId = models.ForeignKey('UserList',on_delete=models.CASCADE)
+    AssessPro = models.IntegerField(default=0)
+    AssessType = models.IntegerField(default=1)
+    AssessDes = models.CharField(max_length=500,null=True)
+    AssessObject = models.CharField(max_length=300,null=True)
+    AssessIndexNum = models.IntegerField(default=0)
+    AssessBeginTime = models.DateTimeField(auto_now_add=True)
+    People = models.CharField(max_length=300,null=True)
+    AssessUseNum = models.IntegerField(default=0)
+    AssessIndexId = models.CharField(max_length=1000,null=True)
+
 #问卷列表
 class SurveyList(models.Model):
     SurveyId = models.AutoField(primary_key=True)
-    AssessId = models.ForeignKey('AssessList',on_delete=models.CASCADE)
     SurveyName = models.CharField(max_length=50)
     SurveyPro = models.IntegerField(default=0)
     SurveyUseNum = models.IntegerField(default=0)
     SurveyQueNum = models.IntegerField(default=0,null=True)
+    AssessId = models.ForeignKey('AssessList',on_delete=models.CASCADE)
 
 #问题列表
 class QuestionList(models.Model):
@@ -95,24 +112,9 @@ class MethodList(models.Model):
 #模板库
 class ModelList(models.Model):
     ModelId = models.AutoField(primary_key=True)
-    ModelType = models.IntegerField(default=1)
     AssessId = models.ForeignKey('AssessList',on_delete=models.CASCADE)
+    ModelType = models.IntegerField(default=1)
 
-#评估列表
-class AssessList(models.Model):
-    AssessId = models.AutoField(primary_key=True)
-    AssessName = models.CharField(max_length=50)
-    AssessOneDes = models.CharField(max_length=200,null=True)
-    UserId = models.ForeignKey('UserList',on_delete=models.CASCADE)
-    AssessPro = models.IntegerField(default=0)
-    AssessType = models.IntegerField(default=1)
-    AssessDes = models.CharField(max_length=500,null=True)
-    AssessObject = models.CharField(max_length=300,null=True)
-    AssessIndexNum = models.IntegerField(default=0)
-    AssessBeginTime = models.DateTimeField(auto_now_add=True)
-    People = models.CharField(max_length=300,null=True)
-    AssessUseNum = models.IntegerField(default=0)
-    AssessIndexId = models.CharField(max_length=1000,null=True)
 
 #方案列表
 class PlanList(models.Model):
