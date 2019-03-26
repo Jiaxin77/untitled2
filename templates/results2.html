@@ -37,7 +37,7 @@
 	<div id="app" style="overflow-y: scroll; ">
 		<div class="question" v-for="(que,index) in myresults" style="height: 800px; overflow-x: hidden;">
 			<div class="QuestionTitle">
-				<p>{{ que.Id }}.{{ que.title }}</p>
+				<p>{% verbatim %}{{ que.Id }}{% endverbatim %}.{% verbatim %}{{ que.title }}{% endverbatim %}</p>
 			</div>
 			<div class="results" style="height: 50%;">
 				<div class="tableResult" v-if="que.queType=='SingleChoose'" v-if="que.queType=='MultiChoose">
@@ -102,7 +102,7 @@
 							<th>回答</th>
 						</tr>
 						<tr v-for="FIB in que.results"> 
-							<td>{{ FIB }}</td>
+							<td>{% verbatim %}{{ FIB }}{% endverbatim %}</td>
 						</tr>
 					</table>
 					

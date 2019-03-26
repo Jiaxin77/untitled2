@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def index(request):
-      return render(request, "login.html", {"message": ""})
+      return render(request, "results2.html")
 
 def login(request):
     result = ""
