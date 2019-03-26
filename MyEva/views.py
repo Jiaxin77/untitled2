@@ -390,6 +390,13 @@ def FillQNaire(request):
     #录入答卷列表
     #问卷和assess的process要增加
 
+def deleteAssess(request):
+    Messages = json.loads(request.body)
+    assessId = Messages['assess']
+    AssessList.objects.filter(AssessId=assessId).delete()
+    print("删除成功")
+    return  render(request,"chooseEva.html")
+
 #def deleteAssess(request):
     #get assessid
     #删除对应assessid

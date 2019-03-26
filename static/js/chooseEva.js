@@ -132,6 +132,22 @@
                         })
 
                 },
+				deleteEva:function(EvaData)
+				{
+					axios.post('http://127.0.0.1:8000/deleteAssess/',
+						JSON.stringify({
+						assess:EvaData.id
+
+					}))
+						.then(function(response){
+							console.log(response);
+							window.location.href='/chooseEva/'
+						})
+						.catch(function(error){
+							console.log(error);
+						})
+
+				},
                 getid(eva)
                 {
                     return eva.id;

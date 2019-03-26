@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head>
+	<title>Results____加上饼状图 和所有问题类型！</title>
+	<script type="text/javascript" src="/static/js/echarts.min.js"></script>
+	<script type="text/javascript" src="/static/js/echarts-wordcloud.min.js"></script>
+
+
+</head>
+
+<body style="height: 100%; margin: 0">
+
+
+	<div id="title">
+		<div id="logo">
+			<h4 id="titleText">人机工效评估系统</h4>
+		</div>
+		<div id="chooseUse">
+			<div id="ManageEva">
+				<a href="">评估管理</a>
+			</div>
+			<div id="ManageModel">
+				<a href="">模板管理</a>
+			</div>
+			<div id="IndexAndMethod">
+				<a href="">指标库与方法库</a>
+			</div>
+		</div>
+
+		<div id="buttons">
+			<div id="message">消息</div>
+			<div id="set">设置</div>
+			<div id="mine">个人中心</div>
+		</div>
+	</div>
+
+	<div id="app" style="overflow-y: scroll; ">
+		<div class="question" v-for="(que,index) in myresults" style="height: 800px; overflow-x: hidden;">
+			<div class="QuestionTitle">
+				<p>{{ que.Id }}.{{ que.title }}</p>
+			</div>
+			<div class="results" style="height: 50%;">
+				<div class="tableResult" v-if="que.queType=='SingleChoose'" v-if="que.queType=='MultiChoose">
+					<table class="resultsTable" style="height: 50%">
+						<tr>
+							<th>选项</th>
+							<th>小计</th>
+							<th>比例</th>
+						</tr>
+						<tr v-if="que.chooseA!=''"> 
+							<td>{% verbatim %}{{ que.chooseA }}{% endverbatim %}</td>
+							<td>{% verbatim %}{{ que.results[0] }}{% endverbatim %}</td>
+							<td>{% verbatim %}{{ que.resultRatio[0] }}{% endverbatim %}</td>
+						</tr>
+						<tr v-if="que.chooseB!=''">
+							<td>{% verbatim %}{{ que.chooseB }}{% endverbatim %}</td>
+							<td>{% verbatim %}{{ que.results[1] }}{% endverbatim %}</td>
+							<td>{% verbatim %}{{ que.resultRatio[1] }}{% endverbatim %}</td>
+						</tr>
+						<tr v-if="que.chooseC!=''">
+							<td>{% verbatim %}{{ que.chooseC }}{% endverbatim %}</td>
+							<td>{% verbatim %}{{ que.results[2] }}{% endverbatim %}</td>
+							<td>{% verbatim %}{{ que.resultRatio[2] }}{% endverbatim %}</td>
+						</tr>
+						<tr v-if="que.chooseD!=''">
+							<td>{% verbatim %}{{ que.chooseD }}{% endverbatim %}</td>
+							<td>{% verbatim %}{{ que.results[3] }}{% endverbatim %}</td>
+							<td>{% verbatim %}{{ que.resultRatio[3] }}{% endverbatim %}</td>
+						</tr>
+						<tr>
+							<td>本题有效填写人次</td>
+							<td>{% verbatim %}{{ que.filledPeople }}{% endverbatim %}</td>
+							<td></td>
+						</tr>
+
+					</table>
+				</div>
+				<div class="tableResult" v-if="que.queType=='Scale'">
+					<table class="resultsTable" style="height: 50%">
+						<tr>
+							<th>选项</th>
+							<th>小计</th>
+							<th>比例</th>
+						</tr>
+						<tr v-for="(itemResult,indexResult) in que.ScaleDegree">
+							<td>{% verbatim %}{{ itemResult }}{% endverbatim %}</td>
+							<td>{% verbatim %}{{ que.results[indexResult] }}{% endverbatim %}</td>
+							<td>{% verbatim %}{{ que.resultRatio[indexResult] }}{% endverbatim %}</td>
+						</tr>
+						<tr>
+							<td>本题有效填写人次</td>
+							<td>{% verbatim %}{{ que.filledPeople }}{% endverbatim %}</td>
+							<td  ></td>
+						</tr>
+
+					</table>
+				</div>
+				<div class="FIBresult" v-if="que.queType=='FillInBlank'" style="height: 50%">
+					
+					<table class="FIBtable">
+						<tr>
+							<th>回答</th>
+						</tr>
+						<tr v-for="FIB in que.results"> 
+							<td>{{ FIB }}</td>
+						</tr>
+					</table>
+					
+					<div class="wordcloud" :id="getWordCloud(index)" style="width: 100%;height: 70% ;width:100%">
+						
+					</div>
+				</div>
+
+				<div class="chooseButtons" v-if="que.queType=='SingleChoose'||que.queType=='MultiChoose'||que.queType=='Scale'" >
+					<button class="Bar" @click="chooseBar(index)">条形图</button>
+					<button class="Pie" @click="choosePie(index)">饼状图</button>
+				</div>
+				<br><br>
+				<div class="pic" style="position: relative;height: 40%; ">
+					<div :id="getBar(index)" style="height:100%; left:10%;right:30%;visibility:visible;z-index: 2;position: absolute;top:0px" ></div>
+					<div :id="getPie(index)" style="height:100%; left: 10%;
+					right: 30%; visibility:hidden;z-index: 1;position: absolute;top:0px" ></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+<script type="text/javascript" src="/static/js/vue.js"></script>
+<script type="text/javascript" src="/static/js/result2.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/css/result2.css">
+
+</html>

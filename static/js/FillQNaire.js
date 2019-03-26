@@ -27,10 +27,11 @@
 					}))
 					.then(function(response) {
 						//alert("保存成功，感谢您的填写！");
-						windows.location.href='/FillQNaire/'
+						window.location.href='/chooseEva/'
 						console.log(response);
 					})
 					.catch(function(error){
+						window.location.href='/chooseEva/'
 						console.log(error);
 			})
 			}

@@ -25,7 +25,7 @@
 				<a href="">模板管理</a>
 			</div>
 			<div id="IndexAndMethod">
-				<a href="">指标库与方法库</a>
+				<a href="{% url 'indexandmethod' %}">指标库与方法库</a>
 			</div>
 		</div>
 
@@ -97,9 +97,9 @@
 				<ul>
 
 					<li @click="getFillEva(eva)" >录入数据</li>
-					<li>分析数据</li>
+					<li >分析数据</li>
 					<li>复制评估</li>
-					<li>删除评估</li>
+					<li @click="deleteEva(eva)">删除评估</li>
 					<li>生成评估</li>
 				</ul>
 			</div>
