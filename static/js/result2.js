@@ -1,4 +1,4 @@
-
+/*
 	var ResultsData=[
 	{
 		Id:1,
@@ -49,7 +49,7 @@
 		{name:"邓超元",value:5}]
 	}
 	]
-
+*/
 	var app=new Vue({
 		el:'#app',
 		data:{

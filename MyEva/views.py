@@ -15,7 +15,7 @@ from MyEva.models import FIBAnswerList
 from MyEva.models import SCAList
 from MyEva.models import MCAList
 from MyEva.models import ScaleAnswerList
-
+import math
 from django.contrib import  messages
 import os
 import json
@@ -249,7 +249,7 @@ def chooseEva(request):
         tempeva['InShort']=eva.AssessOneDes
         tempeva['BeginTime']=str(eva.AssessBeginTime)[0:16]
         tempeva['process']=eva.AssessPro
-        if eva.AssessPro != 100:
+        if eva.AssessPro < 100:
             tempeva['condition']='ing'
         else:
             tempeva['condition']='End'
@@ -340,18 +340,22 @@ def FillQNaire(request):
         return render(request,"FillQNaire.html")
     else:
         #增加一个填问卷的人
-        surveyedNum=thisSurvey.SurveyUseNum * thisSurvey.SurveyPro/100
+        surveyedNum=math.ceil((thisSurvey.SurveyUseNum * thisSurvey.SurveyPro)/100)
         print(surveyedNum)
         surveyedNum=surveyedNum+1
         print(surveyedNum)
         pro=surveyedNum*100/thisSurvey.SurveyUseNum
         print(pro)
+        if(pro>100):
+            pro=100
         thisSurvey.SurveyPro=pro
         thisSurvey.save()
         assessId=thisSurvey.AssessId
-        assessedNum=assessId.AssessUseNum*assessId.AssessPro/100
+        assessedNum=math.ceil((assessId.AssessUseNum*assessId.AssessPro)/100)#向上取整
         assessedNum=assessedNum+1
         assessPro=assessedNum*100/assessId.AssessUseNum
+        if(assessPro>100):
+            assessPro=100
         assessId.AssessPro=assessPro
         assessId.save()
 
@@ -360,8 +364,8 @@ def FillQNaire(request):
         for ans in Answers:
             print(type(ans))
             print(ans['queId'])
+            thisQuestion = QuestionList.objects.get(QuestionId=ans['queId'])
             if ans['type']=='SingleChoose':#单选题
-                thisQuestion=QuestionList.objects.get(QuestionId=ans['queId'])
                 AnswerList.objects.create(QuestionType=1, isMust=1, PaperId=thisPaper,QuestionId=thisQuestion)
                 thisAnswer = AnswerList.objects.get(QuestionType=1, isMust=1, PaperId=thisPaper,QuestionId=thisQuestion)
                 SCAList.objects.create(ChoiceAnswer=ans['answer'],AnswerId=thisAnswer)
@@ -397,7 +401,7 @@ def deleteAssess(request):
     print("删除成功")
     return  render(request,"chooseEva.html")
 
-def analysisQNaire(request,assess):
+def analysisQNaire(assess):
     assessId=assess
     thisSurvey=SurveyList.objects.get(AssessId=assessId)
     thisPapers=PaperList.objects.filter(SurveyId=thisSurvey)
@@ -420,6 +424,9 @@ def analysisQNaire(request,assess):
             for thisAns in thisAnswers:
                 if thisAns.QuestionId==que:#是这道题的答案
                     completePeople=completePeople+1#有效回答人数+1
+                    print(thisAns.AnswerId)
+                    print(thisAns.QuestionId)
+                    print(thisAns.QuestionId.QueDescription)
                     choiced=SCAList.objects.get(AnswerId=thisAns)#获取具体答案
                     if(choiced.ChoiceAnswer=='A'):
                         chooseANum=chooseANum+1
@@ -457,7 +464,7 @@ def analysisQNaire(request,assess):
             HtmlAnswers.append(temp)
             j=j+1
 
-    return render(request, "result2.html",{'AnswerList':json.dumps(HtmlAnswers)})
+    return HtmlAnswers
 
 
 
@@ -479,13 +486,14 @@ def analysisQNaire(request,assess):
 # 	}
 
 def AnalysisData(request):
-    Messages = json.loads(request.body)
-    assessId=Messages['assess']
+    assessId=json.loads(request.GET['assess'])
     thisAssess=AssessList.objects.get(AssessId=assessId)
     # 问卷
     if(thisAssess.AssessType==0):
         print("单一问卷")
-        analysisQNaire(request,thisAssess)
+        myQNaireResults=analysisQNaire(thisAssess)
+        return  render(request,"results2.html",{'AnswerList':json.dumps(myQNaireResults)})
+
     else:
         print("综合评估")
     return render(request, "chooseEva.html")

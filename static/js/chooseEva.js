@@ -134,6 +134,7 @@
                 },
 				deleteEva:function(EvaData)
 				{
+
 					axios.post('http://127.0.0.1:8000/deleteAssess/',
 						JSON.stringify({
 						assess:EvaData.id
@@ -147,6 +148,28 @@
 							console.log(error);
 						})
 
+				},
+				analysisEva:function(EvaData)
+				{
+					if(EvaData.condition=='End') {
+						console.log(EvaData.id)
+						 axios.get('http://127.0.0.1:8000/AnalysisData/',{
+                        params:{
+                            assess:EvaData.id
+                        }
+                    })
+							.then(function (response) {
+								console.log(response);
+								window.location.href = '/AnalysisData/?assess='+EvaData.id
+							})
+							.catch(function (error) {
+								console.log(error)
+							})
+					}
+					else
+					{
+						alert("此评估还未完成，无法分析数据！");
+					}
 				},
                 getid(eva)
                 {
