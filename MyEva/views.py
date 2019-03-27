@@ -21,6 +21,9 @@ import os
 import json
 import math
 import numpy
+import jieba
+from collections import Counter
+import sys
 # Create your views here.
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -379,6 +382,7 @@ def FillQNaire(request):
             elif ans['type']=='FillInBlank':#填空题
                 AnswerList.objects.create(QuestionType=3, isMust=1, PaperId=thisPaper,QuestionId=thisQuestion)
                 thisAnswer = AnswerList.objects.get(QuestionType=3, isMust=1, PaperId=thisPaper,QuestionId=thisQuestion)
+                print(ans['answer'])
                 FIBAnswerList.objects.create(FIBAnswer=ans['answer'],AnswerId=thisAnswer)
             elif ans['type']=='Scale':#量表题
                 AnswerList.objects.create(QuestionType=4, isMust=1, PaperId=thisPaper,QuestionId=thisQuestion)
@@ -402,6 +406,20 @@ def deleteAssess(request):
     AssessList.objects.filter(AssessId=assessId).delete()
     print("删除成功")
     return  render(request,"chooseEva.html")
+
+def countFrequency(answers):
+    myTxt = ''.join(answers)
+    # myTxt="李汶翰、嘉羿、管栎、胡春杨、陈宥维、夏瀚宇、施展、邓超元、连淮伟李汶翰、姚明明、管栎、何昶希、胡春杨、陈宥维、连淮伟、陈思键、冯俊杰李汶翰、嘉羿、管栎、胡春杨、连淮伟、夏瀚宇、何昶希、姚明明、冯俊杰、李汶翰、嘉羿、管栎、胡春杨、连淮伟、夏瀚宇、何昶希、姚明明、冯俊杰李汶翰、嘉羿、管栎、胡春杨、连淮伟、夏瀚宇、何昶希、姚明明、冯俊杰"
+    myTxt_words = [x for x in jieba.cut(myTxt) if len(x) >= 2]
+    c = Counter(myTxt_words).most_common(10)
+    print(json.dumps(c, ensure_ascii=False))
+    htmlFrequency = []
+    for oneWord in c:
+        temp = {'name': '', 'value': 0}
+        temp['name'] = oneWord[0]
+        temp['value'] = oneWord[1]
+        htmlFrequency.append(temp)
+    return htmlFrequency
 
 def analysisQNaire(assess):
     assessId=assess
@@ -484,11 +502,45 @@ def analysisQNaire(assess):
             temp={'Id':j,'queId':que.QuestionId,'queType':'Scale','title':que.QueDescription,'Begin':thisScale.BeginIndex,'End':thisScale.EndIndex,'filledPeople':completePeople,'ScaleDegree':degree,'results':chooseNum,'resultRatio':chooseRatio}
             HtmlAnswers.append(temp)
             j=j+1
+        elif que.QuestionType==3:#填空题
+            FIBAnswers=[]
+            completePeople=0
+            for thisAns in thisAnswers:
+                if thisAns.QuestionId==que:#是这道题的答案
+                    completePeople=completePeople+1#有效回答人数+1
+                    thisFIBAns=FIBAnswerList.objects.get(AnswerId=thisAns)
+                    FIBAnswers.append(thisFIBAns.FIBAnswer)
+            htmlFrequency=countFrequency(FIBAnswers)
+            temp={'Id':j,'queId':que.QuestionId,'queType':'FillInBlank','title':que.QueDescription,'results':FIBAnswers,'WCResults':htmlFrequency}
+            HtmlAnswers.append(temp)
+            j=j+1
 
 
     return HtmlAnswers
-
-
+#
+# {
+# 		Id:3,
+# 		queId:"45678",
+# 		queType:"FillInBlank",
+# 		title:"青春有你出道位？",
+# 		results:["李汶翰、嘉羿、管栎、胡春杨、陈宥维、夏瀚宇、施展、邓超元、连淮伟","李汶翰、姚明明、管栎、何昶希、胡春杨、陈宥维、连淮伟、陈思键、冯俊杰",
+# 		"李汶翰、嘉羿、管栎、胡春杨、连淮伟、夏瀚宇、何昶希、姚明明、冯俊杰","李汶翰、嘉羿、管栎、胡春杨、连淮伟、夏瀚宇、何昶希、姚明明、冯俊杰",
+# 		"李汶翰、嘉羿、管栎、胡春杨、连淮伟、夏瀚宇、何昶希、姚明明、冯俊杰"
+# 		],
+# 		WCResults:
+# 		[{name:"李汶翰",value:95},
+# 		{name:"嘉羿",value:74},
+# 		{name:"管栎",value:79},
+# 		{name:"胡春杨",value:87},
+# 		{name:"何昶希",value:67},
+# 		{name:"连淮伟",value:56},
+# 		{name:"姚明明",value:23},
+# 		{name:"冯俊杰",value:21},
+# 		{name:"施展",value:56},
+# 		{name:"姚弛",value:12},
+# 		{name:"陈思键",value:10},
+# 		{name:"邓超元",value:5}]
+# 	}
 
 #
 # {
@@ -516,6 +568,7 @@ def AnalysisData(request):
     else:
         print("综合评估")
     return render(request, "chooseEva.html")
+
 
 
 
