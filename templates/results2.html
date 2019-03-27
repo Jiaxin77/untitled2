@@ -42,7 +42,7 @@
 				<p>{% verbatim %}{{ que.Id }}{% endverbatim %}.{% verbatim %}{{ que.title }}{% endverbatim %}</p>
 			</div>
 			<div class="results" style="height: 50%;">
-				<div class="tableResult" v-if="que.queType=='SingleChoose'" v-if="que.queType=='MultiChoose">
+				<div class="tableResult" v-if="que.queType=='SingleChoose'||que.queType=='MultiChoose'">
 					<table class="resultsTable" style="height: 50%">
 						<tr>
 							<th>选项</th>
@@ -79,6 +79,7 @@
 				</div>
 				<div class="tableResult" v-if="que.queType=='Scale'">
 					<table class="resultsTable" style="height: 50%">
+                        <tr>数字越小代表越{% verbatim %}{{ que.Begin }}{% endverbatim %},数字越大代表越{% verbatim %}{{ que.End }}{% endverbatim %}</tr>
 						<tr>
 							<th>选项</th>
 							<th>小计</th>

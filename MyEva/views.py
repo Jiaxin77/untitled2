@@ -15,10 +15,12 @@ from MyEva.models import FIBAnswerList
 from MyEva.models import SCAList
 from MyEva.models import MCAList
 from MyEva.models import ScaleAnswerList
-import math
+
 from django.contrib import  messages
 import os
 import json
+import math
+import numpy
 # Create your views here.
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -424,9 +426,9 @@ def analysisQNaire(assess):
             for thisAns in thisAnswers:
                 if thisAns.QuestionId==que:#是这道题的答案
                     completePeople=completePeople+1#有效回答人数+1
-                    print(thisAns.AnswerId)
-                    print(thisAns.QuestionId)
-                    print(thisAns.QuestionId.QueDescription)
+                    #print(thisAns.AnswerId)
+                    #print(thisAns.QuestionId)
+                    #print(thisAns.QuestionId.QueDescription)
                     choiced=SCAList.objects.get(AnswerId=thisAns)#获取具体答案
                     if(choiced.ChoiceAnswer=='A'):
                         chooseANum=chooseANum+1
@@ -463,25 +465,39 @@ def analysisQNaire(assess):
             temp={'Id':j,'queId':que.QuestionId,'queType':'MultiChoose','title':que.QueDescription,'filledPeople':completePeople,'chooseA':thisMCQ.ChoiceA,'chooseB':thisMCQ.ChoiceB,'chooseC':thisMCQ.ChoiceC,'chooseD':thisMCQ.ChoiceD,'results':[chooseANum,chooseBNum,chooseCNum,chooseDNum],'resultRatio':[chooseANum/completePeople,chooseBNum/completePeople,chooseCNum/completePeople,chooseDNum/completePeople]}
             HtmlAnswers.append(temp)
             j=j+1
+        elif que.QuestionType==4:#量表题
+            thisScale=ScaleList.objects.get(QuestionId=que)
+            chooseNum=[]
+            for i in thisScale.DegreeNum-1:
+                chooseNum[i]=0
+            completePeople=0
+            for thisAns in thisAnswers:
+                if thisAns.QuestionId==que:
+                    completePeople=completePeople+1
+                    choosed=ScaleAnswerList.objects.get(AnswerId=thisAns)
+                    chooseNum[choosed.DegreeAnswer-1]=chooseNum[choosed.DegreeAnswer-1]+1
+            chooseRatio=[]
+            for i in thisScale.DegreeNum - 1:
+                chooseRatio[i]=chooseNum[i]/completePeople
+            temp={'Id':j,'queId':que.QuestionId,'queType':'Scale','title':que.QueDescription,'Begin':thisScale.BeginIndex,'End':thisScale.EndIndex,'filledPeople':completePeople,'ScaleDegree':numpy.arange(1,thisScale.DegreeNum,1),'results':chooseNum,'resultRatio':chooseRatio}
+            HtmlAnswers.append(temp)
+            j=j+1
+
 
     return HtmlAnswers
 
 
 
-
-
+#
 # {
-# 		Id:1,
-# 		queId:"12345",
-# 		queType:"SingleChoose",
-# 		title:"李汶翰帅不帅？",
-# 		filledPeople:30,
-# 		chooseA:"帅",
-# 		chooseB:"可帅",
-# 		chooseC:"非常帅",
-# 		chooseD:"必须的必",
-# 		results:[15,5,7,3],
-# 		resultRatio:[0.5,0.17,0.23,0.1]
+# 		Id:2,
+# 		queId:"23456",
+# 		queType:"Scale",
+# 		title:"爱不爱我？",
+# 		filledPeople:100,
+# 		ScaleDegree:[1,2,3,4,5,6,7],
+# 		results:[10,5,8,12,15,16,34],
+# 		resultRatio:[0.1,0.05,0.08,0.12,0.15,0.16,0.34]
 #
 # 	}
 
