@@ -397,10 +397,100 @@ def deleteAssess(request):
     print("删除成功")
     return  render(request,"chooseEva.html")
 
-#def deleteAssess(request):
-    #get assessid
-    #删除对应assessid
-    #回到chooseEva 的url？
+def analysisQNaire(request,assess):
+    assessId=assess
+    thisSurvey=SurveyList.objects.get(AssessId=assessId)
+    thisPapers=PaperList.objects.filter(SurveyId=thisSurvey)
+    thisQuestions=QuestionList.objects.filter(SurveyId=thisSurvey)
+    thisAnswers=[]
+    for paper in thisPapers:
+        answers=AnswerList.objects.filter(PaperId=paper)
+        for ans in answers:
+            thisAnswers.append(ans)
+    j=1
+    HtmlAnswers=[]
+    for que in thisQuestions:
+        if que.QuestionType == 1:#单选题
+            thisSCQ=ChoiceList.objects.get(QuestionId=que)#获取题目
+            chooseANum=0
+            chooseBNum=0
+            chooseCNum=0
+            chooseDNum=0
+            completePeople=0
+            for thisAns in thisAnswers:
+                if thisAns.QuestionId==que:#是这道题的答案
+                    completePeople=completePeople+1#有效回答人数+1
+                    choiced=SCAList.objects.get(AnswerId=thisAns)#获取具体答案
+                    if(choiced.ChoiceAnswer=='A'):
+                        chooseANum=chooseANum+1
+                    elif(choiced.ChoiceAnswer=='B'):
+                        chooseBNum=chooseBNum+1
+                    elif(choiced.ChoiceAnswer=='C'):
+                        chooseCNum=chooseCNum+1
+                    elif(choiced.ChoiceAnswer=='D'):
+                        chooseDNum=chooseDNum+1
+            temp={'Id':j,'queId':que.QuestionId,'queType':'SingleChoose','title':que.QueDescription,'filledPeople':completePeople,'chooseA':thisSCQ.ChoiceA,'chooseB':thisSCQ.ChoiceB,'chooseC':thisSCQ.ChoiceC,'chooseD':thisSCQ.ChoiceD,'results':[chooseANum,chooseBNum,chooseCNum,chooseDNum],'resultRatio':[chooseANum/completePeople,chooseBNum/completePeople,chooseCNum/completePeople,chooseDNum/completePeople]}
+            HtmlAnswers.append(temp)
+            j=j+1
+        elif que.QuestionType == 2:#多选题
+            thisMCQ=ChoiceList.objects.get(QuestionId=que)
+            chooseANum=0
+            chooseBNum=0
+            chooseCNum=0
+            chooseDNum=0
+            completePeople=0
+            for thisAns in thisAnswers:
+                if thisAns.QuestionId==que:#是这道题的答案
+                    completePeople=completePeople+1#有效回答人数+1
+                    choiced=MCAList.objects.get(AnswerId=thisAns)
+                    choicedAnswers=choiced.ChoiceAnswer.split(',')
+                    for ca in choicedAnswers:
+                        if(ca=='A'):
+                            chooseANum=chooseANum+1
+                        elif(ca=='B'):
+                            chooseBNum=chooseBNum+1
+                        elif(ca=='C'):
+                            chooseCNum=chooseCNum+1
+                        elif(ca=='D'):
+                            chooseDNum=chooseDNum+1
+            temp={'Id':j,'queId':que.QuestionId,'queType':'MultiChoose','title':que.QueDescription,'filledPeople':completePeople,'chooseA':thisMCQ.ChoiceA,'chooseB':thisMCQ.ChoiceB,'chooseC':thisMCQ.ChoiceC,'chooseD':thisMCQ.ChoiceD,'results':[chooseANum,chooseBNum,chooseCNum,chooseDNum],'resultRatio':[chooseANum/completePeople,chooseBNum/completePeople,chooseCNum/completePeople,chooseDNum/completePeople]}
+            HtmlAnswers.append(temp)
+            j=j+1
+
+    return render(request, "result2.html",{'AnswerList':json.dumps(HtmlAnswers)})
+
+
+
+
+
+# {
+# 		Id:1,
+# 		queId:"12345",
+# 		queType:"SingleChoose",
+# 		title:"李汶翰帅不帅？",
+# 		filledPeople:30,
+# 		chooseA:"帅",
+# 		chooseB:"可帅",
+# 		chooseC:"非常帅",
+# 		chooseD:"必须的必",
+# 		results:[15,5,7,3],
+# 		resultRatio:[0.5,0.17,0.23,0.1]
+#
+# 	}
+
+def AnalysisData(request):
+    Messages = json.loads(request.body)
+    assessId=Messages['assess']
+    thisAssess=AssessList.objects.get(AssessId=assessId)
+    # 问卷
+    if(thisAssess.AssessType==0):
+        print("单一问卷")
+        analysisQNaire(request,thisAssess)
+    else:
+        print("综合评估")
+    return render(request, "chooseEva.html")
+
+
 
 #def AnalysisData(request):
     #获取问卷id

@@ -29,6 +29,7 @@ urlpatterns = [
    path('chooseEva/',views.chooseEva,name="chooseEva"),
    path('getFillAssess/',views.getFillAssess,name="getFillAssess"),
    path('FillQNaire/',views.FillQNaire,name="FillQNaire"),
-   path('deleteAssess/',views.deleteAssess,name="deleteAssess")
+   path('deleteAssess/',views.deleteAssess,name="deleteAssess"),
+   path('analysisData/',views.AnalysisData,name="AnalysisData")
 
 ]
