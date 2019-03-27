@@ -52,22 +52,22 @@
 						<tr v-if="que.chooseA!=''"> 
 							<td>{% verbatim %}{{ que.chooseA }}{% endverbatim %}</td>
 							<td>{% verbatim %}{{ que.results[0] }}{% endverbatim %}</td>
-							<td>{% verbatim %}{{ que.resultRatio[0] }}{% endverbatim %}</td>
+							<td>{% verbatim %}{{ que.resultRatio[0] | numFilter}}{% endverbatim %}</td>
 						</tr>
 						<tr v-if="que.chooseB!=''">
 							<td>{% verbatim %}{{ que.chooseB }}{% endverbatim %}</td>
 							<td>{% verbatim %}{{ que.results[1] }}{% endverbatim %}</td>
-							<td>{% verbatim %}{{ que.resultRatio[1] }}{% endverbatim %}</td>
+							<td>{% verbatim %}{{ que.resultRatio[1] | numFilter}}{% endverbatim %}</td>
 						</tr>
 						<tr v-if="que.chooseC!=''">
 							<td>{% verbatim %}{{ que.chooseC }}{% endverbatim %}</td>
 							<td>{% verbatim %}{{ que.results[2] }}{% endverbatim %}</td>
-							<td>{% verbatim %}{{ que.resultRatio[2] }}{% endverbatim %}</td>
+							<td>{% verbatim %}{{ que.resultRatio[2] | numFilter}}{% endverbatim %}</td>
 						</tr>
 						<tr v-if="que.chooseD!=''">
 							<td>{% verbatim %}{{ que.chooseD }}{% endverbatim %}</td>
 							<td>{% verbatim %}{{ que.results[3] }}{% endverbatim %}</td>
-							<td>{% verbatim %}{{ que.resultRatio[3] }}{% endverbatim %}</td>
+							<td>{% verbatim %}{{ que.resultRatio[3] | numFilter}}{% endverbatim %}</td>
 						</tr>
 						<tr>
 							<td>本题有效填写人次</td>
@@ -78,8 +78,10 @@
 					</table>
 				</div>
 				<div class="tableResult" v-if="que.queType=='Scale'">
+                    <p>数字越小代表越{% verbatim %}{{ que.Begin }}{% endverbatim %},数字越大代表越{% verbatim %}{{ que.End }}{% endverbatim %}</p>
 					<table class="resultsTable" style="height: 50%">
-                        <tr>数字越小代表越{% verbatim %}{{ que.Begin }}{% endverbatim %},数字越大代表越{% verbatim %}{{ que.End }}{% endverbatim %}</tr>
+
+                        </td></tr>
 						<tr>
 							<th>选项</th>
 							<th>小计</th>
@@ -88,7 +90,7 @@
 						<tr v-for="(itemResult,indexResult) in que.ScaleDegree">
 							<td>{% verbatim %}{{ itemResult }}{% endverbatim %}</td>
 							<td>{% verbatim %}{{ que.results[indexResult] }}{% endverbatim %}</td>
-							<td>{% verbatim %}{{ que.resultRatio[indexResult] }}{% endverbatim %}</td>
+							<td>{% verbatim %}{{ que.resultRatio[indexResult] | numFilter}}{% endverbatim %}</td>
 						</tr>
 						<tr>
 							<td>本题有效填写人次</td>

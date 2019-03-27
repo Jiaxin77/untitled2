@@ -438,7 +438,7 @@ def analysisQNaire(assess):
                         chooseCNum=chooseCNum+1
                     elif(choiced.ChoiceAnswer=='D'):
                         chooseDNum=chooseDNum+1
-            temp={'Id':j,'queId':que.QuestionId,'queType':'SingleChoose','title':que.QueDescription,'filledPeople':completePeople,'chooseA':thisSCQ.ChoiceA,'chooseB':thisSCQ.ChoiceB,'chooseC':thisSCQ.ChoiceC,'chooseD':thisSCQ.ChoiceD,'results':[chooseANum,chooseBNum,chooseCNum,chooseDNum],'resultRatio':[chooseANum/completePeople,chooseBNum/completePeople,chooseCNum/completePeople,chooseDNum/completePeople]}
+            temp={'Id':j,'queId':que.QuestionId,'queType':'SingleChoose','title':que.QueDescription,'filledPeople':completePeople,'chooseA':thisSCQ.ChoiceA,'chooseB':thisSCQ.ChoiceB,'chooseC':thisSCQ.ChoiceC,'chooseD':thisSCQ.ChoiceD,'results':[chooseANum,chooseBNum,chooseCNum,chooseDNum],'resultRatio':[ chooseANum/completePeople,chooseBNum/completePeople,chooseCNum/completePeople,chooseDNum/completePeople]}
             HtmlAnswers.append(temp)
             j=j+1
         elif que.QuestionType == 2:#多选题
@@ -468,8 +468,8 @@ def analysisQNaire(assess):
         elif que.QuestionType==4:#量表题
             thisScale=ScaleList.objects.get(QuestionId=que)
             chooseNum=[]
-            for i in thisScale.DegreeNum-1:
-                chooseNum[i]=0
+            for i in range(0,thisScale.DegreeNum - 1):
+                chooseNum.append(0)
             completePeople=0
             for thisAns in thisAnswers:
                 if thisAns.QuestionId==que:
@@ -477,9 +477,11 @@ def analysisQNaire(assess):
                     choosed=ScaleAnswerList.objects.get(AnswerId=thisAns)
                     chooseNum[choosed.DegreeAnswer-1]=chooseNum[choosed.DegreeAnswer-1]+1
             chooseRatio=[]
-            for i in thisScale.DegreeNum - 1:
-                chooseRatio[i]=chooseNum[i]/completePeople
-            temp={'Id':j,'queId':que.QuestionId,'queType':'Scale','title':que.QueDescription,'Begin':thisScale.BeginIndex,'End':thisScale.EndIndex,'filledPeople':completePeople,'ScaleDegree':numpy.arange(1,thisScale.DegreeNum,1),'results':chooseNum,'resultRatio':chooseRatio}
+            for i in range(0,thisScale.DegreeNum - 1):
+                chooseRatio.append(chooseNum[i]/completePeople)
+            degree=[]
+            degree=(numpy.arange(1, thisScale.DegreeNum, 1)).tolist()
+            temp={'Id':j,'queId':que.QuestionId,'queType':'Scale','title':que.QueDescription,'Begin':thisScale.BeginIndex,'End':thisScale.EndIndex,'filledPeople':completePeople,'ScaleDegree':degree,'results':chooseNum,'resultRatio':chooseRatio}
             HtmlAnswers.append(temp)
             j=j+1
 
@@ -507,6 +509,7 @@ def AnalysisData(request):
     # 问卷
     if(thisAssess.AssessType==0):
         print("单一问卷")
+        myQNaireResults=[]
         myQNaireResults=analysisQNaire(thisAssess)
         return  render(request,"results2.html",{'AnswerList':json.dumps(myQNaireResults)})
 

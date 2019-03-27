@@ -187,10 +187,12 @@ Vue.prototype.$axios = axios
 
 					JSON.stringify(this.questions))
 					.then(function(response) {
+						alert("添加问卷成功！")
 						console.log(response);
 					})
 					.catch(function(error){
 						console.log(error);
+						alert("添加问卷失败！")
 			})
 			}
 

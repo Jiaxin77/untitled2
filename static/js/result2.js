@@ -50,6 +50,11 @@
 	}
 	]
 */
+
+	Vue.filter('numFilter',function(value){
+		 let realVal = parseFloat(value).toFixed(2)
+		 return parseFloat(realVal)
+	})
 	var app=new Vue({
 		el:'#app',
 		data:{

@@ -178,6 +178,12 @@ body
 	border: 1px solid #555;
 	margin-bottom: 30px;
 }
+.tableResult p
+{
+	text-align: center;
+	margin: 0 auto;
+	margin-bottom: 10px;
+}
 .resultsTable th
 {
 	color: #fff;
