@@ -88,7 +88,7 @@ class  MCAList(models.Model):
 #填空题答案列表
 class FIBAnswerList(models.Model):
     AnswerId = models.ForeignKey('AnswerList',on_delete=models.CASCADE)
-    FIBAnswer = models.CharField(max_length=100)
+    FIBAnswer = models.CharField(max_length=1000)
 
 #量表题答案列表
 class ScaleAnswerList(models.Model):
