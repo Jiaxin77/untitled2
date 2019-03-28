@@ -137,6 +137,150 @@ def indexandmethod(request):
 def newEva(request):
     return render(request, "newEva.html")
 
+# var Alldatas=[
+# {
+# 	id:1,
+# 	name:"软件人机界面",
+# 	FirstList:
+# 	[
+# 	{
+# 		id:11,
+# 		listTitle:"易学性",
+# 		selected:[],
+# 		SecondList:
+# 		[
+# 		{
+# 			id:111,
+# 			listTitle:"一致性",
+# 			method:"启发式评估法"
+# 		},
+# 		{
+# 			id:112,
+# 			listTitle:"认知负荷",
+# 			method:"启发式评估法"
+# 		}
+# 		]
+# 	},
+# 	{
+# 		id:12,
+# 		listTitle:"容错性",
+# 		selected:[],
+# 		SecondList:
+# 		[
+# 		{
+# 			id:121,
+# 			listTitle:"防止犯错",
+# 			method:"可用性测试"
+# 		},
+# 		{
+# 			id:122,
+# 			listTitle:"纠错",
+# 			method:"可用性测试"
+# 		}
+# 		]
+# 	},
+# 	{
+# 		id:13,
+# 		listTitle:"易用性",
+# 		selected:[],
+# 		SecondList:
+# 		[
+# 		{
+# 			id:131,
+# 			listTitle:"灵活性",
+# 			method:"可用性测试"
+# 		},
+# 		{
+# 			id:132,
+# 			listTitle:"适用性",
+# 			method:"可用性测试"
+# 		}
+# 		]
+# 	},
+#
+# 	]
+#
+#
+#
+# },
+# {
+# 	id:2,
+# 	name:"系统任务流程",
+# 	FirstList:
+# 	[
+# 	{
+# 		id:21,
+# 		listTitle:"有效性",
+# 		selected:[],
+# 		SecondList:
+# 		[
+# 		{
+# 			id:211,
+# 			listTitle:"功能完备性",
+# 			method:"启发式评估法"
+# 		},
+# 		{
+# 			id:212,
+# 			listTitle:"任务有效性",
+# 			method:"启发式评估法"
+# 		}
+# 		]
+# 	},
+# 	{
+# 		id:22,
+# 		listTitle:"效率",
+# 		selected:[],
+# 		SecondList:
+# 		[
+# 		{
+# 			id:221,
+# 			listTitle:"任务操作便捷性",
+# 			method:"可用性测试"
+# 		},
+# 		{
+# 			id:222,
+# 			listTitle:"流程复杂度",
+# 			method:"可用性测试"
+# 		}
+# 		]
+# 	}
+# 	]
+# }
+# ];
+
+def getIndexInfo():
+    IndexInfo=[]
+    AllIndexFamilyName=IndexList.objects.all().values('FamilyName').distinct()
+    j=1
+    for familyname in AllIndexFamilyName:
+
+        thisFamily=familyname['FamilyName']
+        thisFamilyMembers=IndexList.objects.filter(FamilyName=thisFamily)
+        tempFamily = {'id': j, 'name':thisFamily,'FirstList':[]}
+        Fathers=[]
+        #统计FatherName
+        for member in thisFamilyMembers:#这个家族的成员
+            FatherName=member.FatherName
+            Fathers.append(FatherName)
+        Fathers = set(Fathers)#去重
+        k=1
+        for father in Fathers:
+            tempFather={'id':j*10+k,'listTitle':father,'selected':[],'SecondList':[]}
+            l=1
+            for member in thisFamilyMembers:
+                if member.FatherName==father:
+                    tempIndex={'id':j*100+k*10+l,'listTitle':member.IndexName,'method':member.thisMethod}
+                    tempFather['SecondList'].append(tempIndex)
+                    l=l+1
+            tempFamily['FirstList'].append(tempFather)
+            k=k+1
+        IndexInfo.append(tempFamily)
+        j=j+1
+    return IndexInfo
+
+        
+
+
 def newBlankEva(request):
     global USER
     if request.method == "POST":
@@ -156,7 +300,14 @@ def newBlankEva(request):
             global ThisQNaire
             ThisQNaire=SurveyList.objects.get(AssessId=thisAssess,SurveyName=EvaName)
             return render(request, "newQNaire.html",{'QNaireName':EvaName})
-
+        elif EvaType == "comprehensive":#新建综合评估
+            AssessList.objects.create(AssessName=EvaName,AssessOneDes=EvaDetail,AssessType=1,AssessUseNum=EvaUseNum,UserId=USER)
+            thisAssess=AssessList.objects.get(AssessName=EvaName,AssessOneDes=EvaDetail,AssessType=1,AssessUseNum=EvaUseNum,UserId=USER)
+            #获取指标信息
+            IndexInfo=[]
+            IndexInfo=getIndexInfo()
+            print(IndexInfo)
+            return  render(request,"edit1.html",{'AssessId':thisAssess.AssessId,'AssessName':thisAssess.AssessName,'IndexInfo':IndexInfo})
     return render(request, "newEva.html")
 
 def addQNaire(request):

@@ -1,4 +1,4 @@
-
+/*
 var Alldatas=[
 {
 	id:1,
@@ -110,7 +110,7 @@ var Alldatas=[
 }
 ];
 
-
+*/
 var app = new Vue({
 	el: '#app',
 	data: {
