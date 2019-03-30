@@ -3,6 +3,7 @@
 <head>
 	<title>AllChooseTest</title>
 	<script>
+        var Assess={{ Assess|safe }}
         var Alldatas={{ IndexInfo|safe }}
     </script>
 </head>
@@ -17,7 +18,7 @@
 				<li>————建立方案完成</li>
 			</ul>	
 		</div>
-		<button>下一步</button>
+		<!--<button @click='postIndexs()'>下一步</button>-->
 
 	</div>
 	<div id="app">
@@ -54,7 +55,7 @@
 			</div>
 		</div>
 		<div id="resultArea">
-
+            <button @click="postIndexs()">确认指标</button>
 			<ul v-for = "vvv in datas">
 				<ul v-for =" uuu in vvv.FirstList">
 					
@@ -77,6 +78,7 @@
 </body>
 
 <link rel="stylesheet" type="text/css" href="/static/css/edit1.css">
+<script type="text/javascript" src="/static/js/axios.min.js"></script>
 <script type="text/javascript" src="/static/js/vue.js"></script>
 <script type="text/javascript" src="/static/js/edit1.js"></script>
 </html>

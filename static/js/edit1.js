@@ -114,8 +114,9 @@ var Alldatas=[
 var app = new Vue({
 	el: '#app',
 	data: {
-		mySelected:[],
-		datas :Alldatas
+	    datas:Alldatas,
+		mySelected:[]
+
 	},
 	methods:{
 
@@ -193,7 +194,28 @@ isAllChecked : function (data) {
 	{
 		return item.selected.length===item.SecondList.length;
 	});
-}
+},
+        postIndexs:function()
+        {
+                console.log("提交");
+                    axios.post('http://127.0.0.1:8000/getEvaInfo/',
+
+					JSON.stringify({
+						Indexs:app.datas,
+                        Assess:Assess
+
+					}))
+					.then(function(response) {
+						//alert("保存成功，感谢您的填写！");
+						window.location.href='/showEvaInfo/?assess='+Assess.AssessId
+                        alert("保存成功！")
+						console.log(response);
+					})
+					.catch(function(error){
+						//window.location.href='/chooseEva/'
+						console.log(error);
+			})
+        }
 
 
 

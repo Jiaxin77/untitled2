@@ -307,8 +307,51 @@ def newBlankEva(request):
             IndexInfo=[]
             IndexInfo=getIndexInfo()
             print(IndexInfo)
-            return  render(request,"edit1.html",{'AssessId':thisAssess.AssessId,'AssessName':thisAssess.AssessName,'IndexInfo':IndexInfo})
+            Assess={'AssessId':thisAssess.AssessId,'AssessName':thisAssess.AssessName}
+            return  render(request,"edit1.html",{'Assess':Assess,'IndexInfo':IndexInfo})
     return render(request, "newEva.html")
+
+
+
+
+
+def getEvaInfo(request):
+    global ASSESS
+    global INDEXS
+    ASSESS = request.POST.get("Assess", None)
+    INDEXS = request.POST.get("Indexs", None)
+    methods = MethodList.objects.all()
+    return  render(request,"editEva2.html",{'Assess':ASSESS,'Index':INDEXS,'Method':methods})
+
+
+def showEvaInfo(request):
+    global INDEXS #正规来讲，index也应该在上个函数中存入数据库，再从数据库中读出
+    assessid = json.loads(request.GET['assess'])
+    thisAssess=AssessList.objects.get(AssessId=assessid)
+    myAssess={'AssessId':assessid,'AssessName':thisAssess.AssessName}
+    methods = MethodList.objects.all()
+    return  render(request,"editEva2.html",{'Assess':myAssess,'Index':INDEXS,'Method':methods})
+
+
+'''
+def getEvaPlan(request):
+    assess = json.loads(request.GET['Assess'])
+    indexs = json.loads(request.GET['Indexs'])
+    for family in indexs:
+        fathers=[]
+        fathers=family.FirstList
+        for father in fathers:
+            selected=[]
+            selected=father.selected
+            for index in selected:
+                indexName=index.listTitle
+                indexMethod=index.method
+                methods=indexMethod.split(",")
+                for method in methods:
+                    if(method == "")
+'''
+
+
 
 def addQNaire(request):
     print('newQuestions')

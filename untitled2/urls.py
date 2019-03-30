@@ -30,6 +30,7 @@ urlpatterns = [
    path('getFillAssess/',views.getFillAssess,name="getFillAssess"),
    path('FillQNaire/',views.FillQNaire,name="FillQNaire"),
    path('deleteAssess/',views.deleteAssess,name="deleteAssess"),
-   path('AnalysisData/',views.AnalysisData,name="AnalysisData")
+   path('AnalysisData/',views.AnalysisData,name="AnalysisData"),
+   path('getEvaInfo/',views.getEvaInfo,name="getEvaInfo")
 
 ]

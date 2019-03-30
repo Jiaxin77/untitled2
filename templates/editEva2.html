@@ -5,6 +5,10 @@
 		评估-编辑方案-首页
 	</title>
 <!--	<link rel="stylesheet" type="text/css" href="css/editEva2.css">-->
+<script>
+    var Index = {{ index|safe }}
+    var assess={{ Assess|safe }}
+</script>
 </head>
 
 <body>
@@ -28,7 +32,7 @@
 		<button id="save">保存</button>
 		</div>
 		<br>
-		<span>方案名称：  <input type="text" name="PlanName" id="PlanName"></span><br>
+		<span>方案名称：  {% verbatim %}{{ Assess.AssessName }}{% endverbatim %}</span><br>
 		<span>评估描述：  <input type="text" name="EvaDetail" id="EvaDetail"></span><br>
 		<span>评估对象：  <input type="text" name="EvaObject" id="EvaObject"></span><br>
 	</div>

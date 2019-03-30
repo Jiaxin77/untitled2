@@ -3,7 +3,7 @@
 
 
 var person=['层次分析专家','可用性测试被试人员'];
-
+/*
 var Index=[
 	{
 		id:1,
@@ -86,7 +86,7 @@ var Index=[
 		]
 	}
 	];
-
+*/
 	var IndexInform={
 		indexName:"",
 		EvaMethod:"",
@@ -104,7 +104,8 @@ var app=new Vue({
 		people:person,
 		myIndex:Index,
 		IndexInfo:IndexInform,
-		IndexBox:[]
+		IndexBox:[],
+        Assess:assess
 
 	},
 		//在页面刚加载时就执行的函数——Vue生命周期

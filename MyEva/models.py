@@ -109,7 +109,9 @@ class MethodList(models.Model):
     MethodId = models.AutoField(primary_key=True)
     MethodName = models.CharField(max_length=50)
     Description = models.CharField(max_length=500)
-
+    dataSource = models.CharField(max_length=100,null=True)
+    dealData = models.CharField(max_length=100,null=True)
+    people = models.CharField(max_length=200,null=True)
 #模板库
 class ModelList(models.Model):
     ModelId = models.AutoField(primary_key=True)
