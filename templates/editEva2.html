@@ -6,8 +6,9 @@
 	</title>
 <!--	<link rel="stylesheet" type="text/css" href="css/editEva2.css">-->
 <script>
-    var Index = {{ index|safe }}
+    var Index = {{ Index|safe }}
     var assess={{ Assess|safe }}
+    var thismethods={{ Method|safe }}
 </script>
 </head>
 
@@ -44,7 +45,6 @@
 				(
 				<span v-for="first in item.FirstList" v-if="first.selected!=''">
 					{% verbatim %}{{ first.listTitle }}{% endverbatim %}
-					
 				</span>
 				)
 					

@@ -2,7 +2,7 @@
 
 
 
-var person=['层次分析专家','可用性测试被试人员'];
+
 /*
 var Index=[
 	{
@@ -101,11 +101,12 @@ var Index=[
 var app=new Vue({
 	el:'#app',
 	data:{
-		people:person,
+		people:[],
 		myIndex:Index,
 		IndexInfo:IndexInform,
 		IndexBox:[],
-        Assess:assess
+        Assess:assess,
+        thisMethods:thismethods
 
 	},
 		//在页面刚加载时就执行的函数——Vue生命周期
@@ -126,9 +127,44 @@ var app=new Vue({
 							item.indexName=this.myIndex[i].FirstList[j].selected[z].listTitle;
 							item.EvaMethod=this.myIndex[i].FirstList[j].selected[z].method;
 							item.EvaObject=this.myIndex[i].name+"的"+this.myIndex[i].FirstList[j].listTitle;
+							var methodsName=[];
+							methodsName=item.EvaMethod.split(",");
+							console.log()
+							item.dataSource=[];
+							item.dataDeal=[];
+							for (var m=0;m<methodsName.length;m++)
+                            {
+                                var name;
+                                name=methodsName[m];
+                                for(var t=0;t<this.thisMethods.length;t++)
+                                {
+                                    if(this.thisMethods[t].MethodName==name)
+                                    {
+                                        item.dataSource.push(this.thisMethods[t].dataSource);
+                                        item.dataDeal.push(this.thisMethods[t].dealData);
+                                        console.log(this.thisMethods[t].people);
+                                        if(this.people.length==0)
+                                        {
+                                            this.people.push(this.thisMethods[t].people);
+                                        }
+                                        else
+                                        {
+                                        for(var p=0;p<this.people.length;p++)
+                                        {
+                                            if (this.people.indexOf(this.thisMethods[t].people)==-1)
+                                            {
+                                                console.log("添加人员");
+                                                this.people.push(this.thisMethods[t].people);
+                                            }
+                                        }}
+                                    }
+                                }
+
+                            }
+							/*
 							if(item.EvaMethod=="启发式评估法")
 							{
-								/*这部分之后可以调用函数 根据评估方法的数据获得*/
+
 								item.dataSource="启发式评估表格";
 								item.dataDeal="收集数据";
 							}
@@ -142,6 +178,7 @@ var app=new Vue({
 								item.dataSource="暂未记录";
 								item.dataDeal="暂未记录";
 							}
+							*/
 
 							this.IndexBox.push(item);
 

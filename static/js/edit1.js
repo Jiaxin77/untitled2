@@ -197,7 +197,9 @@ isAllChecked : function (data) {
 },
         postIndexs:function()
         {
+
                 console.log("提交");
+                console.log(app.datas);
                     axios.post('http://127.0.0.1:8000/getEvaInfo/',
 
 					JSON.stringify({

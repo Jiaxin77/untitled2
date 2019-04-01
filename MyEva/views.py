@@ -318,9 +318,13 @@ def newBlankEva(request):
 def getEvaInfo(request):
     global ASSESS
     global INDEXS
+    INDEXS=[]
+    print(request.body)
+    Messages = json.loads(request.body)
     ASSESS = request.POST.get("Assess", None)
-    INDEXS = request.POST.get("Indexs", None)
+    INDEXS = Messages['Indexs']#复杂嵌套数据用request.body
     methods = MethodList.objects.all()
+    print(INDEXS)
     return  render(request,"editEva2.html",{'Assess':ASSESS,'Index':INDEXS,'Method':methods})
 
 
@@ -330,7 +334,12 @@ def showEvaInfo(request):
     thisAssess=AssessList.objects.get(AssessId=assessid)
     myAssess={'AssessId':assessid,'AssessName':thisAssess.AssessName}
     methods = MethodList.objects.all()
-    return  render(request,"editEva2.html",{'Assess':myAssess,'Index':INDEXS,'Method':methods})
+    htmlMethods=[]
+    for method in methods:
+        temp={'MethodId':method.MethodId,'MethodName':method.MethodName,'dataSource':method.dataSource,'dealData':method.dealData,'people':method.people}
+        htmlMethods.append(temp)
+    print(INDEXS)
+    return  render(request,"editEva2.html",{'Assess':myAssess,'Index':INDEXS,'Method':htmlMethods})
 
 
 '''
