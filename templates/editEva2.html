@@ -30,12 +30,12 @@
 	<div id="InputForm">
 		<div id="saveNavi">
 		<h3>方案介绍及执行策略</h3>
-		<button id="save">保存</button>
+		<button id="save" @click='postInfomation()'>保存</button>
 		</div>
 		<br>
 		<span>方案名称：  {% verbatim %}{{ Assess.AssessName }}{% endverbatim %}</span><br>
-		<span>评估描述：  <input type="text" name="EvaDetail" id="EvaDetail" v-model="app.Description"></span><br>
-		<span>评估对象：  <input type="text" name="EvaObject" id="EvaObject" v-model="app.Object"></span><br>
+		<span>评估描述：  <input type="text" name="EvaDetail" id="EvaDetail" v-model="Description"></span><br>
+		<span>评估对象：  <input type="text" name="EvaObject" id="EvaObject" v-model="Object"></span><br>
 	</div>
 
 	<div id="showInform">

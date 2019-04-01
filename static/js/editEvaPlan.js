@@ -53,7 +53,7 @@
 		advice:""
 
 	};
-	var PlanList=[
+	/*var PlanList=[
 	{
 		id:1,
 		PlanId:"1123",
@@ -93,7 +93,7 @@
 
 	}
 	]
-
+*/
 	var Info=[
 
 	{	name:"出错频率",
@@ -131,6 +131,7 @@ var QNaires=[
 var app=new Vue({
 	el:'#app',
 	data:{
+		Assess:Assess,
 		plans:PlanList,
 		OneUseTable:UseTable,
 		UseTables:[],
@@ -172,7 +173,7 @@ var app=new Vue({
 						document.getElementById('QNaire').style.visibility="hidden";
 						document.getElementById('modelQNaire').style.visibility="hidden";
 					}
-					else if(this.plans[i].PlanType=="数据收集")
+					else if(this.plans[i].PlanType=="数据记录")
 					{
 
 
@@ -204,7 +205,7 @@ var app=new Vue({
 						document.getElementById('QNaire').style.visibility="visible";
 						document.getElementById('modelQNaire').style.visibility="hidden";
 					}
-					else if(this.plans[i].PlanType=="主观量表")
+					else if(this.plans[i].PlanType=="主观感知")
 					{
 						document.getElementById('HeuInfo').style.visibility="hidden";
 						document.getElementById('Information').style.visibility="hidden";

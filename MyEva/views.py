@@ -356,8 +356,19 @@ def newPlan(Assess,Indexs,Methods):
                     #     #是在此处新建还是编辑完方案时新建？
                     #     #SurveyList.objects.create(SurveyName=tempSurveyName,SurveyUseNum=thisAssess.AssessUseNum,SurveyQueNum=0,AssessId=thisAssess)
                     #     PlanList.objects.create(PlanName=tempPlanName,PlanTypeId="可用性测试",AssessId=thisAssess)
-
+#获取方案
 def getAssessPlan(request):
+    assessId = json.loads(request.GET['assess'])
+    thisAssess=AssessList.objects.get(AssessId=assessId)
+    Assess={"AssessId":assessId,"AssessName":thisAssess.AssessName}
+    AllPlans=PlanList.objects.filter(AssessId=thisAssess)
+    HtmlPlans=[]
+    j=1
+    for plan in AllPlans:
+        temp={"id":j,"PlanId":plan.PlanId,"PlanName":plan.PlanName,"PlanType":plan.PlanTypeId}
+        HtmlPlans.append(temp)
+        j=j+1
+    return  render(request,"editEvaPlan.html",{'Assess':Assess,'plans':HtmlPlans})
 
 
 def postAssessInfo(request):
@@ -372,7 +383,7 @@ def postAssessInfo(request):
     thisAssess.AssessDes=EvaDes
     thisAssess.AssessObject=EvaObject
     thisAssess.save()
-    #return render()
+    return render(request,"editEva2.html")
 
 
 

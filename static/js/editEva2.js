@@ -194,14 +194,15 @@ var app=new Vue({
                     axios.post('http://127.0.0.1:8000/postAssessInfo/',
 
 					JSON.stringify({
-						description:app.Description,
-                        object:app.Object,
-                        Assess:app.Assess
+						description:this.Description,
+                        object:this.Object,
+                        Assess:this.Assess
 
 					}))
 					.then(function(response) {
 						//alert("保存成功，感谢您的填写！");
 						//window.location.href='/showEvaInfo/?assess='+Assess.AssessId
+                        window.location.href='/getAssessPlan/?assess='+app.Assess.AssessId
                         alert("保存成功！")
 						console.log(response);
 					})
