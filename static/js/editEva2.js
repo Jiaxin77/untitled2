@@ -106,7 +106,9 @@ var app=new Vue({
 		IndexInfo:IndexInform,
 		IndexBox:[],
         Assess:assess,
-        thisMethods:thismethods
+        thisMethods:thismethods,
+        Description:"",
+        Object:""
 
 	},
 		//在页面刚加载时就执行的函数——Vue生命周期
@@ -186,7 +188,28 @@ var app=new Vue({
 					}
 				}
 				
-			}
+			},
+            postInfomation:function()
+            {
+                    axios.post('http://127.0.0.1:8000/postAssessInfo/',
+
+					JSON.stringify({
+						description:app.Description,
+                        object:app.Object,
+                        Assess:app.Assess
+
+					}))
+					.then(function(response) {
+						//alert("保存成功，感谢您的填写！");
+						//window.location.href='/showEvaInfo/?assess='+Assess.AssessId
+                        alert("保存成功！")
+						console.log(response);
+					})
+					.catch(function(error){
+						//window.location.href='/chooseEva/'
+						console.log(error);
+			})
+            }
 
 		}
 	})

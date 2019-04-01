@@ -34,8 +34,8 @@
 		</div>
 		<br>
 		<span>方案名称：  {% verbatim %}{{ Assess.AssessName }}{% endverbatim %}</span><br>
-		<span>评估描述：  <input type="text" name="EvaDetail" id="EvaDetail"></span><br>
-		<span>评估对象：  <input type="text" name="EvaObject" id="EvaObject"></span><br>
+		<span>评估描述：  <input type="text" name="EvaDetail" id="EvaDetail" v-model="app.Description"></span><br>
+		<span>评估对象：  <input type="text" name="EvaObject" id="EvaObject" v-model="app.Object"></span><br>
 	</div>
 
 	<div id="showInform">
@@ -76,7 +76,7 @@
 	</div>
 	</div>
 </body>
-
+<script type="text/javascript" src="/static/js/axios.min.js"></script>
 <script type="text/javascript" src="/static/js/vue.js"></script>
 
 <script type="text/javascript" src="/static/js/editEva2.js"></script>

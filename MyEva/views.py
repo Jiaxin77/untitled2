@@ -357,6 +357,22 @@ def newPlan(Assess,Indexs,Methods):
                     #     #SurveyList.objects.create(SurveyName=tempSurveyName,SurveyUseNum=thisAssess.AssessUseNum,SurveyQueNum=0,AssessId=thisAssess)
                     #     PlanList.objects.create(PlanName=tempPlanName,PlanTypeId="可用性测试",AssessId=thisAssess)
 
+def getAssessPlan(request):
+
+
+def postAssessInfo(request):
+    # description: app.Description,
+    # object: app.Object,
+    # Assess: app.Assess
+    Messages = json.loads(request.body)
+    EvaDes=Messages['description']
+    EvaObject=Messages['object']
+    Assess=Messages['Assess']
+    thisAssess=AssessList.objects.get(AssessId=Assess['AssessId'])
+    thisAssess.AssessDes=EvaDes
+    thisAssess.AssessObject=EvaObject
+    thisAssess.save()
+    #return render()
 
 
 
