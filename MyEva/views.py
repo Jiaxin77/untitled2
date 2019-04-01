@@ -15,7 +15,7 @@ from MyEva.models import FIBAnswerList
 from MyEva.models import SCAList
 from MyEva.models import MCAList
 from MyEva.models import ScaleAnswerList
-
+from MyEva.models import PlanList
 from django.contrib import  messages
 import os
 import json
@@ -313,6 +313,52 @@ def newBlankEva(request):
 
 
 
+#为评估增加预设方案
+def newPlan(Assess,Indexs,Methods):
+    print("新增方案")
+    print(Assess)
+    thisAssess=AssessList.objects.get(AssessId=Assess['AssessId'])
+    indexNum=0
+    indexIdList=[]
+    temppeople=[]
+
+    for family in Indexs:
+        for father in family['FirstList']:
+            for selectedIndex in father['selected']:
+                indexNum=indexNum+1
+                thisMethods=selectedIndex['method'].split(",")
+                indexId=IndexList.objects.get(IndexName=selectedIndex['listTitle'])
+                indexIdList.append(indexId)
+                for thismethod in thisMethods:
+                    tempPlanName = "针对" + selectedIndex['listTitle'] + "的"+thismethod
+                    PlanList.objects.create(PlanName=tempPlanName,PlanTypeId=thismethod,AssessId=thisAssess)
+                    for method in Methods:
+                        if(thismethod==method['MethodName']):
+                            temppeople.append(method['people'])
+    temppeople=list(set(temppeople))
+    thisAssess.AssessIndexNum=indexNum
+    thisAssess.People=temppeople
+    thisAssess.AssessIndexId=indexIdList
+    thisAssess.save()
+    print("建立方案完毕")
+    return True
+
+
+                    # if(thismethod=='启发式评估'):
+                    #     tempPlanName="针对"+selectedIndex.listTitle+"的启发式评估"
+                    #     print(tempPlanName)
+                    #     #运行前migration下
+                    #     PlanList.objects.create(PlanName=tempPlanName,PlanTypeId="启发式评估",AssessId=thisAssess)
+                    # elif(thismethod=='可用性测试'):
+                    #     tempPlanName="针对"+selectedIndex.listTitle+"的可用性测试"
+                    #     print(tempPlanName)
+                    #     #tempSurveyName=thisAssess.AssessName+tempPlanName
+                    #     #是在此处新建还是编辑完方案时新建？
+                    #     #SurveyList.objects.create(SurveyName=tempSurveyName,SurveyUseNum=thisAssess.AssessUseNum,SurveyQueNum=0,AssessId=thisAssess)
+                    #     PlanList.objects.create(PlanName=tempPlanName,PlanTypeId="可用性测试",AssessId=thisAssess)
+
+
+
 
 
 def getEvaInfo(request):
@@ -321,11 +367,19 @@ def getEvaInfo(request):
     INDEXS=[]
     print(request.body)
     Messages = json.loads(request.body)
-    ASSESS = request.POST.get("Assess", None)
+    ASSESS = Messages['Assess']
     INDEXS = Messages['Indexs']#复杂嵌套数据用request.body
     methods = MethodList.objects.all()
+    htmlMethods = []
+    for method in methods:
+        temp = {'MethodId': method.MethodId, 'MethodName': method.MethodName, 'dataSource': method.dataSource,
+                'dealData': method.dealData, 'people': method.people}
+        htmlMethods.append(temp)
+    print(ASSESS)
+    newPlan(ASSESS,INDEXS,htmlMethods)
+    methods = MethodList.objects.all()
     print(INDEXS)
-    return  render(request,"editEva2.html",{'Assess':ASSESS,'Index':INDEXS,'Method':methods})
+    return  render(request,"editEva2.html",{'Assess':ASSESS,'Index':INDEXS,'Method':htmlMethods})
 
 
 def showEvaInfo(request):

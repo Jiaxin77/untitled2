@@ -122,8 +122,8 @@ class ModelList(models.Model):
 #方案列表
 class PlanList(models.Model):
     PlanId = models.AutoField(primary_key=True)
-    PlanName = models.CharField(max_length=59)
-    PlanDescription = models.CharField(max_length=500)
+    PlanName = models.CharField(max_length=100)
+    PlanDescription = models.CharField(max_length=500,null=True)
     PlanTypeId = models.CharField(max_length=50)
     AssessId = models.ForeignKey('AssessList',on_delete=models.CASCADE)
 
