@@ -396,6 +396,22 @@ var app=new Vue({
 				}
 				console.log(this.QNaires,length);
 				console.log(this.QNaires);
+			},
+			postPlan:function()
+			{
+					axios.post('http://127.0.0.1:8000/savePlanQNaire/',
+
+					JSON.stringify({
+						QNaires:this.QNaires
+					}))
+					.then(function(response) {
+						alert("增加方案成功！")
+						console.log(response);
+					})
+					.catch(function(error){
+						console.log(error);
+						alert("增加方案失败！")
+			})
 			}
 
 	}

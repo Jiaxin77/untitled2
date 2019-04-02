@@ -370,6 +370,53 @@ def getAssessPlan(request):
         j=j+1
     return  render(request,"editEvaPlan.html",{'Assess':Assess,'plans':HtmlPlans})
 
+def savePlanQNaire(request):
+    Messages = json.loads(request.body)
+    QNaires = Messages['QNaires']
+    for QNaire in QNaires:
+        PlanId=QNaire['PlanId']
+        questions=QNaire['questions']
+        thisPlan=PlanList.objects.get(PlanId=PlanId)
+        thisAssess=thisPlan.AssessId
+        tempSurveyName=str(thisAssess.AssessId)+thisPlan.PlanName
+        SurveyList.objects.create(SurveyName=tempSurveyName,SurveyUseNum=thisAssess.AssessUseNum,SurveyQueNum=len(questions),AssessId=thisAssess)
+        thisSurvey=SurveyList.objects.get(SurveyName=tempSurveyName,SurveyUseNum=thisAssess.AssessUseNum,SurveyQueNum=len(questions),AssessId=thisAssess)
+        thisPlan.PlanTypeId=thisSurvey.SurveyId#将SurveyId对应上Plan
+        thisPlan.save()
+        for que in questions:
+            print(que)
+            print(que['type'])
+            QueDes = que['title']
+            if que['type'] == 'SingleChoose':
+                queType = 1
+                QuestionList.objects.create(QueDescription=QueDes, QuestionType=queType, isMust=1, SurveyId=thisSurvey)
+                thisQuestion = QuestionList.objects.get(QueDescription=QueDes, QuestionType=queType, isMust=1,
+                                                        SurveyId=thisSurvey)
+                ChoiceList.objects.create(SCQorMCQ=1, ChoiceA=que['ChooseA'], ChoiceB=que['ChooseB'],
+                                          ChoiceC=que['ChooseC'], ChoiceD=que['ChooseD'], QuestionId=thisQuestion)
+                print("插入成功")
+            elif que['type'] == 'MultiChoose':
+                queType = 2
+                QuestionList.objects.create(QueDescription=QueDes, QuestionType=queType, isMust=1, SurveyId=thisSurvey)
+                thisQuestion = QuestionList.objects.get(QueDescription=QueDes, QuestionType=queType, isMust=1,
+                                                        SurveyId=thisSurvey)
+                ChoiceList.objects.create(SCQorMCQ=2, ChoiceA=que['ChooseA'], ChoiceB=que['ChooseB'],
+                                          ChoiceC=que['ChooseC'], ChoiceD=que['ChooseD'], QuestionId=thisQuestion)
+            elif que['type'] == 'FillInBlank':
+                queType = 3
+                QuestionList.objects.create(QueDescription=QueDes, QuestionType=queType, isMust=1, SurveyId=thisSurvey)
+            elif que['type'] == 'Scale':
+                queType = 4
+                QuestionList.objects.create(QueDescription=QueDes, QuestionType=queType, isMust=1, SurveyId=thisSurvey)
+                thisQuestion = QuestionList.objects.get(QueDescription=QueDes, QuestionType=queType, isMust=1,
+                                                        SurveyId=thisSurvey)
+                ScaleList.objects.create(BeginIndex=que['lowest'], EndIndex=que['highest'], DegreeNum=que['ScaleCount'],
+                                         QuestionId=thisQuestion)
+            elif que['type'] == 'Paragraph':
+                queType = 5
+                QuestionList.objects.create(QueDescription=QueDes, QuestionType=queType, isMust=1, SurveyId=thisSurvey)
+    print("新建方案成功")
+    return  render(request,"editEvaPlan.html")
 
 def postAssessInfo(request):
     # description: app.Description,
@@ -455,6 +502,8 @@ def addQNaire(request):
         Questions=obj
         print(type(Questions))
         print(Questions)
+        ThisQNaire.SurveyQueNum=len(Questions)
+        ThisQNaire.save()
         for que in Questions:
             print(que)
             print(que['type'])

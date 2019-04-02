@@ -9,6 +9,7 @@
     </script>
 </head>
 <body>
+<div id="app">
 
 		<div id="naviProcess">
 
@@ -19,11 +20,11 @@
 				<li>————建立方案完成</li>
 			</ul>	
 		</div>
-		<button>保存方案</button>
+		<button @click="postPlan()"></button>保存方案</button>
 
 	</div>
 
-	<div id="app">
+
 		<div id="listApp">
 			<div id="myList">
 				<li v-for="item in plans" :class="item.id==activePlan?'active':'unactive'" @click="clickPlan(item.id)">
@@ -200,6 +201,7 @@
 
 </body>
 <script type="text/javascript" src="/static/js/vue.js"></script>
+<script type="text/javascript" src="/static/js/axios.min.js"></script>
 <script type="text/javascript" src="/static/js/editEvaPlan.js"></script>
 
 </html>
