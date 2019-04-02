@@ -29,10 +29,10 @@ import sys
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-def index(request):
+def index(request):#测试页面用
       return render(request, "results2.html")
 
-def login(request):
+def login(request):#登录
     result = ""
     global USER
     if request.method == "POST":
@@ -60,7 +60,7 @@ def login(request):
     return render(request,"login.html")
 
 
-def register(request):
+def register(request):#注册
     if request.method == "POST":
         username = request.POST.get("Regusername", None)
         password = request.POST.get("Regpassword", None)
@@ -77,199 +77,53 @@ def register(request):
             messages.success(request,"注册成功")
     return render(request, "login.html")
 
-# var IndexMessage= [
-# 				{
-# 					id:1,
-# 					title:'易学性',
-# 					content:'易学性巴拉巴拉'
-# 				},
-# 				{
-# 					id:2,
-# 					title:'容错性',
-# 					content:'容错性balabala'
-# 				},
-# 				{
-# 					id:3,
-# 					title:'便捷性',
-# 					content:'便捷性巴拉巴拉'
-# 				}
-# 				];
 
-
-# var MethodMessage=[
-# 	{
-# 		id:1,
-# 		title:'层次分析法',
-# 		content:'层次分析法babala'
-# 	},
-# 	{
-# 		id:2,
-# 		title:'启发式评估法',
-# 		content:'启发式评估法balabala'
-# 	},
-# 	{
-# 		id:3,
-# 		title:'可用性测试法',
-# 		content:'可用性测试法balabala'
-# 	}
-# 	];
-def indexandmethod(request):
-    HtmlIndexList=[]
-    HtmlMethodList=[]
+def indexandmethod(request):#指标与方法库
+    HtmlIndexList = []
+    HtmlMethodList = []
     MyIndexList = IndexList.objects.values('FatherName', 'Description').distinct()
     MyMethodList = MethodList.objects.values('MethodName','Description').distinct()
     i=0
     for index in MyIndexList:
-        tempIndex={'id':i,'title':'title','content':'content'}
+        tempIndex = {'id':i,'title':'title','content':'content'}
         tempIndex['title']=index['FatherName']
-        tempIndex['content']=index['Description'].replace("\n","<br/>")
-        i=i+1
+        tempIndex['content']=index['Description'].replace("\n", "<br/>")
+        i = i+1
         HtmlIndexList.append(tempIndex)
     j=0
     for method in MyMethodList:
-        tempMethod={'id':j,'title':'title','content':'content'}
-        tempMethod['title']=method['MethodName']
-        tempMethod['content']=method['Description'].replace("\n","<br/>")
-        j=j+1
+        tempMethod = {'id':j,'title':'title','content':'content'}
+        tempMethod['title'] = method['MethodName']
+        tempMethod['content'] = method['Description'].replace("\n", "<br/>")
+        j = j+1
         HtmlMethodList.append(tempMethod)
-    return render(request, "IndexAndMethod.html",{'IndexList':json.dumps(HtmlIndexList),'MethodList':json.dumps(HtmlMethodList)})
+    return render(request, "IndexAndMethod.html", {'IndexList': json.dumps(HtmlIndexList),'MethodList':json.dumps(HtmlMethodList)})
 
 def newEva(request):
     return render(request, "newEva.html")
 
-# var Alldatas=[
-# {
-# 	id:1,
-# 	name:"软件人机界面",
-# 	FirstList:
-# 	[
-# 	{
-# 		id:11,
-# 		listTitle:"易学性",
-# 		selected:[],
-# 		SecondList:
-# 		[
-# 		{
-# 			id:111,
-# 			listTitle:"一致性",
-# 			method:"启发式评估法"
-# 		},
-# 		{
-# 			id:112,
-# 			listTitle:"认知负荷",
-# 			method:"启发式评估法"
-# 		}
-# 		]
-# 	},
-# 	{
-# 		id:12,
-# 		listTitle:"容错性",
-# 		selected:[],
-# 		SecondList:
-# 		[
-# 		{
-# 			id:121,
-# 			listTitle:"防止犯错",
-# 			method:"可用性测试"
-# 		},
-# 		{
-# 			id:122,
-# 			listTitle:"纠错",
-# 			method:"可用性测试"
-# 		}
-# 		]
-# 	},
-# 	{
-# 		id:13,
-# 		listTitle:"易用性",
-# 		selected:[],
-# 		SecondList:
-# 		[
-# 		{
-# 			id:131,
-# 			listTitle:"灵活性",
-# 			method:"可用性测试"
-# 		},
-# 		{
-# 			id:132,
-# 			listTitle:"适用性",
-# 			method:"可用性测试"
-# 		}
-# 		]
-# 	},
-#
-# 	]
-#
-#
-#
-# },
-# {
-# 	id:2,
-# 	name:"系统任务流程",
-# 	FirstList:
-# 	[
-# 	{
-# 		id:21,
-# 		listTitle:"有效性",
-# 		selected:[],
-# 		SecondList:
-# 		[
-# 		{
-# 			id:211,
-# 			listTitle:"功能完备性",
-# 			method:"启发式评估法"
-# 		},
-# 		{
-# 			id:212,
-# 			listTitle:"任务有效性",
-# 			method:"启发式评估法"
-# 		}
-# 		]
-# 	},
-# 	{
-# 		id:22,
-# 		listTitle:"效率",
-# 		selected:[],
-# 		SecondList:
-# 		[
-# 		{
-# 			id:221,
-# 			listTitle:"任务操作便捷性",
-# 			method:"可用性测试"
-# 		},
-# 		{
-# 			id:222,
-# 			listTitle:"流程复杂度",
-# 			method:"可用性测试"
-# 		}
-# 		]
-# 	}
-# 	]
-# }
-# ];
-
-def getIndexInfo():
-    IndexInfo=[]
-    AllIndexFamilyName=IndexList.objects.all().values('FamilyName').distinct()
-    j=1
+def getIndexInfo():#获取指标信息
+    IndexInfo = []
+    AllIndexFamilyName = IndexList.objects.all().values('FamilyName').distinct()
+    j = 1
     for familyname in AllIndexFamilyName:
 
-        thisFamily=familyname['FamilyName']
-        thisFamilyMembers=IndexList.objects.filter(FamilyName=thisFamily)
-        tempFamily = {'id': j, 'name':thisFamily,'FirstList':[]}
-        Fathers=[]
+        thisFamily = familyname['FamilyName']
+        thisFamilyMembers = IndexList.objects.filter(FamilyName=thisFamily)
+        tempFamily = {'id': j, 'name': thisFamily, 'FirstList': []}
+        Fathers = []
         #统计FatherName
-        for member in thisFamilyMembers:#这个家族的成员
-            FatherName=member.FatherName
+        for member in thisFamilyMembers: #这个家族的成员
+            FatherName = member.FatherName
             Fathers.append(FatherName)
         Fathers = set(Fathers)#去重
-        k=1
+        k = 1
         for father in Fathers:
-            tempFather={'id':j*10+k,'listTitle':father,'selected':[],'SecondList':[]}
-            l=1
+            tempFather = {'id': j*10+k, 'listTitle': father, 'selected': [], 'SecondList': []}
+            l = 1
             for member in thisFamilyMembers:
-                if member.FatherName==father:
-                    tempIndex={'id':j*100+k*10+l,'listTitle':member.IndexName,'method':member.thisMethod}
+                if member.FatherName == father:
+                    tempIndex = {'id': j*100+k*10+l, 'listTitle': member.IndexName, 'method': member.thisMethod}
                     tempFather['SecondList'].append(tempIndex)
                     l=l+1
             tempFamily['FirstList'].append(tempFather)
@@ -281,7 +135,7 @@ def getIndexInfo():
         
 
 
-def newBlankEva(request):
+def newBlankEva(request):#新建空白评估
     global USER
     if request.method == "POST":
         EvaType=request.POST.get("eva",None)
@@ -313,8 +167,8 @@ def newBlankEva(request):
 
 
 
-#为评估增加预设方案
-def newPlan(Assess,Indexs,Methods):
+
+def newPlan(Assess,Indexs,Methods):#为评估增加预设方案
     print("新增方案")
     print(Assess)
     thisAssess=AssessList.objects.get(AssessId=Assess['AssessId'])
@@ -344,20 +198,8 @@ def newPlan(Assess,Indexs,Methods):
     return True
 
 
-                    # if(thismethod=='启发式评估'):
-                    #     tempPlanName="针对"+selectedIndex.listTitle+"的启发式评估"
-                    #     print(tempPlanName)
-                    #     #运行前migration下
-                    #     PlanList.objects.create(PlanName=tempPlanName,PlanTypeId="启发式评估",AssessId=thisAssess)
-                    # elif(thismethod=='可用性测试'):
-                    #     tempPlanName="针对"+selectedIndex.listTitle+"的可用性测试"
-                    #     print(tempPlanName)
-                    #     #tempSurveyName=thisAssess.AssessName+tempPlanName
-                    #     #是在此处新建还是编辑完方案时新建？
-                    #     #SurveyList.objects.create(SurveyName=tempSurveyName,SurveyUseNum=thisAssess.AssessUseNum,SurveyQueNum=0,AssessId=thisAssess)
-                    #     PlanList.objects.create(PlanName=tempPlanName,PlanTypeId="可用性测试",AssessId=thisAssess)
-#获取方案
-def getAssessPlan(request):
+
+def getAssessPlan(request):#获取方案用于新建方案的人查看（不包含问卷）
     assessId = json.loads(request.GET['assess'])
     thisAssess=AssessList.objects.get(AssessId=assessId)
     Assess={"AssessId":assessId,"AssessName":thisAssess.AssessName}
@@ -370,7 +212,7 @@ def getAssessPlan(request):
         j=j+1
     return  render(request,"editEvaPlan.html",{'Assess':Assess,'plans':HtmlPlans})
 
-def savePlanQNaire(request):
+def savePlanQNaire(request):#存储新建方案中的新建问卷
     Messages = json.loads(request.body)
     QNaires = Messages['QNaires']
     for QNaire in QNaires:
@@ -418,7 +260,7 @@ def savePlanQNaire(request):
     print("新建方案成功")
     return  render(request,"editEvaPlan.html")
 
-def postAssessInfo(request):
+def postAssessInfo(request):#提交方案描述 评估对象等信息
     # description: app.Description,
     # object: app.Object,
     # Assess: app.Assess
@@ -434,8 +276,7 @@ def postAssessInfo(request):
 
 
 
-
-def getEvaInfo(request):
+def getEvaInfo(request):#新建评估中 获取选择的指标
     global ASSESS
     global INDEXS
     INDEXS=[]
@@ -456,7 +297,7 @@ def getEvaInfo(request):
     return  render(request,"editEva2.html",{'Assess':ASSESS,'Index':INDEXS,'Method':htmlMethods})
 
 
-def showEvaInfo(request):
+def showEvaInfo(request):#新建评估中将指标和方法等信息展示
     global INDEXS #正规来讲，index也应该在上个函数中存入数据库，再从数据库中读出
     assessid = json.loads(request.GET['assess'])
     thisAssess=AssessList.objects.get(AssessId=assessid)
@@ -470,27 +311,8 @@ def showEvaInfo(request):
     return  render(request,"editEva2.html",{'Assess':myAssess,'Index':INDEXS,'Method':htmlMethods})
 
 
-'''
-def getEvaPlan(request):
-    assess = json.loads(request.GET['Assess'])
-    indexs = json.loads(request.GET['Indexs'])
-    for family in indexs:
-        fathers=[]
-        fathers=family.FirstList
-        for father in fathers:
-            selected=[]
-            selected=father.selected
-            for index in selected:
-                indexName=index.listTitle
-                indexMethod=index.method
-                methods=indexMethod.split(",")
-                for method in methods:
-                    if(method == "")
-'''
 
-
-
-def addQNaire(request):
+def addQNaire(request):#新建问卷的问题
     print('newQuestions')
     print(request.body)
     obj=json.loads(request.body)
@@ -532,49 +354,10 @@ def addQNaire(request):
                 QuestionList.objects.create(QueDescription=QueDes,QuestionType=queType,isMust=1,SurveyId=ThisQNaire)
 
     return render(request, "newEva.html")
-#
-# var AllAssess=[
-# 		{
-# 			id:1,
-# 			name:"评估名称1",
-# 			person:"曲丽丽",
-# 			InShort:"我是评估1一句话描述",
-# 			BeginTime:"2018-06-16 14:03",
-# 			process:90,
-# 			condition:"ing"
-# 		},
-# 		{
-# 			id:2,
-# 			name:"评估名称2",
-# 			person:"丁程鑫",
-# 			InShort:"我是评估2一句话描述",
-# 			BeginTime:"2018-06-18 17:03",
-# 			process:30,
-# 			condition:"ing"
-# 		},
-# 		{
-# 			id:3,
-# 			name:"评估名称3",
-# 			person:"马嘉祺",
-# 			InShort:"我是评估3一句话描述",
-# 			BeginTime:"2018-03-18 17:03",
-# 			process:100,
-# 			condition:"End"
-# 		},
-# 		{
-# 			id:4,
-# 			name:"评估名称3",
-# 			person:"李汶翰",
-# 			InShort:"我是评估4一句话描述",
-# 			BeginTime:"2017-03-18 17:03",
-# 			process:100,
-# 			condition:"End"
-# 		}
-# 	]
 
 
 
-def chooseEva(request):
+def chooseEva(request):#展示评估方案列表
     print("chooseEva")
     evalist=AssessList.objects.all()
     HtmlEvaList=[]
@@ -595,21 +378,21 @@ def chooseEva(request):
     return render(request,"chooseEva.html",{'EvaList':json.dumps(HtmlEvaList)})
 
 
-#	var Question=[ { "id": 1, "title": "丁程鑫帅不帅", "type": "SingleChoose", "ChooseA": "超帅", "ChooseB": "特别帅", "ChooseC": "帅炸了", "ChooseD": "巨帅" }, { "id": 2, "title": "李汶翰能不能出道", "type": "MultiChoose", "ChooseA": "C位出道", "ChooseB": "必须top", "ChooseC": "一位必须的", "ChooseD": "当然可以" }, { "id": 3, "title": "嘻嘻嘻嘻", "type": "Paragraph" }, { "id": 4, "title": "爱不爱我", "type": "Scale", "lowest": "不爱", "highest": "爱", "ScaleCount": 5 }, { "id": 5, "title": "你猜我是谁", "type": "FillInBlank" } ];
 
-#录入数据——得到问卷
-def getFillAssess(request):
+
+def getFillAssess(request):#录入评估数据
     #assessId = json.loads(request.body)
     assessId=json.loads(request.GET['assess'])
     #先get到assess的id
     Assess=AssessList.objects.get(AssessId=assessId)
-    if Assess.AssessType == 0:
+    if Assess.AssessType == 0:#录入问卷
         HtmlQuestionsList=[]
         Survey=SurveyList.objects.get(AssessId=Assess.AssessId)
         Questions=QuestionList.objects.filter(SurveyId=Survey)
         print(type(Questions))
+        j=1
         for que in Questions:
-            j=1
+
             if que.QuestionType == 1:
                 tempQue={'id':j,'queId':'','title':'title','type':'SingleChoose','ChooseA':'','ChooseB':'','ChooseC':'','ChooseD':'',"answer":''}
                 tempQue['queId']=que.QuestionId
@@ -657,14 +440,82 @@ def getFillAssess(request):
                 j=j+1
         print(HtmlQuestionsList)
         return render(request,"FillQNaire.html",{'QuestionList':json.dumps(HtmlQuestionsList),'SurveyId':Survey.SurveyId})
-    else:
-        return render(request,"chooseEva.html")
-    #判断类型 如果是问卷
-    #从问卷列表中查询此assessid 得到问卷id
-    #从问题列表中查询此问卷id的所有问题
-    #逐个问题判断类型，完善成数据格式，传回
+    else:#是综合评估
+        HtmlAssess = {"AssessId": assessId, "AssessName": Assess.AssessName}
+        AllPlans = PlanList.objects.filter(AssessId=Assess)
+        HtmlPlans = []
+        j = 1
+        HtmlQNaires = []
+        for plan in AllPlans:
+            temp = {"id": j, "PlanId": plan.PlanId, "PlanName": plan.PlanName, "PlanType": plan.PlanTypeId}
+            if (str(plan.PlanTypeId).isdigit()):  # 判断里面是不是数字，是的话则为survey
+                temp['PlanType']="可用性测试"
+                HtmlQuestionsList = []
+                surveyId = plan.PlanTypeId
+                thisSurvey = SurveyList.objects.get(SurveyId=surveyId)
+                Questions = QuestionList.objects.filter(SurveyId=thisSurvey)
+                print(type(Questions))
+                q = 1
+                for que in Questions:
 
-def FillQNaire(request):
+                    if que.QuestionType == 1:
+                        tempQue = {'id': q, 'queId': '', 'title': 'title', 'type': 'SingleChoose', 'ChooseA': '',
+                                   'ChooseB': '', 'ChooseC': '', 'ChooseD': '', "answer": ''}
+                        tempQue['queId'] = que.QuestionId
+                        tempQue['title'] = que.QueDescription
+                        choices = ChoiceList.objects.get(QuestionId=que)
+                        tempQue['ChooseA'] = choices.ChoiceA
+                        tempQue['ChooseB'] = choices.ChoiceB
+                        tempQue['ChooseC'] = choices.ChoiceC
+                        tempQue['ChooseD'] = choices.ChoiceD
+                        HtmlQuestionsList.append(tempQue)
+                        q = q + 1
+                    elif que.QuestionType == 2:
+                        tempQue = {'id': q, 'queId': '', 'title': 'title', 'type': 'MultiChoose', 'ChooseA': '',
+                                   'ChooseB': '', 'ChooseC': '', 'ChooseD': '', 'answer': []}
+                        tempQue['queId'] = que.QuestionId
+                        tempQue['title'] = que.QueDescription
+                        choices = ChoiceList.objects.get(QuestionId=que)
+                        tempQue['ChooseA'] = choices.ChoiceA
+                        tempQue['ChooseB'] = choices.ChoiceB
+                        tempQue['ChooseC'] = choices.ChoiceC
+                        tempQue['ChooseD'] = choices.ChoiceD
+                        HtmlQuestionsList.append(tempQue)
+                        q = q + 1
+                    elif que.QuestionType == 3:
+                        tempQue = {'id': q, 'queId': '', 'title': 'title', 'type': 'FillInBlank', 'answer': ''}
+                        tempQue['queId'] = que.QuestionId
+                        tempQue['title'] = que.QueDescription
+                        HtmlQuestionsList.append(tempQue)
+                        q = q + 1
+                    elif que.QuestionType == 4:
+                        tempQue = {'id': q, 'queId': '', 'title': 'title', 'type': 'Scale', 'lowest': 'lowest',
+                                   'highest': 'highest', 'ScaleCount': 0, 'answer': ''}
+                        tempQue['queId'] = que.QuestionId
+                        tempQue['title'] = que.QueDescription
+                        scale = ScaleList.objects.get(QuestionId=que)
+                        tempQue['lowest'] = scale.BeginIndex
+                        tempQue['highest'] = scale.EndIndex
+                        tempQue['ScaleCount'] = scale.DegreeNum
+                        HtmlQuestionsList.append(tempQue)
+                        q = q + 1
+                    elif que.QuestionType == 5:
+                        # "id": 3, "title": "嘻嘻嘻嘻", "type": "Paragraph"
+                        tempQue = {'id': q, 'queId': '', 'title': 'title', 'type': 'Paragraph'}
+                        tempQue['queId'] = que.QuestionId
+                        tempQue['title'] = que.QueDescription
+                        HtmlQuestionsList.append(tempQue)
+                        q = q + 1
+                print(HtmlQuestionsList)
+                tempQNaire = {"PlanId": plan.PlanId, "Question": HtmlQuestionsList}
+                HtmlQNaires.append(tempQNaire)
+            HtmlPlans.append(temp)
+            j = j + 1
+        return render(request, "evaPlan.html", {'Assess': HtmlAssess, 'plans': HtmlPlans, 'QNaires': HtmlQNaires})
+
+
+
+def FillQNaire(request):#填写问卷
     Messages=json.loads(request.body)
     Answers=Messages['AllQuestions']
     thisSurveyId=Messages['Survey']
@@ -726,21 +577,17 @@ def FillQNaire(request):
 
         messages.success(request,"成功提交！")
         return render(request,"chooseEva.html")
-    return render(request, "chooseEva.html")
 
 
-    #有问卷id
-    #录入答卷列表
-    #问卷和assess的process要增加
 
-def deleteAssess(request):
+def deleteAssess(request):#删除评估方案
     Messages = json.loads(request.body)
     assessId = Messages['assess']
     AssessList.objects.filter(AssessId=assessId).delete()
     print("删除成功")
     return  render(request,"chooseEva.html")
 
-def countFrequency(answers):
+def countFrequency(answers):#计算词频
     myTxt = ''.join(answers)
     # myTxt="李汶翰、嘉羿、管栎、胡春杨、陈宥维、夏瀚宇、施展、邓超元、连淮伟李汶翰、姚明明、管栎、何昶希、胡春杨、陈宥维、连淮伟、陈思键、冯俊杰李汶翰、嘉羿、管栎、胡春杨、连淮伟、夏瀚宇、何昶希、姚明明、冯俊杰、李汶翰、嘉羿、管栎、胡春杨、连淮伟、夏瀚宇、何昶希、姚明明、冯俊杰李汶翰、嘉羿、管栎、胡春杨、连淮伟、夏瀚宇、何昶希、姚明明、冯俊杰"
     myTxt_words = [x for x in jieba.cut(myTxt) if len(x) >= 2]
@@ -754,7 +601,7 @@ def countFrequency(answers):
         htmlFrequency.append(temp)
     return htmlFrequency
 
-def analysisQNaire(assess):
+def analysisQNaire(assess):#分析问卷结果
     assessId=assess
     thisSurvey=SurveyList.objects.get(AssessId=assessId)
     thisPapers=PaperList.objects.filter(SurveyId=thisSurvey)
@@ -850,45 +697,9 @@ def analysisQNaire(assess):
 
 
     return HtmlAnswers
-#
-# {
-# 		Id:3,
-# 		queId:"45678",
-# 		queType:"FillInBlank",
-# 		title:"青春有你出道位？",
-# 		results:["李汶翰、嘉羿、管栎、胡春杨、陈宥维、夏瀚宇、施展、邓超元、连淮伟","李汶翰、姚明明、管栎、何昶希、胡春杨、陈宥维、连淮伟、陈思键、冯俊杰",
-# 		"李汶翰、嘉羿、管栎、胡春杨、连淮伟、夏瀚宇、何昶希、姚明明、冯俊杰","李汶翰、嘉羿、管栎、胡春杨、连淮伟、夏瀚宇、何昶希、姚明明、冯俊杰",
-# 		"李汶翰、嘉羿、管栎、胡春杨、连淮伟、夏瀚宇、何昶希、姚明明、冯俊杰"
-# 		],
-# 		WCResults:
-# 		[{name:"李汶翰",value:95},
-# 		{name:"嘉羿",value:74},
-# 		{name:"管栎",value:79},
-# 		{name:"胡春杨",value:87},
-# 		{name:"何昶希",value:67},
-# 		{name:"连淮伟",value:56},
-# 		{name:"姚明明",value:23},
-# 		{name:"冯俊杰",value:21},
-# 		{name:"施展",value:56},
-# 		{name:"姚弛",value:12},
-# 		{name:"陈思键",value:10},
-# 		{name:"邓超元",value:5}]
-# 	}
 
-#
-# {
-# 		Id:2,
-# 		queId:"23456",
-# 		queType:"Scale",
-# 		title:"爱不爱我？",
-# 		filledPeople:100,
-# 		ScaleDegree:[1,2,3,4,5,6,7],
-# 		results:[10,5,8,12,15,16,34],
-# 		resultRatio:[0.1,0.05,0.08,0.12,0.15,0.16,0.34]
-#
-# 	}
 
-def AnalysisData(request):
+def AnalysisData(request):#分析评估数据
     assessId=json.loads(request.GET['assess'])
     thisAssess=AssessList.objects.get(AssessId=assessId)
     # 问卷
@@ -904,9 +715,3 @@ def AnalysisData(request):
 
 
 
-
-#def AnalysisData(request):
-    #获取问卷id
-    #获取问卷所有问题
-    #对应问题类型if
-    #根据问题id找答卷答案 统计

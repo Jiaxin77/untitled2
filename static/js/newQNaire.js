@@ -189,6 +189,7 @@ Vue.prototype.$axios = axios
 					.then(function(response) {
 						alert("添加问卷成功！")
 						console.log(response);
+						window.location.href='/chooseEva/'
 					})
 					.catch(function(error){
 						console.log(error);
