@@ -666,13 +666,17 @@ def analysisQNaire(assess):#分析问卷结果
         elif que.QuestionType==4:#量表题
             thisScale=ScaleList.objects.get(QuestionId=que)
             chooseNum=[]
-            for i in range(0,thisScale.DegreeNum - 1):
+            for i in range(0,thisScale.DegreeNum):
                 chooseNum.append(0)
+            print("长度")
+            print(len(chooseNum))
             completePeople=0
             for thisAns in thisAnswers:
                 if thisAns.QuestionId==que:
                     completePeople=completePeople+1
                     choosed=ScaleAnswerList.objects.get(AnswerId=thisAns)
+                    print("下标")
+                    print(choosed.DegreeAnswer-1)
                     chooseNum[choosed.DegreeAnswer-1]=chooseNum[choosed.DegreeAnswer-1]+1
             chooseRatio=[]
             for i in range(0,thisScale.DegreeNum - 1):

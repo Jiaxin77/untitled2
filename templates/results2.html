@@ -44,11 +44,13 @@
 			<div class="results" style="height: 50%;">
 				<div class="tableResult" v-if="que.queType=='SingleChoose'||que.queType=='MultiChoose'">
 					<table class="resultsTable" style="height: 50%">
-						<tr>
+
+                        <tr>
 							<th>选项</th>
 							<th>小计</th>
 							<th>比例</th>
 						</tr>
+
 						<tr v-if="que.chooseA!=''"> 
 							<td>{% verbatim %}{{ que.chooseA }}{% endverbatim %}</td>
 							<td>{% verbatim %}{{ que.results[0] }}{% endverbatim %}</td>
@@ -103,12 +105,16 @@
 				<div class="FIBresult" v-if="que.queType=='FillInBlank'" style="height: 50%">
 					
 					<table class="FIBtable">
+                        <thead>
 						<tr>
 							<th>回答</th>
 						</tr>
+                        </thead>
+                        <tbody>
 						<tr v-for="FIB in que.results"> 
 							<td>{% verbatim %}{{ FIB }}{% endverbatim %}</td>
 						</tr>
+                        </tbody>
 					</table>
 					
 					<div class="wordcloud" :id="getWordCloud(index)" style="width: 100%;height: 70% ;width:100%">

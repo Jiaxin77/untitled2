@@ -255,3 +255,10 @@ body
 	background-color: lightgrey;
 }
 
+.FIBtable tbody
+{
+	display:block;
+    height:200px;
+    overflow-y:scroll;
+    -webkit-overflow-scrolling: touch;
+}
