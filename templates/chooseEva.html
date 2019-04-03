@@ -19,7 +19,7 @@
 		</div>
 		<div id="chooseUse">
 			<div id="ManageEva">
-				<a href="">评估管理</a>
+				<a href="{% url 'chooseEva' %}">评估管理</a>
 			</div>
 			<div id="ManageModel">
 				<a href="">模板管理</a>
@@ -100,7 +100,7 @@
 					<li @click="analysisEva(eva)">分析数据</li>
 					<li>复制评估</li>
 					<li @click="deleteEva(eva)">删除评估</li>
-					<li>生成评估</li>
+
 				</ul>
 			</div>
 
@@ -142,11 +142,10 @@
 
 			<div class ="moreInfo" :id="getMoreId(eva,'Ing')" style="visibility: hidden;">
 				<ul>
-					<li>录入数据</li>
-					<li>分析数据</li>
+					<li @click="getFillEva(eva)" >录入数据</li>
+					<li @click="analysisEva(eva)">分析数据</li>
 					<li>复制评估</li>
-					<li>删除评估</li>
-					<li>生成评估</li>
+					<li @click="deleteEva(eva)">删除评估</li>
 				</ul>
 			</div>
 
@@ -187,11 +186,10 @@
 
 			<div class ="moreInfo" :id="getMoreId(eva,'End')" style="visibility: hidden;">
 				<ul>
-					<li>录入数据</li>
-					<li>分析数据</li>
+					<li @click="getFillEva(eva)" >录入数据</li>
+					<li @click="analysisEva(eva)">分析数据</li>
 					<li>复制评估</li>
-					<li>删除评估</li>
-					<li>生成评估</li>
+					<li @click="deleteEva(eva)">删除评估</li>
 				</ul>
 			</div>
 

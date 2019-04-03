@@ -406,6 +406,7 @@ var app=new Vue({
 					}))
 					.then(function(response) {
 						alert("增加方案成功！")
+						window.location.href='/chooseEva/'
 						console.log(response);
 					})
 					.catch(function(error){

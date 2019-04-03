@@ -116,4 +116,20 @@ li.now
 	list-style: none;
 }
 
+#okIndex
+{
+	position: relative;
+	right: 10%;
+	left: 70%;
+	width: 200px;
+	background-color: white;
+	border-radius: 0.5em;
+	border: 1px solid rgb(34, 170, 255);
+	color: rgb(34, 170, 255);
+}
 
+#okIndex :hover
+{
+	background-color:  rgb(34, 170, 255);
+	color:white;
+}

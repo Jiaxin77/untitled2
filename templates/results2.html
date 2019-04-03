@@ -19,13 +19,13 @@
 		</div>
 		<div id="chooseUse">
 			<div id="ManageEva">
-				<a href="">评估管理</a>
+				<a href="{% url 'chooseEva' %}">评估管理</a>
 			</div>
 			<div id="ManageModel">
 				<a href="">模板管理</a>
 			</div>
 			<div id="IndexAndMethod">
-				<a href="">指标库与方法库</a>
+				<a href="{% url 'indexandmethod' %}">指标库与方法库</a>
 			</div>
 		</div>
 
@@ -127,7 +127,7 @@
 					<button class="Pie" @click="choosePie(index)">饼状图</button>
 				</div>
 				<br><br>
-				<div class="pic" style="position: relative;height: 40%; ">
+				<div class="pic" style="position: relative;height: 40%; " v-if="que.queType!='FillInBlank'">
 					<div :id="getBar(index)" style="height:100%; left:10%;right:30%;visibility:visible;z-index: 2;position: absolute;top:0px" ></div>
 					<div :id="getPie(index)" style="height:100%; left: 10%;
 					right: 30%; visibility:hidden;z-index: 1;position: absolute;top:0px" ></div>
