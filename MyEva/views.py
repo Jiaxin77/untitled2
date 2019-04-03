@@ -679,10 +679,10 @@ def analysisQNaire(assess):#分析问卷结果
                     print(choosed.DegreeAnswer-1)
                     chooseNum[choosed.DegreeAnswer-1]=chooseNum[choosed.DegreeAnswer-1]+1
             chooseRatio=[]
-            for i in range(0,thisScale.DegreeNum - 1):
+            for i in range(0,thisScale.DegreeNum):
                 chooseRatio.append(chooseNum[i]/completePeople)
             degree=[]
-            degree=(numpy.arange(1, thisScale.DegreeNum, 1)).tolist()
+            degree=(numpy.arange(1, thisScale.DegreeNum+1, 1)).tolist()
             temp={'Id':j,'queId':que.QuestionId,'queType':'Scale','title':que.QueDescription,'Begin':thisScale.BeginIndex,'End':thisScale.EndIndex,'filledPeople':completePeople,'ScaleDegree':degree,'results':chooseNum,'resultRatio':chooseRatio}
             HtmlAnswers.append(temp)
             j=j+1
