@@ -191,7 +191,7 @@ var app=new Vue({
 			},
             postInfomation:function()
             {
-                    axios.post('http://127.0.0.1:8000/postAssessInfo/',
+                    axios.post('/postAssessInfo/',
 
 					JSON.stringify({
 						description:this.Description,

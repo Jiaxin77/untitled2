@@ -118,7 +118,7 @@
                 {
                     //因为是向后台get，所以在这里做跳转
                     console.log(EvaData)
-                    axios.get('http://127.0.0.1:8000/getFillAssess/',{
+                    axios.get('/getFillAssess/',{
                         params:{
                             assess:EvaData.id
                         }
@@ -135,7 +135,7 @@
 				deleteEva:function(EvaData)
 				{
 
-					axios.post('http://127.0.0.1:8000/deleteAssess/',
+					axios.post('/deleteAssess/',
 						JSON.stringify({
 						assess:EvaData.id
 
@@ -153,7 +153,7 @@
 				{
 					if(EvaData.condition=='End') {
 						console.log(EvaData.id)
-						 axios.get('http://127.0.0.1:8000/AnalysisData/',{
+						 axios.get('/AnalysisData/',{
                         params:{
                             assess:EvaData.id
                         }

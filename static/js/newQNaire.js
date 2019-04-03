@@ -183,7 +183,7 @@ Vue.prototype.$axios = axios
 
 				//	document.addQNaire.submit();
 
-				axios.post('http://127.0.0.1:8000/addQNaire/',
+				axios.post('/addQNaire/',
 
 					JSON.stringify(this.questions))
 					.then(function(response) {

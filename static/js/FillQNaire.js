@@ -11,7 +11,7 @@
 		},
 		methods:{
 			submitQNaire:function () {
-				axios.post('http://127.0.0.1:8000/FillQNaire/',
+				axios.post('/FillQNaire/',
 
 					JSON.stringify({
 						AllQuestions:this.questions,

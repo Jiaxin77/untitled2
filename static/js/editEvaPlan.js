@@ -399,7 +399,7 @@ var app=new Vue({
 			},
 			postPlan:function()
 			{
-					axios.post('http://127.0.0.1:8000/savePlanQNaire/',
+					axios.post('/savePlanQNaire/',
 
 					JSON.stringify({
 						QNaires:this.QNaires

@@ -200,7 +200,7 @@ isAllChecked : function (data) {
 
                 console.log("提交");
                 console.log(app.datas);
-                    axios.post('http://127.0.0.1:8000/getEvaInfo/',
+                    axios.post('/getEvaInfo/',
 
 					JSON.stringify({
 						Indexs:app.datas,
