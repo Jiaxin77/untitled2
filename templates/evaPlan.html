@@ -6,6 +6,7 @@
     <script>
         var PlanList={{ plans|safe }}
         var QNaires={{ QNaires|safe }}
+        var Assess={{ Assess|safe }}
     </script>
 </head>
 <body>
@@ -47,7 +48,8 @@
 		</div>
 
 		<div id="InfoDiv">
-			<button id="saveNow" @click="saveNowPlan">保存</button>
+            <button id="saveAll" @click="postInfo()">全部保存</button>
+			<button id="saveNow" @click="saveNowPlan()">保存</button>
 
 			<div id="Information">
 				{% verbatim %}{{ InfoList }}{% endverbatim %}
@@ -164,6 +166,8 @@
 
 </body>
 <script type="text/javascript" src="/static/js/vue.js"></script>
+<script type="text/javascript" src="/static/js/axios.min.js"></script>
+
 <script type="text/javascript" src="/static/js/evaPlan.js"></script>
 
 </html>

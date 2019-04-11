@@ -7,7 +7,7 @@
 		advice:""
 
 	};
-/*
+	/*
 	var PlanList=[
 	{
 		id:1,
@@ -47,8 +47,8 @@
 
 
 	}
-	]*/
-
+	]
+*/
 	var Info=[
 
 	{	name:"出错频率",
@@ -89,8 +89,8 @@ var app=new Vue({
 		plans:PlanList,
 		OneUseTable:UseTable,
 		UseTables:[],
-		InfoList:Info, 
-		SaveInfo:[],
+		InfoList:Info,
+	//SaveInfo:[],
 		AllInfo:[],
 		activePlan:1,
 		AllQNaires:QNaires,
@@ -103,13 +103,13 @@ var app=new Vue({
 	},
 	methods:{
 		saveNowPlan:function()
-		{	
+		{
 			//之前有没有保存过 是重新编辑的
 			for(var a=0;a<this.AllInfo.length;a++)
 			{
 				if(this.AllInfo[a].id==this.activePlan)
 				{
-
+					console.log("删了一个")
 					this.AllInfo.splice(a,1);//删除此元素 在之后重新保存
 					break;
 				}
@@ -128,18 +128,39 @@ var app=new Vue({
 					else if(this.plans[j].PlanType=="数据记录")
 					{
 
-						this.SaveInfo=[];
-
+						//var SaveInfo=[];
+						thisInfoStr="";
 						for(var il=0;il<this.InfoList.length;il++)
 						{
-							temp={"name":"","unit":"","value":""}
-							temp=this.InfoList[il];
-							this.SaveInfo.push(temp);
+							if(thisInfoStr=="")
+							{
+								thisInfoStr=""+this.InfoList[il].value;
+							}
+							else
+							{
+							thisInfoStr=thisInfoStr+","+this.InfoList[il].value
+							}
 						}
+					/*for(var il=0;il<this.InfoList.length;il++)
+						{
+							temp={"name":"","unit":"","value":""}
+							console.log("InfoList:");
+							console.log(this.InfoList[il]);
+							temp=this.InfoList[il];
+							console.log("temp");
+							console.log(temp);
+							SaveInfo.push(temp);
+						}*/
+						var tempInfo={"id":this.activePlan,"Planid":this.plans[j].PlanId,"PlanType":"数据收集","myInfo":thisInfoStr}
 
 
-						var tempInfo={"id":this.activePlan,"Planid":this.plans[j].PlanId,"PlanType":"数据收集","Info":this.SaveInfo};
+						//var tempInfo={"id":this.activePlan,"Planid":this.plans[j].PlanId,"PlanType":"数据收集","myInfo":SaveInfo};
 						this.AllInfo.push(tempInfo);
+					}
+					else if(this.plans[j].PlanType=="可用性测试")
+					{
+						var tempQNaire={"id":this.activePlan,"Planid":this.plans[j].PlanId,"PlanType":"可用性测试","QNaireInfo":this.questions}
+						this.AllInfo.push(tempQNaire);
 					}
 					else
 					{
@@ -151,17 +172,17 @@ var app=new Vue({
 			console.log(this.AllInfo.length);
 			for(var k=0;k<this.AllInfo.length;k++)
 			{
-				
+
 				console.log(this.AllInfo[k].Planid);
 				console.log(this.AllInfo[k]);
 			}
-			
+
 
 		},
 		clickPlan:function(id)
 		{
-			
-			
+
+
 			for(var i=0;i<this.plans.length;i++)
 			{
 
@@ -196,15 +217,23 @@ var app=new Vue({
 						{
 							this.InfoList[d].value="";
 						}
+						//this.initialInfo();
 
 						for(var a=0;a<this.AllInfo.length;a++)
 						{
+
 							if(this.AllInfo[a].id==this.activePlan)
 							{
 								console.log("匹配到了!");
-								console.log(this.AllInfo[a].Info);
+								console.log(this.AllInfo[a].myInfo);
+								var InfoResult=[];
+								InfoResult=this.AllInfo[a].myInfo.split(',');
 								//console.log(this.SaveInfo);
-								this.InfoList=this.AllInfo[a].Info;
+								for (var iR=0;iR<this.InfoList.length;iR++)
+								{
+									this.InfoList[iR].value=InfoResult[iR];
+								}
+								//this.InfoList=this.AllInfo[a].myInfo;
 								console.log(this.InfoList);
 							}
 						}
@@ -216,12 +245,11 @@ var app=new Vue({
 					}
 					else if(this.plans[i].PlanType=="可用性测试")
 					{
-						console.log("可用性测试");
+
 						for(var q=0;q<this.AllQNaires.length;q++)
 						{
 							if (this.AllQNaires[q].PlanId==this.plans[i].PlanId)
 							{
-								console.log(this.AllQNaires[q].PlanId);
 								this.questions=this.AllQNaires[q].Question;
 							}
 						}
@@ -240,20 +268,19 @@ var app=new Vue({
 				}
 			}
 		},
-		
+
 		/*initialInfo:function()
 		{//为什么会覆盖啊啊啊啊啊啊啊啊啊啊啊啊啊
-			for (var i=0;i<Info.length;i++)
+			for (var iInfo=0;iInfo<Info.length;iInfo++)
 			{
 				var item={};
-				item.name=Info[i].name;
-				item.unit=Info[i].unit;
+				item.name=Info[iInfo].name;
+				item.unit=Info[iInfo].unit;
 				item.value="";
 
-				this.SaveInfo.
+				this.InfoList.push(item);
 			}
-			
-			
+			this.SaveInfo.push(this.InfoList);
 
 		}
 		,*/
@@ -278,7 +305,26 @@ var app=new Vue({
 			item.advice="";
 			this.OneUseTable=item;
 			this.UseTables.push(this.OneUseTable);
+		},
+		postInfo:function()
+		{
+					axios.post('/getEvaAnswer/',
+
+					JSON.stringify({
+						Assess:Assess,
+						AllInfo:this.AllInfo
+					}))
+					.then(function(response) {
+						alert("保存成功！")
+						window.location.href='/chooseEva/'
+						console.log(response);
+					})
+					.catch(function(error){
+						console.log(error);
+						alert("保存失败！")
+			})
 		}
+
 
 	}
 

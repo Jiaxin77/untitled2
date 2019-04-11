@@ -16,6 +16,8 @@ from MyEva.models import SCAList
 from MyEva.models import MCAList
 from MyEva.models import ScaleAnswerList
 from MyEva.models import PlanList
+from MyEva.models import HeuEvaResult
+from MyEva.models import PerformanceRecord
 from django.contrib import  messages
 import os
 import json
@@ -702,6 +704,102 @@ def analysisQNaire(assess):#分析问卷结果
 
     return HtmlAnswers
 
+def getEvaAnswer(request):#获取用户填的评估数据
+    message = json.loads(request.body)
+    print(message)
+    Assess=message['Assess']
+    AllInfo=message['AllInfo']
+    AssessId=Assess['AssessId']
+    global USER
+
+    thisAssess=AssessList.objects.get(AssessId=AssessId)
+    assessedNum = math.ceil((thisAssess.AssessUseNum * thisAssess.AssessPro) / 100)  # 向上取整
+    assessedNum = assessedNum + 1
+    assessPro = assessedNum * 100 / thisAssess.AssessUseNum
+    if (assessPro > 100):
+        assessPro = 100
+    thisAssess.AssessPro = assessPro
+    thisAssess.save()
+
+    for info in AllInfo:
+        PlanId=info['Planid']
+        PlanType=info['PlanType']
+        thisPlan=PlanList.objects.get(PlanId=PlanId)
+        IndexName=thisPlan.PlanName[2:].split('的')[0]#截取“针对”之后，“的”之前
+        thisIndex=IndexList.objects.get(IndexName=IndexName)
+        if(PlanType=="启发式评估"):
+                UseTables=[]
+                UseTables=info['UseTables']
+                for usetable in UseTables:
+                    HeuEvaResult.objects.create(Interface=usetable['local'],HeuProblem=usetable['problem'],SeriousDegree=usetable['serious'],Advice=usetable['advice'],IndexId=thisIndex,PlanId=thisPlan,UserId=USER)
+        elif(PlanType=="数据记录"):
+                dataInfo=[]
+                dataInfo=info['myInfo'].split(',')
+                PerformanceRecord.objects.create(ErrorRate=float(dataInfo[0]),FinishTime=float(dataInfo[1]),SuccessRate=float(dataInfo[2]),LookingTime=float(dataInfo[3]),PlanId=thisPlan,UserId=USER)
+        elif(PlanType=="可用性测试"):
+                Answers=info['QNaireInfo']
+                surveyId=thisPlan.PlanTypeId
+                thisSurvey=SurveyList.objects.get(SurveyId=surveyId)
+                thisPaper = PaperList.objects.filter(UserId=USER, SurveyId=thisSurvey)
+                if thisPaper.exists():
+                    print("您已填过该评估方案！不可重复填写！")
+                    messages.error(request, "您已填过该评估方案！不可重复填写！")
+                    return render(request, "chooseEva.html")
+                else:
+                    # 增加一个填问卷的人
+                    surveyedNum = math.ceil((thisSurvey.SurveyUseNum * thisSurvey.SurveyPro) / 100)
+                    print(surveyedNum)
+                    surveyedNum = surveyedNum + 1
+                    print(surveyedNum)
+                    pro = surveyedNum * 100 / thisSurvey.SurveyUseNum
+                    print(pro)
+                    if (pro > 100):
+                        pro = 100
+                    thisSurvey.SurveyPro = pro
+                    thisSurvey.save()
+
+
+                    PaperList.objects.create(UserId=USER, SurveyId=thisSurvey)
+                    thisPaper = PaperList.objects.get(UserId=USER, SurveyId=thisSurvey)
+                    for ans in Answers:
+                        print(type(ans))
+                        print(ans['queId'])
+                        thisQuestion = QuestionList.objects.get(QuestionId=ans['queId'])
+                        if ans['type'] == 'SingleChoose':  # 单选题
+                            AnswerList.objects.create(QuestionType=1, isMust=1, PaperId=thisPaper,
+                                                      QuestionId=thisQuestion)
+                            thisAnswer = AnswerList.objects.get(QuestionType=1, isMust=1, PaperId=thisPaper,
+                                                                QuestionId=thisQuestion)
+                            SCAList.objects.create(ChoiceAnswer=ans['answer'], AnswerId=thisAnswer)
+                        elif ans['type'] == 'MultiChoose':  # 多选题
+                            AnswerList.objects.create(QuestionType=2, isMust=1, PaperId=thisPaper,
+                                                      QuestionId=thisQuestion)
+                            thisAnswer = AnswerList.objects.get(QuestionType=2, isMust=1, PaperId=thisPaper,
+                                                                QuestionId=thisQuestion)
+                            MCAanswers = ','.join(ans['answer'])
+                            MCAList.objects.create(ChoiceAnswer=MCAanswers, ChoiceNum=len(ans['answer']),
+                                                   AnswerId=thisAnswer)
+                        elif ans['type'] == 'FillInBlank':  # 填空题
+                            AnswerList.objects.create(QuestionType=3, isMust=1, PaperId=thisPaper,
+                                                      QuestionId=thisQuestion)
+                            thisAnswer = AnswerList.objects.get(QuestionType=3, isMust=1, PaperId=thisPaper,
+                                                                QuestionId=thisQuestion)
+                            print(ans['answer'])
+                            FIBAnswerList.objects.create(FIBAnswer=ans['answer'], AnswerId=thisAnswer)
+                        elif ans['type'] == 'Scale':  # 量表题
+                            AnswerList.objects.create(QuestionType=4, isMust=1, PaperId=thisPaper,
+                                                      QuestionId=thisQuestion)
+                            thisAnswer = AnswerList.objects.get(QuestionType=4, isMust=1, PaperId=thisPaper,
+                                                                QuestionId=thisQuestion)
+                            ScaleAnswerList.objects.create(DegreeAnswer=ans['answer'], AnswerId=thisAnswer)
+                        elif ans['type'] == 'Paragraph':
+                            print("段落")
+        else:
+            print("暂未开发")
+
+
+    return render(request,"evaPlan.html")
+
 
 def AnalysisData(request):#分析评估数据
     assessId=json.loads(request.GET['assess'])
@@ -716,6 +814,8 @@ def AnalysisData(request):#分析评估数据
     else:
         print("综合评估")
     return render(request, "chooseEva.html")
+
+
 
 
 

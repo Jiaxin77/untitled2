@@ -35,5 +35,6 @@ urlpatterns = [
    path('showEvaInfo/',views.showEvaInfo,name="showEvaInfo"),
    path('postAssessInfo/',views.postAssessInfo,name="postAssessInfo"),
    path('getAssessPlan/',views.getAssessPlan,name="getAssessPlan"),
-   path('savePlanQNaire/',views.savePlanQNaire,name="savePlanQNaire")
+   path('savePlanQNaire/',views.savePlanQNaire,name="savePlanQNaire"),
+   path('getEvaAnswer/',views.getEvaAnswer,name="getEvaAnswer")
 ]
