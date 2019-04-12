@@ -603,9 +603,7 @@ def countFrequency(answers):#计算词频
         htmlFrequency.append(temp)
     return htmlFrequency
 
-def analysisQNaire(assess):#分析问卷结果
-    assessId=assess
-    thisSurvey=SurveyList.objects.get(AssessId=assessId)
+def analysisQNaire(thisSurvey):#分析问卷结果
     thisPapers=PaperList.objects.filter(SurveyId=thisSurvey)
     thisQuestions=QuestionList.objects.filter(SurveyId=thisSurvey)
     thisAnswers=[]
@@ -733,6 +731,7 @@ def getEvaAnswer(request):#获取用户填的评估数据
                 for usetable in UseTables:
                     HeuEvaResult.objects.create(Interface=usetable['local'],HeuProblem=usetable['problem'],SeriousDegree=usetable['serious'],Advice=usetable['advice'],IndexId=thisIndex,PlanId=thisPlan,UserId=USER)
         elif(PlanType=="数据记录"):
+                print("录入数据记录！")
                 dataInfo=[]
                 dataInfo=info['myInfo'].split(',')
                 PerformanceRecord.objects.create(ErrorRate=float(dataInfo[0]),FinishTime=float(dataInfo[1]),SuccessRate=float(dataInfo[2]),LookingTime=float(dataInfo[3]),PlanId=thisPlan,UserId=USER)
@@ -800,6 +799,19 @@ def getEvaAnswer(request):#获取用户填的评估数据
 
     return render(request,"evaPlan.html")
 
+# id:1,
+# 		serious:3,
+# 		problem:"31xxx",
+# 		local:"31xxxx",
+# 		advice:"31xxxxx"
+
+
+
+
+
+
+
+
 
 def AnalysisData(request):#分析评估数据
     assessId=json.loads(request.GET['assess'])
@@ -808,11 +820,68 @@ def AnalysisData(request):#分析评估数据
     if(thisAssess.AssessType==0):
         print("单一问卷")
         myQNaireResults=[]
-        myQNaireResults=analysisQNaire(thisAssess)
+        thisSurvey = SurveyList.objects.get(AssessId=assessId)
+        myQNaireResults=analysisQNaire(thisSurvey)
         return  render(request,"results2.html",{'AnswerList':json.dumps(myQNaireResults)})
 
-    else:
-        print("综合评估")
+    else:#综合评估
+        thisPlans = PlanList.objects.filter(AssessId=thisAssess)
+        HtmlPlanList = []
+        allUseProblems = []
+        QNaireResults = []
+        ErrorRate = 0
+        FinishTime = 0
+        SuccessRate = 0
+        LookingTime = 0
+        usernum = 0
+
+        j=1
+        for plan in thisPlans:
+
+
+            if plan.PlanTypeId == '启发式评估':
+                temp = {"id": j, "PlanId": plan.PlanId, "PlanName": plan.PlanName, "PlanType": plan.PlanTypeId}
+                HtmlPlanList.append(temp)
+                j = j + 1
+                # 列出可用性问题清单
+                thisHeus = HeuEvaResult.objects.filter(PlanId=plan).order_by('SeriousDegree')
+                heucount = 1
+                useProblems = []
+                for heu in thisHeus:
+                    tempHeu = {'id': heucount, 'serious': heu.SerioueDegree, 'problem': heu.HeuProblem,
+                               'local': heu.Interface, 'advice': heu.Advice}
+                    useProblems.append(tempHeu)
+                    heucount = heucount + 1
+                tempPlanHeu = {'PlanId': plan.PlanId, 'useProblems': useProblems}
+                allUseProblems.append(tempPlanHeu)
+            elif plan.PlanTypeId == '数据记录':
+                temp = {"id": j, "PlanId": plan.PlanId, "PlanName": plan.PlanName, "PlanType": plan.PlanTypeId}
+                HtmlPlanList.append(temp)
+                j = j + 1
+                # 算出平均值
+                thisPerformance = PerformanceRecord.objects.filter(PlanId=plan)
+                usernum = len(thisPerformance)
+                for performance in thisPerformance:
+                    ErrorRate = ErrorRate + performance.ErrorRate
+                    FinishTime = FinishTime + performance.FinishTime
+                    SuccessRate = SuccessRate + performance.SuccessRate
+                    LookingTime = LookingTime + performance.LookingTime
+            elif (str(plan.PlanTypeId).isdigit()):  # 可用性测试
+                temp = {"id": j, "PlanId": plan.PlanId, "PlanName": plan.PlanName, "PlanType": "可用性测试"}
+                HtmlPlanList.append(temp)
+                j = j + 1
+                thisSurveyId = plan.PlanTypeId
+                thisSurvey = SurveyList.objects.get(SurveyId=thisSurveyId)
+                ResultsData = analysisQNaire(thisSurvey)
+                tempQNairePlan = {'PlanId': plan.PlanId, 'ResultsData': ResultsData}
+                QNaireResults.append(tempQNairePlan)
+            else:
+                print("主观量表，暂未开发")
+        HtmlInfoList = [{'name': '出错频率', 'unit': '次/小时', 'data': ErrorRate / usernum},
+                        {'name': '完成时间', 'unit': '分钟', 'data': FinishTime / usernum},
+                        {'name': '成功率', 'unit': '%', 'data': SuccessRate / usernum},
+                        {'name': '平均注视时间 ', 'unit': '秒', 'data': LookingTime / usernum}]
+        return  render(request,"EvaResult.html",{'PlanList':HtmlPlanList,'infoList':HtmlInfoList,'QNaireResults':QNaireResults,'allUseProblems':allUseProblems})
     return render(request, "chooseEva.html")
 
 

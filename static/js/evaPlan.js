@@ -151,7 +151,7 @@ var app=new Vue({
 							console.log(temp);
 							SaveInfo.push(temp);
 						}*/
-						var tempInfo={"id":this.activePlan,"Planid":this.plans[j].PlanId,"PlanType":"数据收集","myInfo":thisInfoStr}
+						var tempInfo={"id":this.activePlan,"Planid":this.plans[j].PlanId,"PlanType":"数据记录","myInfo":thisInfoStr}
 
 
 						//var tempInfo={"id":this.activePlan,"Planid":this.plans[j].PlanId,"PlanType":"数据收集","myInfo":SaveInfo};
