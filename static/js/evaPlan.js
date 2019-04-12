@@ -132,12 +132,17 @@ var app=new Vue({
 						thisInfoStr="";
 						for(var il=0;il<this.InfoList.length;il++)
 						{
+							if(this.InfoList[il].value=="")
+							{
+								this.InfoList[il].value=0;
+							}
 							if(thisInfoStr=="")
 							{
 								thisInfoStr=""+this.InfoList[il].value;
 							}
 							else
 							{
+
 							thisInfoStr=thisInfoStr+","+this.InfoList[il].value
 							}
 						}

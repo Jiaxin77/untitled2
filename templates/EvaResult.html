@@ -47,7 +47,7 @@
 		<div id="listApp">
 			<div id="myList">
 				<li v-for="item in plans" :class="item.id==activePlan?'active':'unactive'" @click="clickPlan(item.id)">
-					{{ item.PlanName }}
+					{% verbatim %}{{ item.PlanName }}{% endverbatim %}
 				</li>
 			</div>
 		</div>

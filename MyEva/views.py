@@ -734,7 +734,7 @@ def getEvaAnswer(request):#获取用户填的评估数据
                 print("录入数据记录！")
                 dataInfo=[]
                 dataInfo=info['myInfo'].split(',')
-                PerformanceRecord.objects.create(ErrorRate=float(dataInfo[0]),FinishTime=float(dataInfo[1]),SuccessRate=float(dataInfo[2]),LookingTime=float(dataInfo[3]),PlanId=thisPlan,UserId=USER)
+                PerformanceRecord.objects.create(ErrorRate=int(dataInfo[0]),FinishTime=int(dataInfo[1]),SuccessRate=int(dataInfo[2]),LookingTime=int(dataInfo[3]),PlanId=thisPlan,UserId=USER)
         elif(PlanType=="可用性测试"):
                 Answers=info['QNaireInfo']
                 surveyId=thisPlan.PlanTypeId
@@ -848,7 +848,7 @@ def AnalysisData(request):#分析评估数据
                 heucount = 1
                 useProblems = []
                 for heu in thisHeus:
-                    tempHeu = {'id': heucount, 'serious': heu.SerioueDegree, 'problem': heu.HeuProblem,
+                    tempHeu = {'id': heucount, 'serious': heu.SeriousDegree, 'problem': heu.HeuProblem,
                                'local': heu.Interface, 'advice': heu.Advice}
                     useProblems.append(tempHeu)
                     heucount = heucount + 1
