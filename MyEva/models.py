@@ -27,6 +27,7 @@ class AssessList(models.Model):
     AssessUseNum = models.IntegerField(default=0)
     AssessIndexId = models.CharField(max_length=1000,null=True)
 
+
 #问卷列表
 class SurveyList(models.Model):
     SurveyId = models.AutoField(primary_key=True)
