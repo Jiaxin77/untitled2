@@ -146,16 +146,7 @@ var app=new Vue({
 							thisInfoStr=thisInfoStr+","+this.InfoList[il].value
 							}
 						}
-					/*for(var il=0;il<this.InfoList.length;il++)
-						{
-							temp={"name":"","unit":"","value":""}
-							console.log("InfoList:");
-							console.log(this.InfoList[il]);
-							temp=this.InfoList[il];
-							console.log("temp");
-							console.log(temp);
-							SaveInfo.push(temp);
-						}*/
+
 						var tempInfo={"id":this.activePlan,"Planid":this.plans[j].PlanId,"PlanType":"数据记录","myInfo":thisInfoStr}
 
 
@@ -173,14 +164,16 @@ var app=new Vue({
 					}
 				}
 			}
-			console.log("AllInfo：");
+			alert("保存成功！");
+
+			/*console.log("AllInfo：");
 			console.log(this.AllInfo.length);
 			for(var k=0;k<this.AllInfo.length;k++)
 			{
 
 				console.log(this.AllInfo[k].Planid);
 				console.log(this.AllInfo[k]);
-			}
+			}*/
 
 
 		},

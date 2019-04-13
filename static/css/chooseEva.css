@@ -73,6 +73,7 @@ body{
 	color: #333333;
 }
 
+
 #chooseUse a:link
 {
 	color: #333333;
@@ -117,6 +118,13 @@ body{
 	display: inline-block;
 }
 
+#buttons a
+{
+
+	text-decoration:none;
+	color: #333333;
+
+}
 #buttons :hover
 {
 	color: lightblue;

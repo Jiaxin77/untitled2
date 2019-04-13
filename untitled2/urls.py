@@ -36,5 +36,7 @@ urlpatterns = [
    path('postAssessInfo/',views.postAssessInfo,name="postAssessInfo"),
    path('getAssessPlan/',views.getAssessPlan,name="getAssessPlan"),
    path('savePlanQNaire/',views.savePlanQNaire,name="savePlanQNaire"),
-   path('getEvaAnswer/',views.getEvaAnswer,name="getEvaAnswer")
+   path('getEvaAnswer/',views.getEvaAnswer,name="getEvaAnswer"),
+   path('logout/',views.logout,name="logout"),
+   path('manageModel/',views.manageModel,name="manageModel")
 ]

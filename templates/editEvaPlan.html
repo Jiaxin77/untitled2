@@ -37,7 +37,7 @@
 			<button id="saveNow" >保存</button>
 
 			<div id="Information">
-				{% verbatim %}{{ InfoList }}{% endverbatim %}
+
 
 				<div class="inputInfo" v-for="info in InfoList">
 
@@ -74,7 +74,7 @@
 							<td><input type="text" name="serious" v-model="ut.advice" width="400px"></td>
 						</tr>
 					</table>
-					{% verbatim %}{{ UseTables }}{% endverbatim %}
+
 				</div>
 
 			</div>
@@ -102,7 +102,7 @@
 		
 	</div>
 	<div id="questions">
-		{% verbatim %}{{ questions }}{% endverbatim %}
+
 		<div class="question" v-for="que in questions">
 
 			

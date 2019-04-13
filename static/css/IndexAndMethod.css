@@ -119,6 +119,7 @@ body{
 	
 }
 
+
 #title{
 
 	position: fixed;
@@ -216,6 +217,13 @@ body{
 	display: inline-block;
 }
 
+#buttons a
+{
+
+	text-decoration:none;
+	color: #333333;
+
+}
 #buttons :hover
 {
 	color: lightblue;

@@ -21,17 +21,17 @@
 				<a href="{% url 'chooseEva' %}">评估管理</a>
 			</div>
 			<div id="ManageModel">
-				<a href="">模板管理</a>
+                <a href="{% url 'manageModel' %}">模板管理</a>
 			</div>
 			<div id="IndexAndMethod">
 				<a href="{% url 'indexandmethod' %}">指标库与方法库</a>
 			</div>
 		</div>
 
-		<div id="buttons">
-			<div id="message">消息</div>
-			<div id="set">设置</div>
-			<div id="mine">个人中心</div>
+        <div id="buttons">
+			<!--<div id="message">消息</div>
+			<div id="set">设置</div>-->
+            <div id="mine" ><a href="{% url 'logout' %}">退出账户</a></div>
 		</div>
 		<!--<div id="out">	
 			<a href="#" >Log Out</a>
@@ -52,7 +52,7 @@
 			<button id="saveNow" @click="saveNowPlan()">保存</button>
 
 			<div id="Information">
-				{% verbatim %}{{ InfoList }}{% endverbatim %}
+
 
 				<div class="inputInfo" v-for="info in InfoList">
 
@@ -89,7 +89,7 @@
 							<td><input type="text" name="serious" v-model="ut.advice" width="400px"></td>
 						</tr>
 					</table>
-					{% verbatim %}{{ UseTables }}{% endverbatim %}
+
 				</div>
 
 			</div>
@@ -101,7 +101,7 @@
 						<button id="cancel">取消</button>	
 						<button id="submit">提交</button>
 					</div>
-					{{ questions }}-->
+					-->
 					<div  class="previewQuestion" v-for="que in questions" >
 
 						<div v-if="que.type=='SingleChoose'">

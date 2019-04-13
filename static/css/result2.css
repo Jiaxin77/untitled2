@@ -99,6 +99,13 @@ body
 	font-size: 13px;
 	display: inline-block;
 }
+#buttons a
+{
+
+	text-decoration:none;
+	color: #333333;
+
+}
 
 #buttons :hover
 {

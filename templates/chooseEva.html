@@ -22,7 +22,7 @@
 				<a href="{% url 'chooseEva' %}">评估管理</a>
 			</div>
 			<div id="ManageModel">
-				<a href="">模板管理</a>
+				<a href="{% url 'manageModel' %}">模板管理</a>
 			</div>
 			<div id="IndexAndMethod">
 				<a href="{% url 'indexandmethod' %}">指标库与方法库</a>
@@ -30,9 +30,10 @@
 		</div>
 
 		<div id="buttons">
-			<div id="message">消息</div>
-			<div id="set">设置</div>
-			<div id="mine">个人中心</div>
+			<!--<div id="message">消息</div>
+			<div id="set">设置</div>-->
+            <div id="mine" ><a href="{% url 'logout' %}">退出账户</a></div>
+
 		</div>
 		<!--<div id="out">	
 			<a href="#" >Log Out</a>
@@ -146,6 +147,7 @@
 					<li @click="analysisEva(eva)">分析数据</li>
 					<li>复制评估</li>
 					<li @click="deleteEva(eva)">删除评估</li>
+                    <li>设为模板</li>
 				</ul>
 			</div>
 
@@ -190,6 +192,7 @@
 					<li @click="analysisEva(eva)">分析数据</li>
 					<li>复制评估</li>
 					<li @click="deleteEva(eva)">删除评估</li>
+                    <li>设为模板</li>
 				</ul>
 			</div>
 

@@ -34,6 +34,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 def index(request):#测试页面用
       return render(request, "results2.html")
 
+def logout(request):
+    return render(request,"login.html")
+
+
+
 def login(request):#登录
     result = ""
     global USER
@@ -885,6 +890,7 @@ def AnalysisData(request):#分析评估数据
     return render(request, "chooseEva.html")
 
 
-
+def manageModel(request):
+    return render(request,"manageModel.html")
 
 

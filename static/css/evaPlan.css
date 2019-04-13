@@ -116,6 +116,13 @@ body{
 	font-size: 13px;
 	display: inline-block;
 }
+#buttons a
+{
+
+	text-decoration:none;
+	color: #333333;
+
+}
 
 #buttons :hover
 {
@@ -192,13 +199,32 @@ body{
 	min-height: 700px;
 
 }
+
+#saveAll
+{
+	position: relative;
+	width:150px;
+	left: 75%;
+	right: 5%;
+	background-color:white;
+	color: rgb(34, 170, 255);
+	border-radius: 0.5em;
+	border: 1px solid rgb(34, 170, 255);
+
+}
+
+#saveAll:hover
+{
+	background-color:rgb(34, 170, 255);
+	color: white;
+}
 #saveNow
 {
 	position: relative;
-	left: 75%;
+	left: 57%;
 	right: 5%;
 	width: 150px;
-	top: 20px;
+	top: 40px;
 	background-color: rgb(34, 170, 255);
 	color: white;
 	border-radius: 0.5em;
@@ -317,7 +343,7 @@ body{
 #previewDiv
 {
 	position: absolute;
-	top:50px;
+	top:80px;
 	width: 100%;
 	/*left: 5%;
 	right: 5%;*/
@@ -376,7 +402,7 @@ body{
 
 .previewQuestion
 {
-	padding-top: 15px;
+	padding-top: 20px;
 	padding-bottom: 20px;
 	position: relative;	
 	width:100%;
