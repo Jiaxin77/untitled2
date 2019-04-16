@@ -38,5 +38,7 @@ urlpatterns = [
    path('savePlanQNaire/',views.savePlanQNaire,name="savePlanQNaire"),
    path('getEvaAnswer/',views.getEvaAnswer,name="getEvaAnswer"),
    path('logout/',views.logout,name="logout"),
-   path('manageModel/',views.manageModel,name="manageModel")
+   path('manageModel/',views.manageModel,name="manageModel"),
+   path('setModel/',views.setModel,name="setModel"),
+   path('deleteModel/',views.deleteModel,name="deleteModel")
 ]

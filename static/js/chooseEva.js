@@ -120,12 +120,13 @@
                     console.log(EvaData)
                     axios.get('/getFillAssess/',{
                         params:{
-                            assess:EvaData.id
+                        	 assess:EvaData.id,
+							 readOnly:0
                         }
                     })
                         .then(function(response){
                             console.log(response);
-                           window.location.href='/getFillAssess/?assess='+EvaData.id;
+                           window.location.href='/getFillAssess/?assess='+EvaData.id+'&readOnly=0';
                         })
                         .catch(function(error) {
                             console.log(error);
@@ -171,10 +172,31 @@
 						alert("此评估还未完成，无法分析数据！");
 					}
 				},
+				setModel:function(EvaData)
+				{
+					//因为是向后台get，所以在这里做跳转
+                    console.log(EvaData)
+                    axios.get('/setModel/',{
+                        params:{
+                            assess:EvaData.id
+                        }
+                    })
+                        .then(function(response){
+                            console.log(response);
+                            //window.location.href='/chooseEva/'
+							alert("设为模板成功");
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        })
+
+
+				},
                 getid(eva)
                 {
                     return eva.id;
                 },
+
 
 
 

@@ -1,5 +1,5 @@
 
-	var AllModel=[
+	/*var AllModel=[
 	{
 		id:1,
 		name:"历史模板名称1",
@@ -49,7 +49,7 @@
 		type:"history"
 	}
 
-	];
+	];*/
 
 /*
 	var AllComModel=[
@@ -134,8 +134,44 @@
 				document.getElementById('ListEvaluation').style.visibility="hidden";
 				document.getElementById('CollEvaluation').style.visibility="hidden";
 				document.getElementById('HistoryEvaluation').style.visibility="hidden";
+			},
+			deleteModel:function(ModelData)
+		{
+
+					axios.post('/deleteModel/',
+						JSON.stringify({
+						model:ModelData.ModelId
+
+					}))
+						.then(function(response){
+							console.log(response);
+							window.location.href='/manageModel/'
+							alert("删除成功");
+						})
+						.catch(function(error){
+							console.log(error);
+						})
+
+		},
+			lookModel:function(ModelData)
+			{
+
+                    axios.get('/getFillAssess/',{
+                        params:{
+                        	 assess:ModelData.AssessId,
+							 readOnly:1
+                        }
+                    })
+                        .then(function(response){
+                            console.log(response);
+                           window.location.href='/getFillAssess/?assess='+ModelData.AssessId+'&readOnly=1';
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        })
 			}
 
 		}
+
 	})
 

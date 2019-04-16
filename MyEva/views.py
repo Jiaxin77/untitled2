@@ -18,6 +18,7 @@ from MyEva.models import ScaleAnswerList
 from MyEva.models import PlanList
 from MyEva.models import HeuEvaResult
 from MyEva.models import PerformanceRecord
+from MyEva.models import ModelList
 from django.contrib import  messages
 import os
 import json
@@ -389,7 +390,10 @@ def chooseEva(request):#展示评估方案列表
 
 def getFillAssess(request):#录入评估数据
     #assessId = json.loads(request.body)
+    #print(json.loads(request.body))
     assessId=json.loads(request.GET['assess'])
+    readOnly=json.loads(request.GET['readOnly'])
+    print(readOnly)
     #先get到assess的id
     Assess=AssessList.objects.get(AssessId=assessId)
     if Assess.AssessType == 0:#录入问卷
@@ -446,7 +450,7 @@ def getFillAssess(request):#录入评估数据
                 HtmlQuestionsList.append(tempQue)
                 j=j+1
         print(HtmlQuestionsList)
-        return render(request,"FillQNaire.html",{'QuestionList':json.dumps(HtmlQuestionsList),'SurveyId':Survey.SurveyId})
+        return render(request,"FillQNaire.html",{'QuestionList':json.dumps(HtmlQuestionsList),'SurveyId':Survey.SurveyId,'readOnly':readOnly})
     else:#是综合评估
         HtmlAssess = {"AssessId": assessId, "AssessName": Assess.AssessName}
         AllPlans = PlanList.objects.filter(AssessId=Assess)
@@ -518,7 +522,7 @@ def getFillAssess(request):#录入评估数据
                 HtmlQNaires.append(tempQNaire)
             HtmlPlans.append(temp)
             j = j + 1
-        return render(request, "evaPlan.html", {'Assess': HtmlAssess, 'plans': HtmlPlans, 'QNaires': HtmlQNaires})
+        return render(request, "evaPlan.html", {'Assess': HtmlAssess, 'plans': HtmlPlans, 'QNaires': HtmlQNaires,'readOnly':readOnly})
 
 
 
@@ -834,10 +838,10 @@ def AnalysisData(request):#分析评估数据
         HtmlPlanList = []
         allUseProblems = []
         QNaireResults = []
-        ErrorRate = 0
-        FinishTime = 0
-        SuccessRate = 0
-        LookingTime = 0
+        ErrorRate = []
+        FinishTime = []
+        SuccessRate = []
+        LookingTime = []
         usernum = 0
 
         j=1
@@ -867,10 +871,14 @@ def AnalysisData(request):#分析评估数据
                 thisPerformance = PerformanceRecord.objects.filter(PlanId=plan)
                 usernum = len(thisPerformance)
                 for performance in thisPerformance:
-                    ErrorRate = ErrorRate + performance.ErrorRate
-                    FinishTime = FinishTime + performance.FinishTime
-                    SuccessRate = SuccessRate + performance.SuccessRate
-                    LookingTime = LookingTime + performance.LookingTime
+                    if(performance.ErrorRate!=0):
+                        ErrorRate.append(performance.ErrorRate)
+                    if (performance.FinishTime != 0):
+                        FinishTime.append(performance.FinishTime)
+                    if(performance.SuccessRate!=0):
+                        SuccessRate.append(performance.SuccessRate)
+                    if(performance.LookingTime!=0):
+                        LookingTime.append(performance.LookingTime)
             elif (str(plan.PlanTypeId).isdigit()):  # 可用性测试
                 temp = {"id": j, "PlanId": plan.PlanId, "PlanName": plan.PlanName, "PlanType": "可用性测试"}
                 HtmlPlanList.append(temp)
@@ -882,15 +890,108 @@ def AnalysisData(request):#分析评估数据
                 QNaireResults.append(tempQNairePlan)
             else:
                 print("主观量表，暂未开发")
-        HtmlInfoList = [{'name': '出错频率', 'unit': '次/小时', 'data': ErrorRate / usernum},
-                        {'name': '完成时间', 'unit': '分钟', 'data': FinishTime / usernum},
-                        {'name': '成功率', 'unit': '%', 'data': SuccessRate / usernum},
-                        {'name': '平均注视时间 ', 'unit': '秒', 'data': LookingTime / usernum}]
+        meanErrorRate=0
+        meanFinishTime=0
+        meanSuccessRate=0
+        meanLookingTime=0
+        maxErrorRate=0
+        maxFinishTime=0
+        maxSuccessRate=0
+        maxLookingTime=0
+        minErrorRate=0
+        minFinishTime=0
+        minSuccessRate=0
+        minLookingTime=0
+        stdErrorRate=0
+        stdFinishTime=0
+        stdSuccessRate=0
+        stdLookingTime=0
+        if(len(ErrorRate)!=0):
+            meanErrorRate=numpy.mean(ErrorRate)
+            stdErrorRate=numpy.std(ErrorRate, ddof=1)
+            maxErrorRate=max(ErrorRate)
+            minErrorRate=min(ErrorRate)
+        if(len(FinishTime)!=0):
+            meanFinishTime=numpy.mean(FinishTime)
+            stdFinishTime=numpy.std(FinishTime)
+            maxFinishTime=max(FinishTime)
+            minFinishTime=min(FinishTime)
+        if(len(SuccessRate)!=0):
+            meanSuccessRate=numpy.mean(SuccessRate)
+            stdSuccessRate=numpy.std(SuccessRate)
+            maxSuccessRate=max(SuccessRate)
+            minSuccessRate=min(SuccessRate)
+        if(len(LookingTime)!=0):
+            meanLookingTime=numpy.mean(LookingTime)
+            stdLookingTime=numpy.std(LookingTime)
+            maxLookingTime=max(LookingTime)
+            minLookingTime=min(LookingTime)
+
+
+        HtmlInfoList = [{'name': '出错频率', 'unit': '次/小时', 'data': meanErrorRate},
+                        {'name': '完成时间', 'unit': '分钟', 'data': meanFinishTime},
+                        {'name': '成功率', 'unit': '%', 'data': meanSuccessRate},
+                        {'name': '平均注视时间 ', 'unit': '秒', 'data': meanLookingTime}]
         return  render(request,"EvaResult.html",{'PlanList':HtmlPlanList,'infoList':HtmlInfoList,'QNaireResults':QNaireResults,'allUseProblems':allUseProblems})
     return render(request, "chooseEva.html")
 
 
+def setModel(request):
+    assessId = json.loads(request.GET['assess'])
+    thisAssess=AssessList.objects.get(AssessId=assessId)
+    isModel=ModelList.objects.filter(AssessId=thisAssess)
+    if isModel.exists():
+        messages.error(request, "此评估已经是模板")
+    else:
+        #刚存储时是综合和表单，有使用之后设为历史模板
+        ModelList.objects.create(ModelType=thisAssess.AssessType,AssessId=thisAssess)
+        print("设为模板成功")
+
+    return render(request,"chooseEva.html")
+
+# id:1,
+# 		name:"历史模板名称1",
+# 		InShort:"历史模板1一句话描述一句话描述",
+# 		type:"history"
+
+def getAllModels():
+    Models=ModelList.objects.all()
+    j=0
+    ModelsList=[]
+    for model in Models:
+
+
+       if(model.AssessId.AssessType==0):
+           if(model.ModelType==2):#历史
+               temp = {'ModelId':model.ModelId,'id': j, 'name': model.AssessId.AssessName, 'InShort': model.AssessId.AssessOneDes,
+                       'type': 'list','isHistory':'yes','AssessId':model.AssessId.AssessId}
+               ModelsList.append(temp)
+               j=j+1
+           else:
+               temp = {'ModelId':model.ModelId,'id': j, 'name': model.AssessId.AssessName, 'InShort': model.AssessId.AssessOneDes,
+                       'type': 'list', 'isHistory': 'no','AssessId':model.AssessId.AssessId}
+               ModelsList.append(temp)
+               j = j + 1
+       elif(model.AssessId.AssessType==1):
+           if (model.ModelType == 2):  # 历史
+               temp = {'ModelId':model.ModelId,'id': j, 'name': model.AssessId.AssessName, 'InShort': model.AssessId.AssessOneDes,
+                       'type': 'coll', 'isHistory': 'yes','AssessId':model.AssessId.AssessId}
+               ModelsList.append(temp)
+               j = j + 1
+           else:
+               temp = {'ModelId':model.ModelId,'id': j, 'name': model.AssessId.AssessName, 'InShort': model.AssessId.AssessOneDes,
+                       'type': 'coll', 'isHistory': 'no','AssessId':model.AssessId.AssessId}
+               ModelsList.append(temp)
+               j = j + 1
+    return ModelsList
+
 def manageModel(request):
-    return render(request,"manageModel.html")
+    HtmlModelList=getAllModels()
+    return render(request,"manageModel.html",{'AllModel':HtmlModelList})
 
-
+def deleteModel(request):#删除模板
+    Messages = json.loads(request.body)
+    ModelId = Messages['model']
+    ModelList.objects.filter(ModelId=ModelId).delete()
+    print("删除成功")
+    return render(request, "manageModel.html")

@@ -94,7 +94,8 @@ var app=new Vue({
 		AllInfo:[],
 		activePlan:1,
 		AllQNaires:QNaires,
-		questions:[]
+		questions:[],
+		readOnly:readOnly
 
 	},
 	mounted()
@@ -306,21 +307,27 @@ var app=new Vue({
 		},
 		postInfo:function()
 		{
-					axios.post('/getEvaAnswer/',
+			if(readOnly==1)
+			{
+				alert("您处于模板查看只读状态，无法提交！");
+			}
+			else {
+				axios.post('/getEvaAnswer/',
 
 					JSON.stringify({
-						Assess:Assess,
-						AllInfo:this.AllInfo
+						Assess: Assess,
+						AllInfo: this.AllInfo
 					}))
-					.then(function(response) {
+					.then(function (response) {
 						alert("保存成功！")
-						window.location.href='/chooseEva/'
+						window.location.href = '/chooseEva/'
 						console.log(response);
 					})
-					.catch(function(error){
+					.catch(function (error) {
 						console.log(error);
 						alert("保存失败！")
-			})
+					})
+			}
 		}
 
 

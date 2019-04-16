@@ -5,6 +5,9 @@
 		新建评估（模板类似！）
 	</title>
 	<!--<link rel="stylesheet" type="text/css" href="css/newEva.css">-->
+    <script>
+        var AllModel={{ AllModel|safe }}
+    </script>
 </head>
 <body>
 	<div id="title">
@@ -68,8 +71,8 @@
 
 					<div class="more" >
 						<ul>
-							<li>查看模板</li>
-							<li>删除模板</li>
+							<li  @click="lookModel(model)">查看模板</li>
+							<li @click="deleteModel(model)">删除模板</li>
 						</ul>
 					</div>
 
@@ -92,8 +95,8 @@
 					</div>
 					<div class="more" >
 						<ul>
-							<li>查看模板</li>
-							<li>删除模板</li>
+							<li @click="lookModel(model)">查看模板</li>
+							<li @click="deleteModel(model)">删除模板</li>
 						</ul>
 					</div>
 
@@ -106,7 +109,7 @@
 			<div id="HistoryEvaluation" class="HistoryEvaluation" style="visibility: hidden;">
 				<h2 class="ChoosedTitle">历史模板</h2>
 				<div class="thisModels">
-				<div class="HistoryEva" v-for="model in Models" v-if="model.type=='history'">
+				<div class="HistoryEva" v-for="model in Models" v-if="model.isHistory=='yes'">
 					<div class="HistoryevaPic">
 						<p>Task</p>
 					</div>
@@ -118,8 +121,8 @@
 
 					<div class="more" >
 						<ul>
-							<li>查看模板</li>
-							<li>删除模板</li>
+							<li  @click="lookModel(model)">查看模板</li>
+							<li @click="deleteModel(model)">删除模板</li>
 						</ul>
 					</div>
 				</div>
@@ -140,8 +143,8 @@
 
 					<div class="more" >
 						<ul>
-							<li>查看模板</li>
-							<li>删除模板</li>
+							<li  @click="lookModel(model)">查看模板</li>
+							<li @click="deleteModel(model)">删除模板</li>
 						</ul>
 					</div>
 
@@ -197,6 +200,7 @@
 
 </body>
 <script type="text/javascript" src="/static/js/vue.js"></script>
+<script type="text/javascript" src="/static/js/axios.min.js"></script>
 <script type="text/javascript" src="/static/js/manageModel.js"></script>
 <link rel="stylesheet" type="text/css" href="/static/css/manageModel.css">
 
