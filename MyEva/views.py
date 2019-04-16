@@ -369,11 +369,12 @@ def chooseEva(request):#展示评估方案列表
     print("chooseEva")
     evalist=AssessList.objects.all()
     HtmlEvaList=[]
+    global USER
+    tempUser={'username':USER.UserName,'userStatus':USER.Status}
     for eva in evalist:
         tempeva={'id':0,'name':'','person':'','InShort':'','BeginTime':'','process':'','condition':''}
         tempeva['id']=eva.AssessId
         tempeva['name']=eva.AssessName
-        global USER
         tempeva['person']=eva.UserId.UserName
         tempeva['InShort']=eva.AssessOneDes
         tempeva['BeginTime']=str(eva.AssessBeginTime)[0:16]
@@ -383,7 +384,7 @@ def chooseEva(request):#展示评估方案列表
         else:
             tempeva['condition']='End'
         HtmlEvaList.append(tempeva)
-    return render(request,"chooseEva.html",{'EvaList':json.dumps(HtmlEvaList)})
+    return render(request,"chooseEva.html",{'EvaList':json.dumps(HtmlEvaList),'User':tempUser})
 
 
 
