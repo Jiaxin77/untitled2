@@ -40,5 +40,6 @@ urlpatterns = [
    path('logout/',views.logout,name="logout"),
    path('manageModel/',views.manageModel,name="manageModel"),
    path('setModel/',views.setModel,name="setModel"),
-   path('deleteModel/',views.deleteModel,name="deleteModel")
+   path('deleteModel/',views.deleteModel,name="deleteModel"),
+   path('newEvaFromModel/',views.newEvaFromModel,name="newEvaFromModel")
 ]

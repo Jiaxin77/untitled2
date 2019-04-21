@@ -107,10 +107,13 @@ def indexandmethod(request):#指标与方法库
         HtmlMethodList.append(tempMethod)
     return render(request, "IndexAndMethod.html", {'IndexList': json.dumps(HtmlIndexList),'MethodList':json.dumps(HtmlMethodList)})
 
-def newEva(request):
-    return render(request, "newEva.html")
+def newEva(request):#转到新建评估界面
+    HtmlModelList=getAllModels()
+    global USER
+    tempUser = {'userid': USER.UserId, 'username': USER.UserName, 'userStatus': USER.Status}
+    return render(request, "newEva.html",{'ModelList':HtmlModelList,'User':tempUser})
 
-def getIndexInfo():#获取指标信息
+def getIndexInfo(choosedIndexList):#获取指标信息
     IndexInfo = []
     AllIndexFamilyName = IndexList.objects.all().values('FamilyName').distinct()
     j = 1
@@ -134,6 +137,8 @@ def getIndexInfo():#获取指标信息
                     tempIndex = {'id': j*100+k*10+l, 'listTitle': member.IndexName, 'method': member.thisMethod}
                     tempFather['SecondList'].append(tempIndex)
                     l=l+1
+                    if(member.IndexId in choosedIndexList):
+                        tempFather['selected'].append(tempIndex)
             tempFamily['FirstList'].append(tempFather)
             k=k+1
         IndexInfo.append(tempFamily)
@@ -167,7 +172,7 @@ def newBlankEva(request):#新建空白评估
             thisAssess=AssessList.objects.get(AssessName=EvaName,AssessOneDes=EvaDetail,AssessType=1,AssessUseNum=EvaUseNum,UserId=USER)
             #获取指标信息
             IndexInfo=[]
-            IndexInfo=getIndexInfo()
+            IndexInfo=getIndexInfo([])
             print(IndexInfo)
             Assess={'AssessId':thisAssess.AssessId,'AssessName':thisAssess.AssessName}
             return  render(request,"edit1.html",{'Assess':Assess,'IndexInfo':IndexInfo})
@@ -292,6 +297,17 @@ def getEvaInfo(request):#新建评估中 获取选择的指标
     Messages = json.loads(request.body)
     ASSESS = Messages['Assess']
     INDEXS = Messages['Indexs']#复杂嵌套数据用request.body
+    #指标id存储Assess中
+    # thisAssess=AssessList.objects.get(AssessId=ASSESS['AssessId'])
+    # tempIndexStr=""
+    # for family in INDEXS:
+    #     for father in family['FirstList']:
+    #         for selectedIndex in father['selected']:
+    #             thisIndex=IndexList.objects.get(IndexName=selectedIndex['listTitle'])
+    #             thisIndexId=thisIndex.IndexId
+    #             tempIndexStr=tempIndexStr+","+str(thisIndexId)
+    # thisAssess.AssessIndexId=tempIndexStr
+    # thisAssess.save()
     methods = MethodList.objects.all()
     htmlMethods = []
     for method in methods:
@@ -370,7 +386,7 @@ def chooseEva(request):#展示评估方案列表
     evalist=AssessList.objects.all()
     HtmlEvaList=[]
     global USER
-    tempUser={'username':USER.UserName,'userStatus':USER.Status}
+    tempUser={'userid':USER.UserId,'username':USER.UserName,'userStatus':USER.Status}
     for eva in evalist:
         tempeva={'id':0,'name':'','person':'','InShort':'','BeginTime':'','process':'','condition':''}
         tempeva['id']=eva.AssessId
@@ -809,17 +825,6 @@ def getEvaAnswer(request):#获取用户填的评估数据
 
     return render(request,"evaPlan.html")
 
-# id:1,
-# 		serious:3,
-# 		problem:"31xxx",
-# 		local:"31xxxx",
-# 		advice:"31xxxxx"
-
-
-
-
-
-
 
 
 
@@ -996,3 +1001,18 @@ def deleteModel(request):#删除模板
     ModelList.objects.filter(ModelId=ModelId).delete()
     print("删除成功")
     return render(request, "manageModel.html")
+
+def newEvaFromModel(request):#从模板新建
+    Messages = json.loads(request.body)
+    model = Messages['Model']
+    global USER
+    print(Messages)
+    print(model)
+    originAssessId=model['AssessId']
+    originAssess=AssessList.objects.get(AssessId=originAssessId)
+    IndexIdList=originAssess.AssessIndexId
+    HtmlIndexList=getIndexInfo(IndexIdList)
+    originPlanList=PlanList.objects.get(AssessId=originAssess)
+
+    return render(request,'newEva.html')
+

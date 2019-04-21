@@ -1,5 +1,5 @@
 
-
+/*
 	var AllModel=[
 	{
 		id:1,
@@ -50,60 +50,16 @@
 		type:"history"
 	}
 
-	];
+	]; */
 
-/*
-	var AllComModel=[
-	{
-		id:1,
-		name:"综合模板1",
-		InShort:"综合模板1一句话描述一句话描述"
-	},
-	{
-		id:2,
-		name:"综合模板2",
-		InShort:"综合模板2一句话描述一句话描述"
-	},
-	{
-		id:3,
-		name:"综合模板3",
-		InShort:"综合模板3一句话描述一句话描述"
-	},
-	{
-		id:4,
-		name:"综合模板4",
-		InShort:"综合模板3一句话描述一句话描述"
-	}
-	];
 
-	var AllHisModel=[
-	{
-		id:1,
-		name:"历史模板1",
-		InShort:"历史模板1一句话描述一句话描述"
-	},
-	{
-		id:2,
-		name:"历史模板2",
-		InShort:"历史模板2一句话描述一句话描述"
-	},
-	{
-		id:3,
-		name:"历史模板3",
-		InShort:"历史模板3一句话描述一句话描述"
-	},
-	{
-		id:4,
-		name:"历史模板4",
-		InShort:"历史模板4一句话描述一句话描述"
-	}
-	];
-	*/
 
 	var app=new Vue({
 		el:'#app',
 		data:{
-			Models:AllModel
+			Models:AllModel,
+            chooseModel:{begin:'true'},
+            User:User
 
 		},
 		methods:{
@@ -120,11 +76,9 @@
 			closeNewBox:function()
 			{
 
-				if(document.getElementById('shadow').style.visibility=='visible'&&document.getElementById('newEvaBox').style.visibility=='visible')
-				{
 					document.getElementById('shadow').style.visibility='hidden';
 					document.getElementById('newEvaBox').style.visibility='hidden';
-				}
+                    document.getElementById('newModelBox').style.visibility='hidden';
 				location.href='/newEva/';
 			},
 			submitForm:function()
@@ -139,7 +93,7 @@
 					alert("名称不能为空！")
 				}
 			},
-			changeList()
+			changeList:function()
 			{
 				document.getElementById('AllModelEvaluation').style.visibility="hidden";
 				document.getElementById('ListEvaluation').style.visibility="visible";
@@ -153,20 +107,60 @@
 				document.getElementById('CollEvaluation').style.visibility="hidden";
 				document.getElementById('HistoryEvaluation').style.visibility="visible";	
 			},
-			changeColl()
+			changeColl:function()
 			{
 				document.getElementById('AllModelEvaluation').style.visibility="hidden";
 				document.getElementById('ListEvaluation').style.visibility="hidden";
 				document.getElementById('CollEvaluation').style.visibility="visible";
 				document.getElementById('HistoryEvaluation').style.visibility="hidden";
 			},
-			changeAll()
+			changeAll:function()
 			{
 				document.getElementById('AllModelEvaluation').style.visibility="visible";
 				document.getElementById('ListEvaluation').style.visibility="hidden";
 				document.getElementById('CollEvaluation').style.visibility="hidden";
 				document.getElementById('HistoryEvaluation').style.visibility="hidden";
-			}
+			},
+            newFromModel:function(model)
+			{
+				console.log(this.chooseModel)
+				this.$set(this.chooseModel,'AssessId',model.AssessId);
+				this.$set(this.chooseModel,'ModelId',model.ModelId)
+				this.$set(this.chooseModel,'name',model.name);
+				if(model.type=='coll')
+				{
+					this.$set(this.chooseModel,'type', '综合');
+				}
+				else if(model.type=='list')
+				{
+					this.$set(this.chooseModel,'type','单一问卷');
+				}
+
+
+				if(document.getElementById('shadow').style.visibility=='hidden'&&document.getElementById('newModelBox').style.visibility=='hidden')
+				{
+					document.getElementById('shadow').style.visibility='visible';
+					document.getElementById('newModelBox').style.visibility='visible';
+				}
+
+			},
+            submitFromModel:function()
+            {
+                axios.post('/newEvaFromModel/',
+						JSON.stringify({
+						Model:this.chooseModel
+                            ////////////////底下未改呢！
+
+					}))
+						.then(function(response){
+							console.log(response);
+							//window.location.href='/chooseEva/'
+						})
+						.catch(function(error){
+							console.log(error);
+						})
+            }
+
 
 		}
 	})

@@ -44,7 +44,8 @@
 		el:'#app',
 		data:{
 			assess:AllAssess,
-			now:"All"
+			now:"All",
+			User:User
 		},
 
 		methods:{
@@ -136,6 +137,11 @@
 				deleteEva:function(EvaData)
 				{
 
+					if(User.userStatus=="0")
+					{
+						alert("您没有此权限！")
+					}
+					else{
 					axios.post('/deleteAssess/',
 						JSON.stringify({
 						assess:EvaData.id
@@ -149,31 +155,41 @@
 							console.log(error);
 						})
 
-				},
+				}},
 				analysisEva:function(EvaData)
 				{
-					if(EvaData.condition=='End') {
-						console.log(EvaData.id)
-						 axios.get('/AnalysisData/',{
-                        params:{
-                            assess:EvaData.id
-                        }
-                    })
-							.then(function (response) {
-								console.log(response);
-								window.location.href = '/AnalysisData/?assess='+EvaData.id
-							})
-							.catch(function (error) {
-								console.log(error)
-							})
-					}
-					else
+					if(User.userStatus=="0")
 					{
-						alert("此评估还未完成，无法分析数据！");
+						alert("您没有此权限！")
+					}
+					else {
+
+						if (EvaData.condition == 'End') {
+							console.log(EvaData.id)
+							axios.get('/AnalysisData/', {
+								params: {
+									assess: EvaData.id
+								}
+							})
+								.then(function (response) {
+									console.log(response);
+									window.location.href = '/AnalysisData/?assess=' + EvaData.id
+								})
+								.catch(function (error) {
+									console.log(error)
+								})
+						} else {
+							alert("此评估还未完成，无法分析数据！");
+						}
 					}
 				},
 				setModel:function(EvaData)
 				{
+					if(User.userStatus=="0")
+					{
+						alert("您没有此权限！")
+					}
+					else{
 					//因为是向后台get，所以在这里做跳转
                     console.log(EvaData)
                     axios.get('/setModel/',{
@@ -191,7 +207,7 @@
                         })
 
 
-				},
+				}},
                 getid(eva)
                 {
                     return eva.id;

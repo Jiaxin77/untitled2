@@ -5353,14 +5353,13 @@ model</ColNames>
     </column>
     <column id="1206" parent="365" name="PlanName">
       <Position>2</Position>
-      <DataType>varchar(59)|0s</DataType>
+      <DataType>varchar(100)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="1207" parent="365" name="PlanDescription">
       <Position>3</Position>
       <DataType>varchar(500)|0s</DataType>
-      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="1208" parent="365" name="PlanTypeId">
