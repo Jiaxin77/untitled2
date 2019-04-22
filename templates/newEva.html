@@ -214,6 +214,7 @@
         </div>
     </form>
 
+    <form method="post" action="/newEvaFromModel/" id="ModelEva" name="ModelEva">
 
 
         <div id="newModelBox" style="visibility: hidden;">
@@ -224,17 +225,18 @@
             模板类型：{% verbatim %}{{ chooseModel.type }}{% endverbatim %}
             <br>
             <br>
-            <p>评估名称   <input id="EvaNameInput" type="text" name="name"></p>
+            <p>评估名称   <input   id="ModelEvaNameInput" type="text" name="name" v-model="newEva.name"></p>
             <br>
-            <p>评估描述   <input id="EvaDetailInput" type="text" name="detail"></p>
-
+            <p>评估描述   <input  id="ModelEvaDetail" type="text" name="detail" v-model="newEva.des"></p>
+            <p>评估需要人数 <input  id="ModelEvaPerson" type="text" name="person" v-model="newEva.person"></p>
+            <p hidden>模板评估id <input  id="ModelAssessId" type="text" name="assessid" v-model="chooseModel.AssessId"></p>
             <br>
             <div id="modelButtons">
                 <button id="cancel" @click="closeNewBox()">取消</button>
                 <button id="yes"  @click="submitFromModel()">确定</button>
             </div>
         </div>
-
+    </form>
 
 </div>
 

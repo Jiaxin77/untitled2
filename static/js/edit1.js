@@ -115,7 +115,8 @@ var app = new Vue({
 	el: '#app',
 	data: {
 	    datas:Alldatas,
-		mySelected:[]
+		mySelected:[],
+		ModelId:ModelId
 
 	},
 	methods:{
@@ -204,7 +205,8 @@ isAllChecked : function (data) {
 
 					JSON.stringify({
 						Indexs:app.datas,
-                        Assess:Assess
+                        Assess:Assess,
+						 ModelId:ModelId
 
 					}))
 					.then(function(response) {

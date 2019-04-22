@@ -164,9 +164,10 @@ def newBlankEva(request):#新建空白评估
             thisAssess=AssessList.objects.get(AssessName=EvaName,AssessOneDes=EvaDetail,AssessType=0, AssessUseNum=EvaUseNum,UserId=USER)
             #thisAssessId=thisAssess.AssessId
             SurveyList.objects.create(AssessId=thisAssess,SurveyName=EvaName,SurveyUseNum=EvaUseNum)
-            global ThisQNaire
+
             ThisQNaire=SurveyList.objects.get(AssessId=thisAssess,SurveyName=EvaName)
-            return render(request, "newQNaire.html",{'QNaireName':EvaName})
+            tempQNaire={'name':ThisQNaire.SurveyName,'id':ThisQNaire.SurveyId}
+            return render(request, "newQNaire.html",{'QNaire':tempQNaire,'AllQuestions':[]})
         elif EvaType == "comprehensive":#新建综合评估
             AssessList.objects.create(AssessName=EvaName,AssessOneDes=EvaDetail,AssessType=1,AssessUseNum=EvaUseNum,UserId=USER)
             thisAssess=AssessList.objects.get(AssessName=EvaName,AssessOneDes=EvaDetail,AssessType=1,AssessUseNum=EvaUseNum,UserId=USER)
@@ -175,20 +176,20 @@ def newBlankEva(request):#新建空白评估
             IndexInfo=getIndexInfo([])
             print(IndexInfo)
             Assess={'AssessId':thisAssess.AssessId,'AssessName':thisAssess.AssessName}
-            return  render(request,"edit1.html",{'Assess':Assess,'IndexInfo':IndexInfo})
+            return  render(request,"edit1.html",{'Assess':Assess,'IndexInfo':IndexInfo,'ModelId':-1})
     return render(request, "newEva.html")
 
 
 
 
-def newPlan(Assess,Indexs,Methods):#为评估增加预设方案
+def newPlan(Assess,Indexs,Methods,ModelId):#为评估增加预设方案
     print("新增方案")
     print(Assess)
     thisAssess=AssessList.objects.get(AssessId=Assess['AssessId'])
     indexNum=0
     indexIdList=[]
     temppeople=[]
-
+    Model=AssessList.objects.filter(AssessId=ModelId)
     for family in Indexs:
         for father in family['FirstList']:
             for selectedIndex in father['selected']:
@@ -199,9 +200,18 @@ def newPlan(Assess,Indexs,Methods):#为评估增加预设方案
                 for thismethod in thisMethods:
                     tempPlanName = "针对" + selectedIndex['listTitle'] + "的"+thismethod
                     PlanList.objects.create(PlanName=tempPlanName,PlanTypeId=thismethod,AssessId=thisAssess)
+                    if Model.exists():
+                        ModelPlan=PlanList.objects.get(PlanName=tempPlanName,AssessId=Model)
+                        if ModelPlan.exists():#存在
+                            thisPlan=PlanList.objects.get(PlanName=tempPlanName,PlanTypeId=thismethod,AssessId=thisAssess)
+                            thisPlan.PlanTypeId=ModelPlan.PlanTypeId
+                            thisPlan.save()
+                        else:
+                            print("不存在")
                     for method in Methods:
                         if(thismethod==method['MethodName']):
                             temppeople.append(method['people'])
+
     temppeople=list(set(temppeople))
     thisAssess.AssessIndexNum=indexNum
     thisAssess.People=temppeople
@@ -219,11 +229,74 @@ def getAssessPlan(request):#获取方案用于新建方案的人查看（不包�
     AllPlans=PlanList.objects.filter(AssessId=thisAssess)
     HtmlPlans=[]
     j=1
+    HtmlQNaires = []
     for plan in AllPlans:
         temp={"id":j,"PlanId":plan.PlanId,"PlanName":plan.PlanName,"PlanType":plan.PlanTypeId}
         HtmlPlans.append(temp)
         j=j+1
-    return  render(request,"editEvaPlan.html",{'Assess':Assess,'plans':HtmlPlans})
+        if (str(plan.PlanTypeId).isdigit()):  # 判断里面是不是数字，是的话则为survey
+            temp['PlanType'] = "可用性测试"
+            HtmlQuestionsList = []
+            surveyId = plan.PlanTypeId
+            thisSurvey = SurveyList.objects.get(SurveyId=surveyId)
+            Questions = QuestionList.objects.filter(SurveyId=thisSurvey)
+            print(type(Questions))
+            q = 1
+            for que in Questions:
+
+                if que.QuestionType == 1:
+                    tempQue = {'id': q, 'queId': '', 'title': 'title', 'type': 'SingleChoose', 'ChooseA': '',
+                               'ChooseB': '', 'ChooseC': '', 'ChooseD': '', "answer": ''}
+                    tempQue['queId'] = que.QuestionId
+                    tempQue['title'] = que.QueDescription
+                    choices = ChoiceList.objects.get(QuestionId=que)
+                    tempQue['ChooseA'] = choices.ChoiceA
+                    tempQue['ChooseB'] = choices.ChoiceB
+                    tempQue['ChooseC'] = choices.ChoiceC
+                    tempQue['ChooseD'] = choices.ChoiceD
+                    HtmlQuestionsList.append(tempQue)
+                    q = q + 1
+                elif que.QuestionType == 2:
+                    tempQue = {'id': q, 'queId': '', 'title': 'title', 'type': 'MultiChoose', 'ChooseA': '',
+                               'ChooseB': '', 'ChooseC': '', 'ChooseD': '', 'answer': []}
+                    tempQue['queId'] = que.QuestionId
+                    tempQue['title'] = que.QueDescription
+                    choices = ChoiceList.objects.get(QuestionId=que)
+                    tempQue['ChooseA'] = choices.ChoiceA
+                    tempQue['ChooseB'] = choices.ChoiceB
+                    tempQue['ChooseC'] = choices.ChoiceC
+                    tempQue['ChooseD'] = choices.ChoiceD
+                    HtmlQuestionsList.append(tempQue)
+                    q = q + 1
+                elif que.QuestionType == 3:
+                    tempQue = {'id': q, 'queId': '', 'title': 'title', 'type': 'FillInBlank', 'answer': ''}
+                    tempQue['queId'] = que.QuestionId
+                    tempQue['title'] = que.QueDescription
+                    HtmlQuestionsList.append(tempQue)
+                    q = q + 1
+                elif que.QuestionType == 4:
+                    tempQue = {'id': q, 'queId': '', 'title': 'title', 'type': 'Scale', 'lowest': 'lowest',
+                               'highest': 'highest', 'ScaleCount': 0, 'answer': ''}
+                    tempQue['queId'] = que.QuestionId
+                    tempQue['title'] = que.QueDescription
+                    scale = ScaleList.objects.get(QuestionId=que)
+                    tempQue['lowest'] = scale.BeginIndex
+                    tempQue['highest'] = scale.EndIndex
+                    tempQue['ScaleCount'] = scale.DegreeNum
+                    HtmlQuestionsList.append(tempQue)
+                    q = q + 1
+                elif que.QuestionType == 5:
+                    # "id": 3, "title": "嘻嘻嘻嘻", "type": "Paragraph"
+                    tempQue = {'id': q, 'queId': '', 'title': 'title', 'type': 'Paragraph'}
+                    tempQue['queId'] = que.QuestionId
+                    tempQue['title'] = que.QueDescription
+                    HtmlQuestionsList.append(tempQue)
+                    q = q + 1
+            print(HtmlQuestionsList)
+            tempQNaire = {"PlanId": plan.PlanId, "Question": HtmlQuestionsList}
+            HtmlQNaires.append(tempQNaire)
+
+    return  render(request,"editEvaPlan.html",{'Assess':Assess,'plans':HtmlPlans,'QNaires':HtmlQNaires})
 
 def savePlanQNaire(request):#存储新建方案中的新建问卷
     Messages = json.loads(request.body)
@@ -297,6 +370,7 @@ def getEvaInfo(request):#新建评估中 获取选择的指标
     Messages = json.loads(request.body)
     ASSESS = Messages['Assess']
     INDEXS = Messages['Indexs']#复杂嵌套数据用request.body
+    ModelId = Messages['ModelId']#有无模板，模板编号
     #指标id存储Assess中
     # thisAssess=AssessList.objects.get(AssessId=ASSESS['AssessId'])
     # tempIndexStr=""
@@ -315,7 +389,7 @@ def getEvaInfo(request):#新建评估中 获取选择的指标
                 'dealData': method.dealData, 'people': method.people}
         htmlMethods.append(temp)
     print(ASSESS)
-    newPlan(ASSESS,INDEXS,htmlMethods)
+    newPlan(ASSESS,INDEXS,htmlMethods,ModelId)
     methods = MethodList.objects.all()
     print(INDEXS)
     return  render(request,"editEva2.html",{'Assess':ASSESS,'Index':INDEXS,'Method':htmlMethods})
@@ -339,11 +413,14 @@ def showEvaInfo(request):#新建评估中将指标和方法等信息展示
 def addQNaire(request):#新建问卷的问题
     print('newQuestions')
     print(request.body)
-    obj=json.loads(request.body)
+    message=json.loads(request.body)
+    obj=message['Questions']
+    QNaire=message['QNaire']
     print(obj)
-
+    QNaireId=QNaire['id']
+    ThisQNaire=SurveyList.objects.get(SurveyId=QNaireId)
     if request.method == "POST":
-        global ThisQNaire
+
         Questions=[]
         Questions=obj
         print(type(Questions))
@@ -420,7 +497,6 @@ def getFillAssess(request):#录入评估数据
         print(type(Questions))
         j=1
         for que in Questions:
-
             if que.QuestionType == 1:
                 tempQue={'id':j,'queId':'','title':'title','type':'SingleChoose','ChooseA':'','ChooseB':'','ChooseC':'','ChooseD':'',"answer":''}
                 tempQue['queId']=que.QuestionId
@@ -1003,16 +1079,91 @@ def deleteModel(request):#删除模板
     return render(request, "manageModel.html")
 
 def newEvaFromModel(request):#从模板新建
-    Messages = json.loads(request.body)
-    model = Messages['Model']
+    originAssessId=request.POST.get("assessid",None)
+    newAssessName = request.POST.get("name", None)
+    newAssessDetail = request.POST.get("detail", None)
+    newAssessUseNum = request.POST.get("person", None)
+   # Messages = json.loads(request.body)
+   # model = Messages['Model']
+    #newAssess=Messages['newAssess']
     global USER
-    print(Messages)
-    print(model)
-    originAssessId=model['AssessId']
+   # print(Messages)
+   # print(model)
+    #originAssessId=model['AssessId']
     originAssess=AssessList.objects.get(AssessId=originAssessId)
-    IndexIdList=originAssess.AssessIndexId
-    HtmlIndexList=getIndexInfo(IndexIdList)
-    originPlanList=PlanList.objects.get(AssessId=originAssess)
+    if(originAssess.AssessType==0):#是单一问卷
+        AssessList.objects.create(AssessName=newAssessName,AssessOneDes=newAssessDetail,AssessPro=0,AssessType=0,AssessUseNum=newAssessUseNum,UserId=USER)
+        thisAssess=AssessList.objects.get(AssessName=newAssessName,AssessOneDes=newAssessDetail,AssessPro=0,AssessType=0,AssessUseNum=newAssessUseNum,UserId=USER)
+        SurveyList.objects.create(SurveyName=newAssessName,SurveyPro=0,SurveyUseNum=newAssessUseNum,AssessId=thisAssess)
+        thisSurvey=SurveyList.objects.get(SurveyName=newAssessName,SurveyPro=0,SurveyUseNum=newAssessUseNum,AssessId=thisAssess)
+        tempQNaire={'name':thisSurvey.SurveyName,'id':thisSurvey.SurveyId}
+        HtmlQuestionsList = []#获取原有问题
+        Survey = SurveyList.objects.get(AssessId=originAssess)
+        Questions = QuestionList.objects.filter(SurveyId=Survey)
+        print(type(Questions))
+        j = 1
+        for que in Questions:
 
+            if que.QuestionType == 1:
+                tempQue = {'id': j, 'queId': '', 'title': 'title', 'type': 'SingleChoose', 'ChooseA': '', 'ChooseB': '',
+                           'ChooseC': '', 'ChooseD': '', "answer": ''}
+                tempQue['queId'] = que.QuestionId
+                tempQue['title'] = que.QueDescription
+                choices = ChoiceList.objects.get(QuestionId=que)
+                tempQue['ChooseA'] = choices.ChoiceA
+                tempQue['ChooseB'] = choices.ChoiceB
+                tempQue['ChooseC'] = choices.ChoiceC
+                tempQue['ChooseD'] = choices.ChoiceD
+                HtmlQuestionsList.append(tempQue)
+                j = j + 1
+            elif que.QuestionType == 2:
+                tempQue = {'id': j, 'queId': '', 'title': 'title', 'type': 'MultiChoose', 'ChooseA': '', 'ChooseB': '',
+                           'ChooseC': '', 'ChooseD': '', 'answer': []}
+                tempQue['queId'] = que.QuestionId
+                tempQue['title'] = que.QueDescription
+                choices = ChoiceList.objects.get(QuestionId=que)
+                tempQue['ChooseA'] = choices.ChoiceA
+                tempQue['ChooseB'] = choices.ChoiceB
+                tempQue['ChooseC'] = choices.ChoiceC
+                tempQue['ChooseD'] = choices.ChoiceD
+                HtmlQuestionsList.append(tempQue)
+                j = j + 1
+            elif que.QuestionType == 3:
+                tempQue = {'id': j, 'queId': '', 'title': 'title', 'type': 'FillInBlank', 'answer': ''}
+                tempQue['queId'] = que.QuestionId
+                tempQue['title'] = que.QueDescription
+                HtmlQuestionsList.append(tempQue)
+                j = j + 1
+            elif que.QuestionType == 4:
+                tempQue = {'id': j, 'queId': '', 'title': 'title', 'type': 'Scale', 'lowest': 'lowest',
+                           'highest': 'highest', 'ScaleCount': 0, 'answer': ''}
+                tempQue['queId'] = que.QuestionId
+                tempQue['title'] = que.QueDescription
+                scale = ScaleList.objects.get(QuestionId=que)
+                tempQue['lowest'] = scale.BeginIndex
+                tempQue['highest'] = scale.EndIndex
+                tempQue['ScaleCount'] = scale.DegreeNum
+                HtmlQuestionsList.append(tempQue)
+                j = j + 1
+            elif que.QuestionType == 5:
+                # "id": 3, "title": "嘻嘻嘻嘻", "type": "Paragraph"
+                tempQue = {'id': j, 'queId': '', 'title': 'title', 'type': 'Paragraph'}
+                tempQue['queId'] = que.QuestionId
+                tempQue['title'] = que.QueDescription
+                HtmlQuestionsList.append(tempQue)
+                j = j + 1
+        print(HtmlQuestionsList)
+        return render(request, "newQNaire.html",{'AllQuestions':HtmlQuestionsList,'QNaire':tempQNaire})
+    elif (originAssess.AssessType==1):#是综合评估
+        IndexIdList=originAssess.AssessIndexId
+        HtmlIndexList=getIndexInfo(IndexIdList)#获取了指标
+        AssessList.objects.create(AssessName=newAssessName , AssessOneDes=newAssessDetail, AssessType=1, AssessUseNum=newAssessUseNum,
+                                  UserId=USER)
+        thisAssess = AssessList.objects.get(AssessName=newAssessName , AssessOneDes=newAssessDetail, AssessType=1, AssessUseNum=newAssessUseNum,
+                                  UserId=USER)
+        # 获取指标信息
+        Assess = {'AssessId': thisAssess.AssessId, 'AssessName': thisAssess.AssessName}
+        return render(request, "edit1.html", {'Assess': Assess, 'IndexInfo': HtmlIndexList,'ModelId':originAssess.AssessId})
+    print("到这儿了")
     return render(request,'newEva.html')
 

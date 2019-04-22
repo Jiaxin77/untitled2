@@ -59,7 +59,8 @@
 		data:{
 			Models:AllModel,
             chooseModel:{begin:'true'},
-            User:User
+            User:User,
+			newEva:{name:'',des:'',person:""}
 
 		},
 		methods:{
@@ -146,9 +147,10 @@
 			},
             submitFromModel:function()
             {
-                axios.post('/newEvaFromModel/',
+               /* axios.post('/newEvaFromModel/',
 						JSON.stringify({
-						Model:this.chooseModel
+						Model:this.chooseModel,
+						newAssess:this.newEva
                             ////////////////底下未改呢！
 
 					}))
@@ -158,7 +160,9 @@
 						})
 						.catch(function(error){
 							console.log(error);
-						})
+						})*/
+
+               document.ModelEva.submit();
             }
 
 

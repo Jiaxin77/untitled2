@@ -145,7 +145,7 @@ var app=new Vue({
 		FIB:FillInBlank,
 		Scale:ScaleGraph,
 		Para:Paragraph,
-		QNaires:[]
+		QNaires:QNaires
 
 	},
 	mounted()

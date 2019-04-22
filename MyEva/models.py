@@ -127,7 +127,7 @@ class PlanList(models.Model):
     PlanDescription = models.CharField(max_length=500,null=True)
     PlanTypeId = models.CharField(max_length=50)
     AssessId = models.ForeignKey('AssessList',on_delete=models.CASCADE)
-    IndexId = models.ForeignKey('IndexList',on_delete=models.CASCADE)
+    #IndexId = models.ForeignKey('IndexList',on_delete=models.CASCADE)
 
 #启发式评估表格
 class HeuEvaResult(models.Model):
@@ -140,7 +140,7 @@ class HeuEvaResult(models.Model):
     Advice = models.CharField(max_length=200,null=True)
     ScreenShot = models.CharField(max_length=300,null=True)
     UserId= models.ForeignKey('UserList',on_delete=models.CASCADE)
-    AssessId = models.ForeignKey('AssessList',on_delete=models.CASCADE)
+    #AssessId = models.ForeignKey('AssessList',on_delete=models.CASCADE)
 
 #记录绩效表格
 class PerformanceRecord(models.Model):

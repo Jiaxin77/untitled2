@@ -51,7 +51,8 @@ Vue.prototype.$axios = axios
 	var app=new Vue({
 		el:'#app',
 		data:{
-			questions:[],
+			QNaire:QNaire,
+			questions:AllQuestions,
 			SChoose:SingleChoose,
 			MChoose:MultiChoose,
 			FIB:FillInBlank,
@@ -185,7 +186,10 @@ Vue.prototype.$axios = axios
 
 				axios.post('/addQNaire/',
 
-					JSON.stringify(this.questions))
+					JSON.stringify({
+						QNaire:this.QNaire,
+						Questions:this.questions
+					}))
 					.then(function(response) {
 						alert("添加问卷成功！")
 						console.log(response);
