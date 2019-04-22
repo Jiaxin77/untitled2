@@ -137,7 +137,7 @@ def getIndexInfo(choosedIndexList):#获取指标信息
                     tempIndex = {'id': j*100+k*10+l, 'listTitle': member.IndexName, 'method': member.thisMethod}
                     tempFather['SecondList'].append(tempIndex)
                     l=l+1
-                    if(member.IndexId in choosedIndexList):
+                    if(str(member.IndexId) in choosedIndexList):
                         tempFather['selected'].append(tempIndex)
             tempFamily['FirstList'].append(tempFather)
             k=k+1
@@ -201,13 +201,19 @@ def newPlan(Assess,Indexs,Methods,ModelId):#为评估增加预设方案
                     tempPlanName = "针对" + selectedIndex['listTitle'] + "的"+thismethod
                     PlanList.objects.create(PlanName=tempPlanName,PlanTypeId=thismethod,AssessId=thisAssess)
                     if Model.exists():
-                        ModelPlan=PlanList.objects.get(PlanName=tempPlanName,AssessId=Model)
-                        if ModelPlan.exists():#存在
-                            thisPlan=PlanList.objects.get(PlanName=tempPlanName,PlanTypeId=thismethod,AssessId=thisAssess)
-                            thisPlan.PlanTypeId=ModelPlan.PlanTypeId
-                            thisPlan.save()
-                        else:
-                            print("不存在")
+                        print(tempPlanName)
+                        print(Model)
+                        for mo in Model:
+                            ModelPlan=PlanList.objects.filter(PlanName=tempPlanName,AssessId=mo)
+                            print("ModelPlan")
+                            print(ModelPlan)
+                            if ModelPlan.exists():#存在
+                                for mplan in ModelPlan:
+                                    thisPlan=PlanList.objects.get(PlanName=tempPlanName,PlanTypeId=thismethod,AssessId=thisAssess)
+                                    thisPlan.PlanTypeId=mplan.PlanTypeId
+                                    thisPlan.save()
+                            else:
+                                print("不存在")
                     for method in Methods:
                         if(thismethod==method['MethodName']):
                             temppeople.append(method['people'])
@@ -301,9 +307,10 @@ def getAssessPlan(request):#获取方案用于新建方案的人查看（不包�
 def savePlanQNaire(request):#存储新建方案中的新建问卷
     Messages = json.loads(request.body)
     QNaires = Messages['QNaires']
+    print(QNaires)
     for QNaire in QNaires:
         PlanId=QNaire['PlanId']
-        questions=QNaire['questions']
+        questions=QNaire['Question']
         thisPlan=PlanList.objects.get(PlanId=PlanId)
         thisAssess=thisPlan.AssessId
         tempSurveyName=str(thisAssess.AssessId)+thisPlan.PlanName

@@ -196,7 +196,7 @@ var app=new Vue({
 							if(this.QNaires[q].PlanId==this.plans[i].PlanId)
 							{
 								console.log("问卷匹配到了");
-								this.questions=this.QNaires[q].questions;
+								this.questions=this.QNaires[q].Question;
 								break;
 							}
 						}
@@ -374,9 +374,18 @@ var app=new Vue({
 			},
 			saveQNaire:function()
 			{
+				var activePlanId=0;
+				for(var plancount=0;plancount<this.plans.length;plancount++)
+				{
+					if(this.activePlan==this.plans[plancount].id)
+					{
+						activePlanId=this.plans[plancount].PlanId;
+					}
+				}
 				for(var i=0;i<this.QNaires.length;i++)
 				{
-					if(this.QNaires[i].id==this.activePlan)
+
+					if(this.QNaires[i].PlanId==activePlanId)
 					{
 
 						this.QNaires.splice(i,1);//删除此元素 在之后重新保存
@@ -390,7 +399,7 @@ var app=new Vue({
 						var tempQNaire={};
 						tempQNaire.id=this.plans[i].id;
 						tempQNaire.PlanId=this.plans[i].PlanId;
-						tempQNaire.questions=this.questions;
+						tempQNaire.Question=this.questions;
 						this.QNaires.push(tempQNaire);
 					}
 				}
