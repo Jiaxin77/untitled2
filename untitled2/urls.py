@@ -41,5 +41,6 @@ urlpatterns = [
    path('manageModel/',views.manageModel,name="manageModel"),
    path('setModel/',views.setModel,name="setModel"),
    path('deleteModel/',views.deleteModel,name="deleteModel"),
-   path('newEvaFromModel/',views.newEvaFromModel,name="newEvaFromModel")
+   path('newEvaFromModel/',views.newEvaFromModel,name="newEvaFromModel"),
+   path('searchAssess/',views.searchAssess,name="searchAssess")
 ]

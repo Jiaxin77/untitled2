@@ -45,7 +45,9 @@
 		data:{
 			assess:AllAssess,
 			now:"All",
-			User:User
+			User:User,
+			searchinput:"",
+			AssessNameList:AssessNameList
 		},
 
 		methods:{
@@ -83,6 +85,7 @@
 					document.getElementById('AllEvaluation').style.visibility="visible";
 					this.now="All";
 					console.log("now"+this.now);
+					window.location.href='/chooseEva/';
 				},
 				changeIng:function()
 				{
@@ -208,6 +211,29 @@
 
 
 				}},
+				searchAssess:function()
+				{
+					console.log(this.searchinput);
+					searchStr=this.searchinput
+                    axios.get('/searchAssess/',{
+                        params:{
+                            userinput:this.searchinput
+                        }
+                    })
+                        .then(function(response){
+                            console.log(response);
+                            //window.location.href='/chooseEva/'
+							console.log("searchStr");
+							console.log(searchStr);
+							window.location.href='/searchAssess/?userinput='+searchStr
+
+
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        })
+
+				},
                 getid(eva)
                 {
                     return eva.id;

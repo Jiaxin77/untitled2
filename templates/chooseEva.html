@@ -10,6 +10,7 @@
     <script>
         var AllAssess={{ EvaList|safe }}
         var User={{ User|safe }}
+        var AssessNameList={{ AssessNameList|safe }}
     </script>
 </head>
 <body>
@@ -49,13 +50,17 @@
 		</div>
 
 		<div id="search">
-			<input type="text" name="searchText" placeholder="请输入评估关键字">
-			<a href="">搜索</a>
+			<input type="text" name="searchText" placeholder="请输入评估关键字" v-model="searchinput" list="AssessName">
+			<datalist id="AssessName">
+                <option v-for="evaname in AssessNameList">{% verbatim %}{{ evaname }}{% endverbatim %}</option>
+            </datalist>
+            <a @click="searchAssess()">搜索</a>
 		</div>
 
 		<div id="newEva">
 			<input type="buttons" name="newEva" value="+ 新建评估" readonly="readonly" onclick="window.location.href={% url 'newEva' %}">
-		</div>
+
+        </div>
 
 		<div id="changeOrder">
 		<!--	<img src="css\img\tile.png">
