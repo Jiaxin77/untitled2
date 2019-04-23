@@ -95,7 +95,9 @@ var app=new Vue({
 		activePlan:1,
 		AllQNaires:QNaires,
 		questions:[],
-		readOnly:readOnly
+		readOnly:readOnly,
+		HeuRegular:"",
+		HeuRegulars:HeuRegulars
 
 	},
 	mounted()
@@ -190,6 +192,13 @@ var app=new Vue({
 					this.activePlan=id;
 					if(this.plans[i].PlanType=="启发式评估")
 					{
+						for(var h=0;h<this.HeuRegulars.length;h++)
+						{
+							if (this.HeuRegulars[h].PlanId==this.plans[i].PlanId)
+							{
+								this.HeuRegular=this.HeuRegulars[h].HeuRegular;
+							}
+						}
 						this.UseTables=[];
 						this.initialTable();
 						for(var a=0;a<this.AllInfo.length;a++)

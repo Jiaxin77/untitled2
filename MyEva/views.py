@@ -56,8 +56,8 @@ def login(request):#登录
             for user in thisUser:
                 if user.Password == password:
                     result = "登录成功"
-                    #messages.success(request,"登录成功")
                     USER = user
+                    #messages.success(request, "登录成功，页面跳转中...")
                     #return render(request, "chooseEva.html", {"user": username})
                     return HttpResponseRedirect(reverse('chooseEva'))
                 else:
@@ -587,6 +587,7 @@ def getFillAssess(request):#录入评估数据
         HtmlPlans = []
         j = 1
         HtmlQNaires = []
+        HtmlHeuRegular=[]
         for plan in AllPlans:
             temp = {"id": j, "PlanId": plan.PlanId, "PlanName": plan.PlanName, "PlanType": plan.PlanTypeId}
             if (str(plan.PlanTypeId).isdigit()):  # 判断里面是不是数字，是的话则为survey
@@ -650,9 +651,16 @@ def getFillAssess(request):#录入评估数据
                 print(HtmlQuestionsList)
                 tempQNaire = {"PlanId": plan.PlanId, "Question": HtmlQuestionsList}
                 HtmlQNaires.append(tempQNaire)
+            elif (plan.PlanTypeId=='启发式评估'):
+                thisIndexName = plan.PlanName[2:].split('的')[0]
+                thisIndex=IndexList.objects.get(IndexName=thisIndexName)
+                heuregular=thisIndex.HeuRegular
+                tempHeu={"PlanId":plan.PlanId,"HeuRegular":heuregular}
+                HtmlHeuRegular.append(tempHeu)
             HtmlPlans.append(temp)
+
             j = j + 1
-        return render(request, "evaPlan.html", {'Assess': HtmlAssess, 'plans': HtmlPlans, 'QNaires': HtmlQNaires,'readOnly':readOnly})
+        return render(request, "evaPlan.html", {'Assess': HtmlAssess, 'plans': HtmlPlans, 'QNaires': HtmlQNaires,'HeuRegulars':HtmlHeuRegular,'readOnly':readOnly})
 
 
 

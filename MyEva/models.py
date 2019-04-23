@@ -105,6 +105,7 @@ class IndexList(models.Model):
     FamilyName = models.CharField(max_length=50)
     Description = models.CharField(max_length=500)
     thisMethod = models.CharField(max_length=200,null=True)
+    HeuRegular = models.CharField(max_length=500,null=True)
 
 #方法库
 class MethodList(models.Model):

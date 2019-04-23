@@ -8,6 +8,7 @@
         var QNaires={{ QNaires|safe }}
         var Assess={{ Assess|safe }}
         var readOnly={{ readOnly|safe }}
+        var HeuRegulars={{ HeuRegulars|safe }}
     </script>
 </head>
 <body>
@@ -73,6 +74,10 @@
 							<th>可用性问题编号</th>
 							<td>{% verbatim %}{{ ut.id }}{% endverbatim %}</td>
 						</tr>
+                        <tr>
+                            <th>违反的可用性原则</th>
+                            <td>{% verbatim %}{{ HeuRegular }}{% endverbatim %}</td>
+                        </tr>
 						<tr>
 							<th>界面位置和功能</th>
 							<td><input type="text" name="position" v-model="ut.local"></td>
