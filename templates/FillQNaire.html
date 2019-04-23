@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>FillInQNaire</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/FillQNaire.css">
 </head>
 <script>
     var Question={{ QuestionList|safe }}
@@ -40,7 +41,7 @@
 
 
 
-		<div class="preview"  id="previewDiv">
+		<div class="preview"  id="previewDiv" v-cloak>
             <div id="htmlButtons">
 		        <button id="cancel">取消</button>
 		        <button id="submit" @click='submitQNaire()'>提交</button>
@@ -103,7 +104,7 @@
 <script type="text/javascript" src="/static/js/axios.min.js"></script>
 <script type="text/javascript" src="/static/js/vue.js"></script>
 <script type="text/javascript" src="/static/js/FillQNaire.js"></script>
-<link rel="stylesheet" type="text/css" href="/static/css/FillQNaire.css">
+
 
  {% if messages %}
         <script>

@@ -7,6 +7,7 @@
         var Alldatas={{ IndexInfo|safe }}
         var ModelId={{ ModelId|safe }}
     </script>
+    <link rel="stylesheet" type="text/css" href="/static/css/edit1.css">
 </head>
 <body>
 
@@ -22,7 +23,7 @@
 		<!--<button @click='postIndexs()'>下一步</button>-->
 
 	</div>
-	<div id="app">
+	<div id="app" v-cloak>
 		<div id="chooseIndex">
 			<h3>选择指标</h3>
 
@@ -82,7 +83,7 @@
 
 </body>
 
-<link rel="stylesheet" type="text/css" href="/static/css/edit1.css">
+
 <script type="text/javascript" src="/static/js/axios.min.js"></script>
 <script type="text/javascript" src="/static/js/vue.js"></script>
 <script type="text/javascript" src="/static/js/edit1.js"></script>

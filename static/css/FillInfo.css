@@ -226,3 +226,6 @@ body{
 	width: 100px;
 	text-align: left;
 }
+[v-cloak] {
+  display:none !important;
+}

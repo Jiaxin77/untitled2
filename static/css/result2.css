@@ -269,3 +269,6 @@ body
     overflow-y:scroll;
     -webkit-overflow-scrolling: touch;
 }
+[v-cloak] {
+  display:none !important;
+}

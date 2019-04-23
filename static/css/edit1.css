@@ -133,3 +133,6 @@ li.now
 	background-color:  rgb(34, 170, 255);
 	color:white;
 }
+[v-cloak] {
+  display:none !important;
+}

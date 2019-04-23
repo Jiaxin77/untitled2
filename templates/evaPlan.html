@@ -39,7 +39,7 @@
 		</div>-->
 	</div>
 
-	<div id="app">
+	<div id="app" v-cloak>
 		<div id="listApp">
 			<div id="myList">
 				<li v-for="item in plans" :class="item.id==activePlan?'active':'unactive'" @click="clickPlan(item.id)">

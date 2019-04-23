@@ -4,6 +4,7 @@
 	<title>
 		评估-编辑方案-首页
 	</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/editEva2.css">
 <!--	<link rel="stylesheet" type="text/css" href="css/editEva2.css">-->
 <script>
     var Index = {{ Index|safe }}
@@ -25,7 +26,7 @@
 		</div>
 
 	</div>
-	<div id="Details">
+	<div id="Details" v-cloak>
 	<div id="InputForm">
 		<div id="saveNavi">
 		<h3>方案介绍及执行策略</h3>
@@ -80,5 +81,5 @@
 
 <script type="text/javascript" src="/static/js/editEva2.js"></script>
 
-<link rel="stylesheet" type="text/css" href="/static/css/editEva2.css">
+
 </html>

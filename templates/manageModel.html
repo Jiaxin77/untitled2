@@ -4,6 +4,7 @@
 	<title>
 		新建评估（模板类似！）
 	</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/manageModel.css">
 	<!--<link rel="stylesheet" type="text/css" href="css/newEva.css">-->
     <script>
         var AllModel={{ AllModel|safe }}
@@ -37,7 +38,7 @@
 		</div>-->
 	</div>
 
-	<div id="app">
+	<div id="app" v-cloak>
 		<div id="navi">
 			<div id="chooseCondition">
 				<input type="buttons" name="All" value="全部" readonly="readonly" @click="changeAll()">
@@ -202,6 +203,6 @@
 <script type="text/javascript" src="/static/js/vue.js"></script>
 <script type="text/javascript" src="/static/js/axios.min.js"></script>
 <script type="text/javascript" src="/static/js/manageModel.js"></script>
-<link rel="stylesheet" type="text/css" href="/static/css/manageModel.css">
+
 
 </html>

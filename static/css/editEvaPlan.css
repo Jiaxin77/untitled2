@@ -497,3 +497,6 @@ li.now
 	font-weight: 600;
 	color: #708090;
 }
+[v-cloak] {
+  display:none !important;
+}

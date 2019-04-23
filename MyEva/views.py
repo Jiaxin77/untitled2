@@ -497,13 +497,11 @@ def chooseEva(request):#展示评估方案列表
     HtmlEvaList=[]
     global USER
     tempUser={'userid':USER.UserId,'username':USER.UserName,'userStatus':USER.Status}
-    AssessNameList = AssessList.objects.all().values('AssessName')
     WCResults=getAllSearchData()
     recommend=getUserRecommend()
     HtmlAssessNameList=[]
-    for assessname in AssessNameList:
-        HtmlAssessNameList.append(assessname['AssessName'])
     for eva in evalist:
+        HtmlAssessNameList.append(eva.AssessName)
         tempeva={'id':0,'name':'','person':'','InShort':'','BeginTime':'','process':'','condition':''}
         tempeva['id']=eva.AssessId
         tempeva['name']=eva.AssessName
@@ -1215,18 +1213,14 @@ def newEvaFromModel(request):#从模板新建
 
 
 def fuzzySearch(userInput):
-    AssessNameList = AssessList.objects.all().values('AssessName')
-    AllCollection = []  # 包含所有评估名称、一句话描述和具体描述
-    for assessname in AssessNameList:
-        AllCollection.append(assessname['AssessName'])
-    AssessDesList = AssessList.objects.all().values('AssessDes')
-    for assessdes in AssessDesList:
-        if (assessdes['AssessDes'] != None):
-            AllCollection.append(assessdes['AssessDes'])
-    AssessOneDesList = AssessList.objects.all().values('AssessOneDes')
-    for assessonedes in AssessOneDesList:
-        if (assessonedes['AssessOneDes'] != None):
-            AllCollection.append(assessonedes['AssessOneDes'])
+    AllAssessList=AssessList.objects.all()
+    AllCollection=[]# 包含所有评估名称、一句话描述和具体描述
+    for assess in AllAssessList:
+        AllCollection.append(assess.AssessName)
+        if (assess.AssessDes != None):
+            AllCollection.append(assess.AssessDes)
+        if (assess.AssessOneDes != None):
+            AllCollection.append(assess.AssessOneDes)
     print(userInput)
     print(AllCollection)
     resultList = fuzzyfinder(str(userInput), AllCollection)

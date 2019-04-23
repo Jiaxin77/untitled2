@@ -279,3 +279,6 @@ h1{
 	width: 15px;
 	
 }
+[v-cloak] {
+  display:none !important;
+}

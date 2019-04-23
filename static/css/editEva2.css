@@ -137,3 +137,6 @@ li.now
     border-style: solid;
     border-color: #a9c6c9;
 }
+[v-cloak] {
+  display:none !important;
+}

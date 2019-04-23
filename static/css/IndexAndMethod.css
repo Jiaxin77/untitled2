@@ -291,4 +291,7 @@ li.option:hover
 {
 	background-color: rgb(238, 255, 255);
 }
+[v-cloak] {
+  display:none !important;
+}
 

@@ -256,3 +256,7 @@ body{
 		border-bottom: 1.5px solid rgb(34, 170, 255);
 		background-color: rgb(34, 170, 255,0.1);
 	}
+
+[v-cloak] {
+  display:none !important;
+}

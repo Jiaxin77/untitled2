@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>信息填写界面</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/FillInfo.css">
 </head>
 <body>
 
@@ -32,7 +33,7 @@
 		</div>-->
 	</div>
 
-	<div id="listApp">
+	<div id="listApp" v-cloak>
 			<div id="myList">
 				<li v-for="item in list" :class="item==active?'active':'unactive'">
 				{% verbatim %}{{ item }}{% endverbatim %}
@@ -40,7 +41,7 @@
 			</div>
 		</div>
 
-<div id="InfoDiv">
+<div id="InfoDiv" v-cloak>
 	<div id="Information">
 
 		
@@ -59,7 +60,7 @@
 
 <script type="text/javascript" src="/static/js/vue.js"></script>
 <script type="text/javascript" src="/static/js/FillInfo.js"></script>
-<link rel="stylesheet" type="text/css" href="/static/css/FillInfo.css">
+
 
 
 </html>

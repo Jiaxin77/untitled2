@@ -288,3 +288,6 @@ body{
 	background-color: #3366FF;
 	color: white;
 }
+[v-cloak] {
+  display:none !important;
+}

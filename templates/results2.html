@@ -2,12 +2,12 @@
 <html style="height: 100%">
 <head>
 	<title>Results____加上饼状图 和所有问题类型！</title>
-	<script type="text/javascript" src="/static/js/echarts.min.js"></script>
-	<script type="text/javascript" src="/static/js/echarts-wordcloud.min.js"></script>
-
-    <script>
+     <script>
         var ResultsData={{ AnswerList|safe }}
     </script>
+
+    <link rel="stylesheet" type="text/css" href="/static/css/result2.css">
+
 </head>
 
 <body style="height: 100%; margin: 0">
@@ -36,14 +36,14 @@
 		</div>
 	</div>
 
-	<div id="app" style="overflow-y: scroll; ">
-		<div class="question" v-for="(que,index) in myresults" style="height: 800px; overflow-x: hidden;">
-			<div class="QuestionTitle">
+	<div id="app"    style="overflow-y: scroll; " v-cloak>
+		<div class="question" v-for="(que,index) in myresults" style="height: 800px; overflow-x: hidden;" v-cloak>
+			<div class="QuestionTitle" v-cloak>
 				<p>{% verbatim %}{{ que.Id }}{% endverbatim %}.{% verbatim %}{{ que.title }}{% endverbatim %}</p>
 			</div>
-			<div class="results" style="height: 50%;">
-				<div class="tableResult" v-if="que.queType=='SingleChoose'||que.queType=='MultiChoose'">
-					<table class="resultsTable" style="height: 50%">
+			<div class="results" style="height: 50%;" v-cloak>
+				<div class="tableResult" v-if="que.queType=='SingleChoose'||que.queType=='MultiChoose'" v-cloak>
+					<table class="resultsTable" style="height: 50%" v-cloak>
 
                         <tr>
 							<th>选项</th>
@@ -51,22 +51,22 @@
 							<th>比例</th>
 						</tr>
 
-						<tr v-if="que.chooseA!=''"> 
+						<tr v-if="que.chooseA!=''" v-cloak>
 							<td>{% verbatim %}{{ que.chooseA }}{% endverbatim %}</td>
 							<td>{% verbatim %}{{ que.results[0] }}{% endverbatim %}</td>
 							<td>{% verbatim %}{{ que.resultRatio[0] | numFilter}}{% endverbatim %}</td>
 						</tr>
-						<tr v-if="que.chooseB!=''">
+						<tr v-if="que.chooseB!=''" v-cloak>
 							<td>{% verbatim %}{{ que.chooseB }}{% endverbatim %}</td>
 							<td>{% verbatim %}{{ que.results[1] }}{% endverbatim %}</td>
 							<td>{% verbatim %}{{ que.resultRatio[1] | numFilter}}{% endverbatim %}</td>
 						</tr>
-						<tr v-if="que.chooseC!=''">
+						<tr v-if="que.chooseC!=''" v-cloak>
 							<td>{% verbatim %}{{ que.chooseC }}{% endverbatim %}</td>
 							<td>{% verbatim %}{{ que.results[2] }}{% endverbatim %}</td>
 							<td>{% verbatim %}{{ que.resultRatio[2] | numFilter}}{% endverbatim %}</td>
 						</tr>
-						<tr v-if="que.chooseD!=''">
+						<tr v-if="que.chooseD!=''" v-cloak>
 							<td>{% verbatim %}{{ que.chooseD }}{% endverbatim %}</td>
 							<td>{% verbatim %}{{ que.results[3] }}{% endverbatim %}</td>
 							<td>{% verbatim %}{{ que.resultRatio[3] | numFilter}}{% endverbatim %}</td>
@@ -79,9 +79,9 @@
 
 					</table>
 				</div>
-				<div class="tableResult" v-if="que.queType=='Scale'">
+				<div class="tableResult" v-if="que.queType=='Scale'" v-cloak>
                     <p>数字越小代表越{% verbatim %}{{ que.Begin }}{% endverbatim %},数字越大代表越{% verbatim %}{{ que.End }}{% endverbatim %}</p>
-					<table class="resultsTable" style="height: 50%">
+					<table class="resultsTable" style="height: 50%" v-cloak>
 
                         </td></tr>
 						<tr>
@@ -89,7 +89,7 @@
 							<th>小计</th>
 							<th>比例</th>
 						</tr>
-						<tr v-for="(itemResult,indexResult) in que.ScaleDegree">
+						<tr v-for="(itemResult,indexResult) in que.ScaleDegree" v-cloak>
 							<td>{% verbatim %}{{ itemResult }}{% endverbatim %}</td>
 							<td>{% verbatim %}{{ que.results[indexResult] }}{% endverbatim %}</td>
 							<td>{% verbatim %}{{ que.resultRatio[indexResult] | numFilter}}{% endverbatim %}</td>
@@ -102,7 +102,7 @@
 
 					</table>
 				</div>
-				<div class="FIBresult" v-if="que.queType=='FillInBlank'" style="height: 50%">
+				<div class="FIBresult" v-if="que.queType=='FillInBlank'" style="height: 50%" v-cloak>
 					
 					<table class="FIBtable">
                         <thead>
@@ -127,7 +127,7 @@
 					<button class="Pie" @click="choosePie(index)">饼状图</button>
 				</div>
 				<br><br>
-				<div class="pic" style="position: relative;height: 40%; " v-if="que.queType!='FillInBlank'">
+				<div class="pic" style="position: relative;height: 40%; " v-if="que.queType!='FillInBlank'" v-cloak>
 					<div :id="getBar(index)" style="height:100%; left:10%;right:30%;visibility:visible;z-index: 2;position: absolute;top:0px" ></div>
 					<div :id="getPie(index)" style="height:100%; left: 10%;
 					right: 30%; visibility:hidden;z-index: 1;position: absolute;top:0px" ></div>
@@ -138,8 +138,9 @@
 
 
 </body>
-<script type="text/javascript" src="/static/js/vue.js"></script>
-<script type="text/javascript" src="/static/js/result2.js"></script>
-<link rel="stylesheet" type="text/css" href="/static/css/result2.css">
+    <script type="text/javascript" src="/static/js/echarts.min.js"></script>
+	<script type="text/javascript" src="/static/js/echarts-wordcloud.min.js"></script>
+    <script type="text/javascript" src="/static/js/vue.js"></script>
+    <script type="text/javascript" src="/static/js/result2.js"></script>
 
 </html>

@@ -9,7 +9,7 @@
         var QNaireResults={{ QNaireResults|safe }}
         var allUseProblems={{ allUseProblems|safe }}
     </script>
-	
+	<link rel="stylesheet" type="text/css" href="/static/css/EvaResult.css">
 	<script type="text/javascript" src="/static/js/vue.js"></script>
 </head>
 <script type="text/javascript" src="/static/js/echarts.min.js"></script>
@@ -43,7 +43,7 @@
 	</div>
 
 
-	<div id="app">
+	<div id="app" v-cloak>
 		<div id="listApp">
 			<div id="myList">
 				<li v-for="item in plans" :class="item.id==activePlan?'active':'unactive'" @click="clickPlan(item.id)">
@@ -196,7 +196,7 @@
 
 </body>
 <script type="text/javascript" src="/static/js/EvaResult.js"></script>
-<link rel="stylesheet" type="text/css" href="/static/css/EvaResult.css">
+
 
 
 </html>

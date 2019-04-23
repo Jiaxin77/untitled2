@@ -444,3 +444,6 @@ body{
 	padding-right:5px;
 
 }
+[v-cloak] {
+  display:none !important;
+}

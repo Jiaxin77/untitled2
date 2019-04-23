@@ -9,6 +9,7 @@
         var AllModel={{ ModelList|safe  }}
         var User= {{ User|safe }}
     </script>
+    <link rel="stylesheet" type="text/css" href="/static/css/newEva.css">
 </head>
 <body>
 <div id="title">
@@ -38,7 +39,7 @@
     </div>-->
 </div>
 
-<div id="app">
+<div id="app" v-cloak>
     <div id="navi">
         <div id="chooseCondition">
             <input type="buttons" name="All" value="全部" readonly="readonly" @click="changeAll()">
@@ -245,6 +246,6 @@
 <script type="text/javascript" src="/static/js/vue.js"></script>
 <script type="text/javascript" src="/static/js/axios.min.js"></script>
 <script type="text/javascript" src="/static/js/newEva.js"></script>
-<link rel="stylesheet" type="text/css" href="/static/css/newEva.css">
+
 
 </html>

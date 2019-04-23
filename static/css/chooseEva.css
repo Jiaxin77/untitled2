@@ -481,3 +481,7 @@ body{
 	margin-top: 20px;
 	margin-bottom: 20px;
 }
+
+[v-cloak] {
+  display:none !important;
+}

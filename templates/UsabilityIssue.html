@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>启发式评估</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/UsabilityIssue.css">
 </head>
 <body>
 
@@ -32,7 +33,7 @@
 		</div>-->
 	</div>
 
-	<div id="listApp">
+	<div id="listApp" v-cloak>
 		<div id="myList">
 			<li v-for="item in list" :class="item==active?'active':'unactive'">
 				{% verbatim %}{{ item }}{% endverbatim %}
@@ -40,7 +41,7 @@
 		</div>
 	</div>
 
-	<div id="app">
+	<div id="app" v-cloak>
 		<button @click="newTable()">新建表格</button>
 		<div id="tables">
 			
@@ -78,7 +79,7 @@
 
 <script type="text/javascript" src="/static/js/vue.js"></script>
 <script type="text/javascript" src="/static/js/UsabilityIssue.js"></script>
-<link rel="stylesheet" type="text/css" href="/static/css/UsabilityIssue.css">
+
 
 
 </html>
