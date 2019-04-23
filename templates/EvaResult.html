@@ -8,6 +8,7 @@
         var infoList={{ infoList|safe }}
         var QNaireResults={{ QNaireResults|safe }}
         var allUseProblems={{ allUseProblems|safe }}
+        var AssessUseProblems={{ AssessUseProblems|safe }}
     </script>
 	<link rel="stylesheet" type="text/css" href="/static/css/EvaResult.css">
 	<script type="text/javascript" src="/static/js/vue.js"></script>
@@ -46,7 +47,8 @@
 	<div id="app" v-cloak>
 		<div id="listApp">
 			<div id="myList">
-				<li v-for="item in plans" :class="item.id==activePlan?'active':'unactive'" @click="clickPlan(item.id)">
+                <li  @click="GetAllUseProblems()" :class="activePlan==-1?'active':'unactive'">启发式评估总问题清单</li>
+				<li v-for="item in plans" :class="item.id==activePlan?'active':'unactive'"  @click="clickPlan(item.id)">
 					{% verbatim %}{{ item.PlanName }}{% endverbatim %}
 				</li>
 			</div>
@@ -64,6 +66,27 @@
 				</div>
 			</div>
 
+            <div id="AllHeuInfo">
+                <div id="Alltable">
+					<table>
+						<tr>
+							<th style="width:10%">编号</th>
+							<th style="width:10%">严重程度</th>
+							<th style="width:30%">可用性问题</th>
+							<th style="width:30%">界面位置和功能</th>
+							<th style="width:20%">改进建议</th>
+						</tr>
+						<tr v-for="up in AllUseProblemList">
+							<td>{% verbatim %}{{up.id}}{% endverbatim %}</td>
+							<td>{% verbatim %}{{up.serious}}{% endverbatim %}</td>
+							<td>{% verbatim %}{{up.problem}}{% endverbatim %}</td>
+							<td>{% verbatim %}{{up.local}}{% endverbatim %}</td>
+							<td>{% verbatim %}{{up.advice}}{% endverbatim %}</td>
+						</tr>
+					</table>
+				</div>
+
+            </div>
 			<div id="HeuInfo">
 				启发式评估
 				<div id="table">

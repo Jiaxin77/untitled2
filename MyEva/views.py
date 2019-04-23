@@ -971,6 +971,7 @@ def AnalysisData(request):#分析评估数据
         FinishTime = []
         SuccessRate = []
         LookingTime = []
+        AssessAllUseProblems=[]
         usernum = 0
 
         j=1
@@ -989,6 +990,7 @@ def AnalysisData(request):#分析评估数据
                     tempHeu = {'id': heucount, 'serious': heu.SeriousDegree, 'problem': heu.HeuProblem,
                                'local': heu.Interface, 'advice': heu.Advice}
                     useProblems.append(tempHeu)
+                    AssessAllUseProblems.append(tempHeu)
                     heucount = heucount + 1
                 tempPlanHeu = {'PlanId': plan.PlanId, 'useProblems': useProblems}
                 allUseProblems.append(tempPlanHeu)
@@ -1061,7 +1063,11 @@ def AnalysisData(request):#分析评估数据
                         {'name': '完成时间', 'unit': '分钟', 'data': meanFinishTime},
                         {'name': '成功率', 'unit': '%', 'data': meanSuccessRate},
                         {'name': '平均注视时间 ', 'unit': '秒', 'data': meanLookingTime}]
-        return  render(request,"EvaResult.html",{'PlanList':HtmlPlanList,'infoList':HtmlInfoList,'QNaireResults':QNaireResults,'allUseProblems':allUseProblems})
+        print(AssessAllUseProblems)
+        Sorted_AssessAllUseProblems=AssessAllUseProblems.sort(key=lambda s:int(s['serious']))
+        print("排序后")
+        print(AssessAllUseProblems)
+        return  render(request,"EvaResult.html",{'PlanList':HtmlPlanList,'infoList':HtmlInfoList,'QNaireResults':QNaireResults,'allUseProblems':allUseProblems,'AssessUseProblems':AssessAllUseProblems})
     return render(request, "chooseEva.html")
 
 

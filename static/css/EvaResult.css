@@ -374,6 +374,20 @@ body{
 	font-weight: 700;
 
 }
+
+#AllHeuInfo
+{
+	position: absolute;
+	top:50px;
+	width: 85%;
+	min-height: 500px;
+
+	left: 5%;
+
+	background-color: white;
+	padding-left:0%;
+	text-align: center;
+}
 #HeuInfo
 {
 	position: absolute;
@@ -402,6 +416,18 @@ body{
 {
 	background-color: rgb(34, 170, 255,0.1);
 }
+#Alltables
+{
+
+	width: 700px;
+	/*height: 500px;*/
+	display: flex;
+	flex-direction:column;
+	flex-wrap: wrap;
+
+
+
+}
 #tables
 {
 
@@ -414,6 +440,34 @@ body{
 
 
 }
+#AllHeuInfo table
+{
+	width: 700px;
+	margin-top: 10px;
+	margin-bottom: 30px;
+	border-collapse:collapse;
+}
+
+
+#AllHeuInfo table th
+{
+	border-top: 1.5px solid rgb(34, 170, 255);
+	border-bottom: 1.5px solid rgb(34, 170, 255);
+	font-weight: 500;
+	background-color:rgb(34, 170, 255,0.7);
+	color:white;
+}
+
+#AllHeuInfo table td
+{
+	border-top: 1.5px solid rgb(34, 170, 255);
+	border-bottom: 1.5px solid rgb(34, 170, 255);
+	background-color: rgb(34, 170, 255,0.1);
+}
+
+
+
+
 #HeuInfo table
 {
 	width: 700px;

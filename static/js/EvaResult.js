@@ -247,7 +247,8 @@ var app=new Vue({
 		UseProblemList:[],
 		myresults:[],
 		AllQNaireResults:QNaireResults,
-		activePlan:1
+		activePlan:1,
+		AllUseProblemList:AssessUseProblems
 
 	},
 	mounted:function(){
@@ -256,6 +257,16 @@ var app=new Vue({
 	},
 	methods:
 	{
+		GetAllUseProblems:function()
+		{
+			this.activePlan=-1;
+			document.getElementById('HeuInfo').style.visibility="hidden";
+			document.getElementById('Information').style.visibility="hidden";
+			document.getElementById('QNaire').style.visibility="hidden";
+			document.getElementById('modelQNaire').style.visibility="hidden";
+			document.getElementById('AllHeuInfo').style.visibility="visible";
+			document.getElementById('AllHeuInfo').className='active';
+		},
 		clickPlan:function(id)
 		{
 			
@@ -280,6 +291,8 @@ var app=new Vue({
 						document.getElementById('Information').style.visibility="hidden";
 						document.getElementById('QNaire').style.visibility="hidden";
 						document.getElementById('modelQNaire').style.visibility="hidden";
+						document.getElementById('AllHeuInfo').style.visibility="hidden";
+						document.getElementById('AllHeuInfo').className="unactive";
 						Bar=document.getElementsByClassName('myBar')
 						for(var bar=0;bar<Bar.length;bar++)
 						{
@@ -300,6 +313,8 @@ var app=new Vue({
 						document.getElementById('Information').style.visibility="visible";
 						document.getElementById('QNaire').style.visibility="hidden";
 						document.getElementById('modelQNaire').style.visibility="hidden";
+						document.getElementById('AllHeuInfo').style.visibility="hidden";
+						document.getElementById('AllHeuInfo').className="unactive";
 						Bar=document.getElementsByClassName('myBar')
 						for(var bar=0;bar<Bar.length;bar++)
 						{
@@ -331,6 +346,8 @@ var app=new Vue({
 						document.getElementById('Information').style.visibility="hidden";
 						document.getElementById('QNaire').style.visibility="visible";
 						document.getElementById('modelQNaire').style.visibility="hidden";
+						document.getElementById('AllHeuInfo').style.visibility="hidden";
+						document.getElementById('AllHeuInfo').className="unactive";
 						for(var bar=0;bar<Bar.length;bar++)
 						{
 							Bar[bar].style.visibility="visible";
@@ -344,6 +361,8 @@ var app=new Vue({
 						document.getElementById('Information').style.visibility="hidden";
 						document.getElementById('QNaire').style.visibility="hidden";
 						document.getElementById('modelQNaire').style.visibility="visible";
+						document.getElementById('AllHeuInfo').style.visibility="hidden";
+						document.getElementById('AllHeuInfo').className="unactive";
 						Bar=document.getElementsByClassName('myBar')
 						for(var bar=0;bar<Bar.length;bar++)
 						{
