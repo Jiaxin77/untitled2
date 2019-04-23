@@ -1083,7 +1083,6 @@ def getAllModels():
     ModelsList=[]
     for model in Models:
 
-
        if(model.AssessId.AssessType==0):
            if(model.ModelType==2):#历史
                temp = {'ModelId':model.ModelId,'id': j, 'name': model.AssessId.AssessName, 'InShort': model.AssessId.AssessOneDes,
@@ -1121,9 +1120,11 @@ def deleteModel(request):#删除模板
 
 def newEvaFromModel(request):#从模板新建
     originAssessId=request.POST.get("assessid",None)
+
     newAssessName = request.POST.get("name", None)
     newAssessDetail = request.POST.get("detail", None)
     newAssessUseNum = request.POST.get("person", None)
+
    # Messages = json.loads(request.body)
    # model = Messages['Model']
     #newAssess=Messages['newAssess']
@@ -1132,6 +1133,9 @@ def newEvaFromModel(request):#从模板新建
    # print(model)
     #originAssessId=model['AssessId']
     originAssess=AssessList.objects.get(AssessId=originAssessId)
+    thisModel=ModelList.objects.get(AssessId=originAssess)
+    thisModel.ModelType=2#设为历史模板
+    thisModel.save()
     if(originAssess.AssessType==0):#是单一问卷
         AssessList.objects.create(AssessName=newAssessName,AssessOneDes=newAssessDetail,AssessPro=0,AssessType=0,AssessUseNum=newAssessUseNum,UserId=USER)
         thisAssess=AssessList.objects.get(AssessName=newAssessName,AssessOneDes=newAssessDetail,AssessPro=0,AssessType=0,AssessUseNum=newAssessUseNum,UserId=USER)
