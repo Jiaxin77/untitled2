@@ -90,14 +90,14 @@ var app=new Vue({
 		OneUseTable:UseTable,
 		UseTables:[],
 		InfoList:Info,
-	//SaveInfo:[],
 		AllInfo:[],
 		activePlan:1,
 		AllQNaires:QNaires,
 		questions:[],
 		readOnly:readOnly,
 		HeuRegular:"",
-		HeuRegulars:HeuRegulars
+		HeuRegulars:HeuRegulars,
+		PlanInfoName:""
 
 	},
 	mounted()
@@ -131,6 +131,8 @@ var app=new Vue({
 					else if(this.plans[j].PlanType=="数据记录")
 					{
 
+						this.PlanInfoName=this.plans[j].PlanName.substring(2).split('的')[0];
+						console.log(this.PlanInfoName);
 						//var SaveInfo=[];
 						thisInfoStr="";
 						for(var il=0;il<this.InfoList.length;il++)
@@ -220,7 +222,8 @@ var app=new Vue({
 					else if(this.plans[i].PlanType=="数据记录")
 					{
 
-
+						this.PlanInfoName=this.plans[i].PlanName.substring(2).split('的')[0];
+						console.log(this.PlanInfoName);
 						for(var d=0;d<this.InfoList.length;d++)
 						{
 							this.InfoList[d].value="";

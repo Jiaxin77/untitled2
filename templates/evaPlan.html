@@ -56,9 +56,9 @@
 			<div id="Information">
 
 
-				<div class="inputInfo" v-for="info in InfoList">
+				<div class="inputInfo" v-for="info in InfoList" v-if="info.name==PlanInfoName">
 
-					<span class="name">{% verbatim %}{{ info.name }}{% endverbatim %}</span>
+					<span class="name" >{% verbatim %}{{ info.name }}{% endverbatim %}</span>
 					<input type="text" v-model="info.value">
 					<span class="unit">{% verbatim %}{{ info.unit }}{% endverbatim %}</span>
 				</div>
