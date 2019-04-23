@@ -947,8 +947,17 @@ def getEvaAnswer(request):#获取用户填的评估数据
 
 
     return render(request,"evaPlan.html")
-
-
+#
+# def getAllPerformance():#全部评估数据的分析结果
+#     PerformanceData=[]
+#     AllPerformance=PerformanceRecord.objects.all()
+#     errornum=0
+#     finishnum=0
+#     successrate=0
+#     lookingtime=0
+#     for performance in AllPerformance:
+#         if(performance.ErrorRate!=0):
+#
 
 
 def AnalysisData(request):#分析评估数据
