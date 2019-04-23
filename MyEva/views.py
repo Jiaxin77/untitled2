@@ -466,6 +466,30 @@ def addQNaire(request):#新建问卷的问题
     return render(request, "newEva.html")
 
 
+def getAllSearchData():
+    AllSearchList=UserList.objects.all().values('SearchHistory')
+    SearchData=[]
+    for search in AllSearchList:
+        if(search['SearchHistory']!=None):
+            SearchData.append(search['SearchHistory'])
+    htmlFrequency=countFrequency(SearchData)
+    return  htmlFrequency
+
+def getUserRecommend():
+    global USER
+    searchData=USER.SearchHistory
+    searchList=[]
+    recommendAssess=[]
+    if (searchData!=None):
+        searchList=searchData.split(';')
+        print("searchList")
+        print(searchList)
+        searchFrequency=countFrequency(searchList)
+        mostWord=searchFrequency[0]['name']
+        recommendAssess=fuzzySearch(mostWord)
+    return recommendAssess
+
+
 
 def chooseEva(request):#展示评估方案列表
     print("chooseEva")
@@ -474,6 +498,8 @@ def chooseEva(request):#展示评估方案列表
     global USER
     tempUser={'userid':USER.UserId,'username':USER.UserName,'userStatus':USER.Status}
     AssessNameList = AssessList.objects.all().values('AssessName')
+    WCResults=getAllSearchData()
+    recommend=getUserRecommend()
     HtmlAssessNameList=[]
     for assessname in AssessNameList:
         HtmlAssessNameList.append(assessname['AssessName'])
@@ -490,7 +516,7 @@ def chooseEva(request):#展示评估方案列表
         else:
             tempeva['condition']='End'
         HtmlEvaList.append(tempeva)
-    return render(request,"chooseEva.html",{'EvaList':json.dumps(HtmlEvaList),'User':tempUser,'AssessNameList':HtmlAssessNameList})
+    return render(request,"chooseEva.html",{'EvaList':json.dumps(HtmlEvaList),'User':tempUser,'AssessNameList':HtmlAssessNameList,'WCResults':WCResults,'Recommend':recommend})
 
 
 
@@ -705,17 +731,19 @@ def deleteAssess(request):#删除评估方案
     return  render(request,"chooseEva.html")
 
 def countFrequency(answers):#计算词频
-    myTxt = ''.join(answers)
-    # myTxt="李汶翰、嘉羿、管栎、胡春杨、陈宥维、夏瀚宇、施展、邓超元、连淮伟李汶翰、姚明明、管栎、何昶希、胡春杨、陈宥维、连淮伟、陈思键、冯俊杰李汶翰、嘉羿、管栎、胡春杨、连淮伟、夏瀚宇、何昶希、姚明明、冯俊杰、李汶翰、嘉羿、管栎、胡春杨、连淮伟、夏瀚宇、何昶希、姚明明、冯俊杰李汶翰、嘉羿、管栎、胡春杨、连淮伟、夏瀚宇、何昶希、姚明明、冯俊杰"
-    myTxt_words = [x for x in jieba.cut(myTxt) if len(x) >= 2]
-    c = Counter(myTxt_words).most_common(10)
-    print(json.dumps(c, ensure_ascii=False))
+    print(answers)
     htmlFrequency = []
-    for oneWord in c:
-        temp = {'name': '', 'value': 0}
-        temp['name'] = oneWord[0]
-        temp['value'] = oneWord[1]
-        htmlFrequency.append(temp)
+    if(answers!=[]):
+        myTxt = ''.join(answers)
+        # myTxt="李汶翰、嘉羿、管栎、胡春杨、陈宥维、夏瀚宇、施展、邓超元、连淮伟李汶翰、姚明明、管栎、何昶希、胡春杨、陈宥维、连淮伟、陈思键、冯俊杰李汶翰、嘉羿、管栎、胡春杨、连淮伟、夏瀚宇、何昶希、姚明明、冯俊杰、李汶翰、嘉羿、管栎、胡春杨、连淮伟、夏瀚宇、何昶希、姚明明、冯俊杰李汶翰、嘉羿、管栎、胡春杨、连淮伟、夏瀚宇、何昶希、姚明明、冯俊杰"
+        myTxt_words = [x for x in jieba.cut(myTxt) if len(x) >= 2]
+        c = Counter(myTxt_words).most_common(10)
+        print(json.dumps(c, ensure_ascii=False))
+        for oneWord in c:
+            temp = {'name': '', 'value': 0}
+            temp['name'] = oneWord[0]
+            temp['value'] = oneWord[1]
+            htmlFrequency.append(temp)
     return htmlFrequency
 
 def analysisQNaire(thisSurvey):#分析问卷结果
@@ -1180,49 +1208,45 @@ def newEvaFromModel(request):#从模板新建
     print("到这儿了")
     return render(request,'newEva.html')
 
-def searchAssess(request):
-    print(request.GET['userinput'])
-    userInput=request.GET['userinput']
-    AssessNameList=AssessList.objects.all().values('AssessName')
-    HtmlAssessNameList=[]
-    AllCollection=[]#包含所有评估名称、一句话描述和具体描述
+
+
+def fuzzySearch(userInput):
+    AssessNameList = AssessList.objects.all().values('AssessName')
+    AllCollection = []  # 包含所有评估名称、一句话描述和具体描述
     for assessname in AssessNameList:
         AllCollection.append(assessname['AssessName'])
-        HtmlAssessNameList.append(assessname['AssessName'])
-    AssessDesList=AssessList.objects.all().values('AssessDes')
+    AssessDesList = AssessList.objects.all().values('AssessDes')
     for assessdes in AssessDesList:
-        if (assessdes['AssessDes']!=None):
+        if (assessdes['AssessDes'] != None):
             AllCollection.append(assessdes['AssessDes'])
-    AssessOneDesList=AssessList.objects.all().values('AssessOneDes')
+    AssessOneDesList = AssessList.objects.all().values('AssessOneDes')
     for assessonedes in AssessOneDesList:
-        if(assessonedes['AssessOneDes']!=None):
+        if (assessonedes['AssessOneDes'] != None):
             AllCollection.append(assessonedes['AssessOneDes'])
-
     print(userInput)
     print(AllCollection)
-    resultList=fuzzyfinder(str(userInput),AllCollection)
-    resultAssess=[]
-    global USER
-    j=0
+    resultList = fuzzyfinder(str(userInput), AllCollection)
+    resultAssess = []
+    j = 0
     tempeva = {'id': 0, 'name': '', 'person': '', 'InShort': '', 'BeginTime': '', 'process': '', 'condition': ''}
     print("result!!!!")
     print(resultList)
     for result in resultList:
         print(result)
-        NameAssess=AssessList.objects.filter(AssessName=result)
+        NameAssess = AssessList.objects.filter(AssessName=result)
         print(NameAssess)
-        OneDesAssess=AssessList.objects.filter(AssessOneDes=result)
+        OneDesAssess = AssessList.objects.filter(AssessOneDes=result)
         print(OneDesAssess)
-        DesAssess=AssessList.objects.filter(AssessDes=result)
+        DesAssess = AssessList.objects.filter(AssessDes=result)
         print(DesAssess)
         if NameAssess.exists():
             for nameeva in NameAssess:
                 tempeva = {'id': 0, 'name': '', 'person': '', 'InShort': '', 'BeginTime': '', 'process': '',
-                       'condition': ''}
-                tempeva['id']=nameeva.AssessId
-                tempeva['name']=nameeva.AssessName
-                tempeva['person']=nameeva.UserId.UserName
-                tempeva['InShort']=nameeva.AssessOneDes
+                           'condition': ''}
+                tempeva['id'] = nameeva.AssessId
+                tempeva['name'] = nameeva.AssessName
+                tempeva['person'] = nameeva.UserId.UserName
+                tempeva['InShort'] = nameeva.AssessOneDes
                 tempeva['BeginTime'] = str(nameeva.AssessBeginTime)[0:16]
                 tempeva['process'] = nameeva.AssessPro
                 if nameeva.AssessPro < 100:
@@ -1234,11 +1258,11 @@ def searchAssess(request):
         if OneDesAssess.exists():
             for onedeseva in OneDesAssess:
                 tempeva = {'id': 0, 'name': '', 'person': '', 'InShort': '', 'BeginTime': '', 'process': '',
-                       'condition': ''}
-                tempeva['id']=onedeseva.AssessId
-                tempeva['name']=onedeseva.AssessName
-                tempeva['person']=onedeseva.UserId.UserName
-                tempeva['InShort']=onedeseva.AssessOneDes
+                           'condition': ''}
+                tempeva['id'] = onedeseva.AssessId
+                tempeva['name'] = onedeseva.AssessName
+                tempeva['person'] = onedeseva.UserId.UserName
+                tempeva['InShort'] = onedeseva.AssessOneDes
                 tempeva['BeginTime'] = str(onedeseva.AssessBeginTime)[0:16]
                 tempeva['process'] = onedeseva.AssessPro
                 if onedeseva.AssessPro < 100:
@@ -1250,11 +1274,11 @@ def searchAssess(request):
         if DesAssess.exists():
             for deseva in DesAssess:
                 tempeva = {'id': 0, 'name': '', 'person': '', 'InShort': '', 'BeginTime': '', 'process': '',
-                       'condition': ''}
-                tempeva['id']=deseva.AssessId
-                tempeva['name']=deseva.AssessName
-                tempeva['person']=deseva.UserId.UserName
-                tempeva['InShort']=deseva.AssessOneDes
+                           'condition': ''}
+                tempeva['id'] = deseva.AssessId
+                tempeva['name'] = deseva.AssessName
+                tempeva['person'] = deseva.UserId.UserName
+                tempeva['InShort'] = deseva.AssessOneDes
                 tempeva['BeginTime'] = str(deseva.AssessBeginTime)[0:16]
                 tempeva['process'] = deseva.AssessPro
                 if deseva.AssessPro < 100:
@@ -1265,10 +1289,27 @@ def searchAssess(request):
                 resultAssess.append(tempeva)
     global USER
     print(resultAssess)
-    resultAssess = [dict(t) for t in set([tuple(d.items()) for d in resultAssess])]#去重
-    tempUser = {'userid': USER.UserId, 'username': USER.UserName, 'userStatus': USER.Status}
+    resultAssess = [dict(t) for t in set([tuple(d.items()) for d in resultAssess])]  # 去重
+    return resultAssess
 
-    return render(request,'chooseEva.html',{'EvaList':resultAssess,'User':tempUser,'AssessNameList':HtmlAssessNameList})
+def searchAssess(request):
+    print(request.GET['userinput'])
+    userInput=request.GET['userinput']
+    resultAssess=fuzzySearch(userInput)
+    WCResults = getAllSearchData()
+    recommend = getUserRecommend()
+    global USER
+    if(USER.SearchHistory!=None):
+        USER.SearchHistory=USER.SearchHistory+";"+userInput
+    else:
+        USER.SearchHistory=userInput
+    USER.save()
+    tempUser = {'userid': USER.UserId, 'username': USER.UserName, 'userStatus': USER.Status}
+    HtmlAssessNameList = []
+    AssessNameList = AssessList.objects.all().values('AssessName')
+    for assessname in AssessNameList:
+        HtmlAssessNameList.append(assessname['AssessName'])
+    return render(request,'chooseEva.html',{'EvaList':resultAssess,'User':tempUser,'AssessNameList':HtmlAssessNameList,'WCResults':WCResults,'Recommend':recommend})
 
 def fuzzyfinder(user_input, collection):
         suggestions = []

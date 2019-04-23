@@ -38,7 +38,51 @@
 	// 		condition:"End"
 	// 	}
 	// ]
+/*
+    var WCResults=[
+	{name:"李汶翰",value:95},
+	{name:"嘉羿",value:74},
+	{name:"管栎",value:79},
+	{name:"胡春杨",value:87},
+	{name:"何昶希",value:67},
+	{name:"连淮伟",value:56},
+	{name:"姚明明",value:23},
+	{name:"冯俊杰",value:21},
+	{name:"施展",value:56},
+	{name:"姚弛",value:12},
+	{name:"陈思键",value:10},
+	{name:"邓超元",value:5}
+	]
+    	var recommend=
+	[
+	{
 
+		name:"评估名称3",
+		person:"马嘉祺",
+		InShort:"我是评估3一句话描述",
+		BeginTime:"2018-03-18 17:03",
+		process:100,
+		condition:"End"
+	},
+	{
+
+		name:"评估名称4",
+		person:"李汶翰",
+		InShort:"我是评估4一句话描述",
+		BeginTime:"2017-03-18 17:03",
+		process:100,
+		condition:"End"
+	},
+	{
+		id:2,
+		name:"评估名称2",
+		person:"丁程鑫",
+		InShort:"我是评估2一句话描述",
+		BeginTime:"2018-06-18 17:03",
+		process:30,
+		condition:"ing"
+	}
+	]*/
 
 	var app=new Vue({
 		el:'#app',
@@ -47,9 +91,13 @@
 			now:"All",
 			User:User,
 			searchinput:"",
-			AssessNameList:AssessNameList
+			AssessNameList:AssessNameList,
+            recommendList:Recommend,
+			WCResults:WCResults
 		},
-
+        mounted:function(){
+			this.loadCloud();
+		},
 		methods:{
 
 	 			lookMore:function(data)
@@ -118,6 +166,63 @@
 				{
 					return data.process;
 				},
+                loadCloud:function() {
+                    var domCloud;
+                    var myChartCloud;
+                    var appCloud;
+                    var optionCloud;
+                    domCloud = document.getElementById('WordCloud');
+                    myChartCloud = echarts.init(domCloud);
+                    optionCloud = null;
+                    optionCloud = {
+                        title: {
+                            x: 'center'
+                        },
+                        tooltip: {
+                            show: true
+                        },
+                        series: [
+                            {
+                                name: '词语云图',
+                                type: 'wordCloud',
+                                sizeRange: [5, 30],
+                                shape: 'circle',
+                                left: null,
+                                top: null,
+                                width: '100%',
+                                height: '100%',
+                                right: null,
+                                bottom: null,
+                                gridSize: 1,
+                                drawOutOfBound: true,
+                                rotationRange: [-90, 90],
+                                textPadding: 0,
+                                autoSize: {
+                                    enable: true,
+                                    miniSize: 1,
+                                },
+                                textStyle: {
+                                    normal: {
+                                        color: function () {
+                                            return 'rgb(' + [
+                                                Math.round(Math.random() * 160),
+                                                Math.round(Math.random() * 160),
+                                                Math.round(Math.random() * 160)
+                                            ].join(',') + ')'
+                                        }
+                                    },
+                                    emphasis: {
+                                        shadowBlur: 10,
+                                        shadowColor: '#333'
+                                    }
+                                },
+                                data: this.WCResults
+                            }]
+                    }
+                    if (optionCloud && typeof optionCloud == "object") {
+                        myChartCloud.setOption(optionCloud, true);
+                    }
+                },
                 getFillEva:function (EvaData)
                 {
                     //因为是向后台get，所以在这里做跳转
@@ -234,6 +339,28 @@
                         })
 
 				},
+                chooseRecommend:function(reeva)
+                {
+
+                    axios.get('/searchAssess/',{
+                        params:{
+                            userinput:reeva.name
+                        }
+                    })
+                        .then(function(response){
+                            console.log(response);
+                            //window.location.href='/chooseEva/'
+
+							window.location.href='/searchAssess/?userinput='+reeva.name
+
+
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        })
+
+
+                },
                 getid(eva)
                 {
                     return eva.id;

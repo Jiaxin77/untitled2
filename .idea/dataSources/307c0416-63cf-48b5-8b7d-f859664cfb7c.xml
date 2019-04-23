@@ -5624,7 +5624,12 @@ model</ColNames>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="1254" parent="371" name="PRIMARY">
+    <column id="1254" parent="371" name="SearchHistory">
+      <Position>5</Position>
+      <DataType>varchar(2000)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="1255" parent="371" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>UserId</ColNames>
       <Primary>1</Primary>

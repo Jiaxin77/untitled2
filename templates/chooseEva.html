@@ -7,10 +7,14 @@
 	<link rel="stylesheet" type="text/css" href="/static/css/chooseEva.css">
     <script type="text/javascript" src="/static/js/axios.min.js"></script>
     <script type="text/javascript" src="/static/js/vue.js"></script>
+    <script type="text/javascript" src="/static/js/echarts.min.js"></script>
+	<script type="text/javascript" src="/static/js/echarts-wordcloud.min.js"></script>
     <script>
         var AllAssess={{ EvaList|safe }}
         var User={{ User|safe }}
         var AssessNameList={{ AssessNameList|safe }}
+        var Recommend={{ Recommend|safe }}
+        var WCResults={{ WCResults|safe }}
     </script>
 </head>
 <body>
@@ -42,6 +46,7 @@
 		</div>-->
 	</div>
 <div id="app">
+    <div id="left">
 	<div id="navi">
 		<div id="chooseCondition">
 			<input type="buttons" name="All" value="全部" readonly="readonly" @click="changeAll()">
@@ -207,8 +212,22 @@
 		</div>
 	
 </div>
+</div>
 
+    <div id="right">
+        <div id="recommend">
+			<h4>猜您想看...</h4>
+			<ul>
+				<li v-for="reeva in recommendList" @click="chooseRecommend(reeva)">{% verbatim %}{{ reeva.name }}{% endverbatim %}</li>
+			</ul>
 
+		</div>
+		<div id="cloud">
+			<h4>大家都在搜...</h4>
+			<div class="wordcloud" id="WordCloud" style="width:100%;height: 100% ;margin-top: 20px;margin-bottom: 20px;">
+			</div>
+		</div>
+    </div>
 </div>
 </body>
 
