@@ -125,8 +125,37 @@ var app=new Vue({
 
 					if(this.plans[j].PlanType=="启发式评估")
 					{
-						var tempUse={"id":this.activePlan,"Planid":this.plans[j].PlanId,"PlanType":"启发式评估","UseTables":this.UseTables};
-						this.AllInfo.push(tempUse);
+
+						if(this.UseTables.length==1)
+						{
+							if(this.UseTables[0].problem=="")
+							{
+								console.log("启发式为空！")
+							}
+
+							else
+							{
+								var tempUse = {
+									"id": this.activePlan,
+									"Planid": this.plans[j].PlanId,
+									"PlanType": "启发式评估",
+									"UseTables": this.UseTables
+								};
+								this.AllInfo.push(tempUse);
+								alert("保存成功！");
+							}
+						}
+						else
+						{
+							var tempUse = {
+									"id": this.activePlan,
+									"Planid": this.plans[j].PlanId,
+									"PlanType": "启发式评估",
+									"UseTables": this.UseTables
+								};
+								this.AllInfo.push(tempUse);
+								alert("保存成功！");
+						}
 					}
 					else if(this.plans[j].PlanType=="数据记录")
 					{
@@ -157,11 +186,35 @@ var app=new Vue({
 
 						//var tempInfo={"id":this.activePlan,"Planid":this.plans[j].PlanId,"PlanType":"数据收集","myInfo":SaveInfo};
 						this.AllInfo.push(tempInfo);
+						alert("保存成功！");
 					}
 					else if(this.plans[j].PlanType=="可用性测试")
 					{
-						var tempQNaire={"id":this.activePlan,"Planid":this.plans[j].PlanId,"PlanType":"可用性测试","QNaireInfo":this.questions}
-						this.AllInfo.push(tempQNaire);
+						AllAnswer=true;
+						for(var tq=0;tq<this.questions.length;tq++)
+						{
+							if(this.questions[tq].answer=="")
+							{
+								AllAnswer=false;
+							}
+						}
+						if(AllAnswer)
+						{
+							var tempQNaire = {
+								"id": this.activePlan,
+								"Planid": this.plans[j].PlanId,
+								"PlanType": "可用性测试",
+								"QNaireInfo": this.questions
+							}
+							this.AllInfo.push(tempQNaire);
+							alert("保存成功！");
+						}
+						else
+							{
+								alert("您仍有问题未填写！");
+							}
+
+
 					}
 					else
 					{
@@ -169,7 +222,7 @@ var app=new Vue({
 					}
 				}
 			}
-			alert("保存成功！");
+
 
 			/*console.log("AllInfo：");
 			console.log(this.AllInfo.length);

@@ -30,8 +30,8 @@
     </div>
 
     <div id="buttons">
-        <!--<div id="message">消息</div>
-        <div id="set">设置</div>-->
+        <div id="message">欢迎您，{{ User.username }}</div>
+        <!--<div id="set">设置</div>-->
         <div id="mine" ><a href="{% url 'logout' %}">退出账户</a></div>
     </div>
     <!--<div id="out">
@@ -209,8 +209,8 @@
             <p>评估需要人数 <input id="EvaPersonNum" type="text" name="peopleNum"></p>
             <br>
             <div id="evaButtons">
-                <button id="cancel" @click="closeNewBox()">取消</button>
-                <button id="yes" @click="submitForm()">确定</button>
+                <button id="cancel" @click="closeNewBox()" type="button">取消</button>
+                <button id="yes" @click="submitForm()" type="button">确定</button>
             </div>
         </div>
     </form>

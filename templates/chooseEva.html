@@ -36,8 +36,9 @@
 		</div>
 
 		<div id="buttons">
-			<!--<div id="message">消息</div>
-			<div id="set">设置</div>-->
+			<div id="message">欢迎您，{{ User.username }}</div>
+			<!--<div id="set">设置</div>-->
+
             <div id="mine" ><a href="{% url 'logout' %}">退出账户</a></div>
 
 		</div>

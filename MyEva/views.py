@@ -158,6 +158,7 @@ def newBlankEva(request):#新建空白评估
         EvaDetail=request.POST.get("detail",None)
         EvaUseNum=request.POST.get("peopleNum",None)
 
+
         if EvaType == "survey":
             #新建评估 插入新建的
 

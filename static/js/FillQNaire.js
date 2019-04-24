@@ -17,22 +17,36 @@
 					alert("您处于模板查看只读状态，无法提交！");
 				}
 				else {
-					axios.post('/FillQNaire/',
+					var AllAnswer=true;
+					for(var tq=0;tq<this.questions.length;tq++)
+						{
+							if(this.questions[tq].answer=="")
+							{
+								AllAnswer=false;
+							}
+						}
+					if(AllAnswer) {
 
-						JSON.stringify({
-							AllQuestions: this.questions,
-							Survey: this.surveyId
+						axios.post('/FillQNaire/',
 
-						}))
-						.then(function (response) {
-							//alert("保存成功，感谢您的填写！");
-							window.location.href = '/chooseEva/'
-							console.log(response);
-						})
-						.catch(function (error) {
-							window.location.href = '/chooseEva/'
-							console.log(error);
-						})
+							JSON.stringify({
+								AllQuestions: this.questions,
+								Survey: this.surveyId
+
+							}))
+							.then(function (response) {
+								//alert("保存成功，感谢您的填写！");
+								window.location.href = '/chooseEva/'
+								console.log(response);
+							})
+							.catch(function (error) {
+								window.location.href = '/chooseEva/';
+								console.log(error);
+							})
+					}
+					else {
+						alert("您仍有问题未填写！");
+					}
 				}
 			}
 		}

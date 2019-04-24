@@ -82,16 +82,36 @@
                     document.getElementById('newModelBox').style.visibility='hidden';
 				location.href='/newEva/';
 			},
+			RadioVaild:function()
+			{
+				var result = false;
+				var radios = document.getElementsByName("eva");
+				for (var i = 0; i < radios.length; i++) {
+					if (radios[i].checked) {
+						result = true;
+					}
+				}
+				return result;
+			},
 			submitForm:function()
 			{
-				if (document.getElementById('EvaNameInput').value!=null)
-				{
-					document.BlankEva.submit();
 
+				if (document.getElementById('EvaNameInput').value=="")
+				{
+					alert("名称不能为空！")
+				}
+				else if(!this.RadioVaild())
+				{
+					alert("请选择评估类型！")
+				}
+				else if(document.getElementById('EvaPersonNum').value=="")
+				{
+					alert("参与人数不能为空！")
 				}
 				else
 				{
-					alert("名称不能为空！")
+					console.log("提交了！")
+					document.BlankEva.submit();
 				}
 			},
 			changeList:function()
@@ -162,7 +182,19 @@
 							console.log(error);
 						})*/
 
-               document.ModelEva.submit();
+               if (document.getElementById('ModelEvaNameInput').value==null)
+				{
+					alert("名称不能为空！")
+				}
+				else if(document.getElementById('ModelEvaPerson').value==null)
+				{
+					alert("参与人数不能为空！")
+				}
+				else
+				{
+					document.ModelEva.submit();
+				}
+
             }
 
 

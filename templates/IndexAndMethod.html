@@ -4,6 +4,10 @@
 	<title>
 		指标库与方法库
 	</title>
+    <script>
+     var IndexMessage = {{ IndexList|safe  }};
+     var MethodMessage = {{ MethodList|safe }}
+    </script>
     <!--报错不用管-->
     <link rel="stylesheet" type="text/css" href="/static/css/IndexAndMethod.css">
 </head>
@@ -95,7 +99,7 @@
 <div id="thisPage">
 	<div id="dynamic-component-demo">
 
-		<button v-for="tab in tabs" v-bind:key="tab" v-bind:class="['tab-button',{active:currentTab === tab}]" v-on:click="currentTab = tab">{% verbatim %}{{tab}}{% endverbatim %}
+		<button v-for="tab in tabs" v-bind:key="tab" v-bind:class="['tab-button',{active:currentTab === tab}]" v-on:click="currentTab = tab" >{% verbatim %}{{tab}}{% endverbatim %}
 		</button>
 
 		<keep-alive>
@@ -107,10 +111,7 @@
 </body>
 
 <script type="text/javascript" src="/static/js/vue.js"></script>
-<script>
-     var IndexMessage = {{ IndexList|safe  }};
-     var MethodMessage = {{ MethodList|safe }}
-</script>
+
 <script type="text/javascript" src="/static/js/IndexAndMethod.js"></script>
 
 <script type="text/x-template" id="myTemplate">
