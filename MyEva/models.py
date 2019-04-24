@@ -106,6 +106,9 @@ class IndexList(models.Model):
     Description = models.CharField(max_length=500)
     thisMethod = models.CharField(max_length=200,null=True)
     HeuRegular = models.CharField(max_length=500,null=True)
+    Standard = models.FloatField(default=0)
+    HigherAdvice = models.CharField(max_length=500,null=True)
+    LowerAdvice = models.CharField(max_length=500,null=True)
 
 #方法库
 class MethodList(models.Model):

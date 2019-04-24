@@ -57,13 +57,41 @@
 			
 
 			<div id="Information">
-			
+
+                <div class="Info">
+                    <table>
+                        <tr>
+                            <th>指标名称</th>
+                            <th>单位</th>
+                            <th>平均值</th>
+                            <th>标准差</th>
+                            <th>最小值</th>
+                            <th>最大值</th>
+                        </tr>
+                        <tr v-for="info in InfoList">
+                            <td>{% verbatim %}{{ info.name }}{% endverbatim %}</td>
+                            <td>{% verbatim %}{{ info.unit }}{% endverbatim %}</td>
+                            <td>{% verbatim %}{{ info.meandata }}{% endverbatim %}</td>
+                            <td>{% verbatim %}{{ info.stddata }}{% endverbatim %}</td>
+                            <td>{% verbatim %}{{ info.mindata }}{% endverbatim %}</td>
+                            <td>{% verbatim %}{{ info.maxdata }}{% endverbatim %}</td>
+                        </tr>
+                    </table>
+                    数据分析结果：
+                        <div v-for="info in InfoList">
+                            {% verbatim %}{{ info.SysAdvice }}{% endverbatim %}
+                            <br>
+                            {% verbatim %}{{ info.StdAdvice }}{% endverbatim %}
+                        </div>
+                </div>
+			<!--
 				<div class="Info" v-for="info in InfoList">
 					<span class="name">{% verbatim %}{{ info.name }}{% endverbatim %}</span>
 					<span class="data">{% verbatim %}{{ info.data}}{% endverbatim %}</span>
 					<span class="unit">{% verbatim %}{{ info.unit }}{% endverbatim %}</span>
 					<p class="des">{% verbatim %}{{ info.text }}{% endverbatim %}</p>
 				</div>
+				-->
 			</div>
 
             <div id="AllHeuInfo">

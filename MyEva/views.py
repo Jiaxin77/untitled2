@@ -948,16 +948,34 @@ def getEvaAnswer(request):#获取用户填的评估数据
 
     return render(request,"evaPlan.html")
 #
-# def getAllPerformance():#全部评估数据的分析结果
-#     PerformanceData=[]
-#     AllPerformance=PerformanceRecord.objects.all()
-#     errornum=0
-#     finishnum=0
-#     successrate=0
-#     lookingtime=0
-#     for performance in AllPerformance:
-#         if(performance.ErrorRate!=0):
-#
+def getAllPerformance():#全部评估数据的分析结果
+
+     AllPerformance=PerformanceRecord.objects.all()
+     meanerror=0
+     meanfinish=0
+     meansuccessrate=0
+     meanlookingtime=0
+     ErrorRate=[]
+     FinishTime=[]
+     SuccessRate=[]
+     LookingTime=[]
+     for performance in AllPerformance:
+         if(performance.ErrorRate!=0):
+             ErrorRate.append(performance.ErrorRate)
+         if(performance.FinishTime!=0):
+             FinishTime.append(performance.FinishTime)
+         if(performance.SuccessRate!=0):
+             SuccessRate.append(performance.SuccessRate)
+         if(performance.LookingTime!=0):
+             LookingTime.append(performance.LookingTime)
+     meanerror=numpy.mean(ErrorRate)
+     meanfinish=numpy.mean(FinishTime)
+     meansuccessrate=numpy.mean(SuccessRate)
+     meanlookingtime=numpy.mean(LookingTime)
+     AveragePerformanceData={'ErrorRate':meanerror,'FinishTime':meanfinish,'SuccessRate':meansuccessrate,'LookingTime':meanlookingtime}
+     return AveragePerformanceData
+
+
 
 
 def AnalysisData(request):#分析评估数据
@@ -1046,32 +1064,82 @@ def AnalysisData(request):#分析评估数据
         stdFinishTime=0
         stdSuccessRate=0
         stdLookingTime=0
+        cwsysErrorRate=""
+        cwstdErrorRate=""
+        cwsysFinishTime = ""
+        cwstdFinishTime = ""
+        cwsysSuccessRate = ""
+        cwstdSuccessRate = ""
+        cwsysLookingTime = ""
+        cwstdLookingTime = ""
         if(len(ErrorRate)!=0):
-            meanErrorRate=numpy.mean(ErrorRate)
-            stdErrorRate=numpy.std(ErrorRate, ddof=1)
+            meanErrorRate=round(numpy.mean(ErrorRate),2)
+            stdErrorRate=round(numpy.std(ErrorRate, ddof=1),2)
             maxErrorRate=max(ErrorRate)
             minErrorRate=min(ErrorRate)
         if(len(FinishTime)!=0):
-            meanFinishTime=numpy.mean(FinishTime)
-            stdFinishTime=numpy.std(FinishTime)
+            meanFinishTime=round(numpy.mean(FinishTime),2)
+            stdFinishTime=round(numpy.std(FinishTime),2)
             maxFinishTime=max(FinishTime)
             minFinishTime=min(FinishTime)
         if(len(SuccessRate)!=0):
-            meanSuccessRate=numpy.mean(SuccessRate)
-            stdSuccessRate=numpy.std(SuccessRate)
+            meanSuccessRate=round(numpy.mean(SuccessRate),2)
+            stdSuccessRate=round(numpy.std(SuccessRate),2)
             maxSuccessRate=max(SuccessRate)
             minSuccessRate=min(SuccessRate)
         if(len(LookingTime)!=0):
-            meanLookingTime=numpy.mean(LookingTime)
-            stdLookingTime=numpy.std(LookingTime)
+            meanLookingTime=round(numpy.mean(LookingTime),2)
+            stdLookingTime=round(numpy.std(LookingTime),2)
             maxLookingTime=max(LookingTime)
             minLookingTime=min(LookingTime)
 
+        AveragePerformanceData=getAllPerformance()
+        print(AveragePerformanceData)
+        StandardPerformanceData=IndexList.objects.filter(thisMethod="数据记录")
+        for per in StandardPerformanceData:
+            if(per.IndexName=="出错频率"):
+                if(meanErrorRate>AveragePerformanceData['ErrorRate']):
+                    cwsysErrorRate="出错频率比评估系统内存储数据平均值高。"
+                elif(meanErrorRate<AveragePerformanceData['ErrorRate']):
+                    cwsysErrorRate = "出错频率比评估系统内存储数据平均值低。"
+                if(meanErrorRate>per.Standard):#比标准值高
+                    cwstdErrorRate=per.HigherAdvice
+                elif(meanErrorRate<per.Standard):
+                    cwstdErrorRate=per.LowerAdvice
 
-        HtmlInfoList = [{'name': '出错频率', 'unit': '次/小时', 'data': meanErrorRate},
-                        {'name': '完成时间', 'unit': '分钟', 'data': meanFinishTime},
-                        {'name': '成功率', 'unit': '%', 'data': meanSuccessRate},
-                        {'name': '平均注视时间 ', 'unit': '秒', 'data': meanLookingTime}]
+            elif (per.IndexName == "完成时间"):
+                if (meanFinishTime > AveragePerformanceData['FinishTime']):
+                    cwsysFinishTime = "完成时间比评估系统内存储数据平均值高。"
+                elif (meanFinishTime < AveragePerformanceData['FinishTime']):
+                    cwsysFinishTime = "完成时间比评估系统内存储数据平均值低。"
+                if (meanFinishTime > per.Standard):  # 比标准值高
+                    cwstdFinishTime = per.HigherAdvice
+                elif (meanFinishTime < per.Standard):
+                    cwstdFinishTime = per.LowerAdvice
+
+            elif (per.IndexName == "成功率"):
+                if (meanSuccessRate > AveragePerformanceData['SuccessRate']):
+                    cwsysSuccessRate = "成功率比评估系统内存储数据平均值高。"
+                elif (meanSuccessRate < AveragePerformanceData['SuccessRate']):
+                    cwsysSuccessRate = "成功率比评估系统内存储数据平均值低。"
+                if (meanSuccessRate > per.Standard):  # 比标准值高
+                    cwstdSuccessRate = per.HigherAdvice
+                elif (meanSuccessRate < per.Standard):
+                    cwstdSuccessRate = per.LowerAdvice
+            elif (per.IndexName == "平均注视时间"):
+                if (meanLookingTime > AveragePerformanceData['LookingTime']):
+                    cwsysLookingTime = "平均注视时间比评估系统内存储数据平均值高。"
+                elif (meanLookingTime < AveragePerformanceData['LookingTime']):
+                    cwsysLookingTime = "平均注视时间比评估系统内存储数据平均值低。"
+                if (meanLookingTime > per.Standard):  # 比标准值高
+                    cwstdLookingTime = per.HigherAdvice
+                elif (meanLookingTime < per.Standard):
+                    cwstdLookingTime = per.LowerAdvice
+
+        HtmlInfoList = [{'name': '出错频率', 'unit': '次/小时', 'meandata': meanErrorRate,'stddata':stdErrorRate,'maxdata':maxErrorRate,'mindata':minErrorRate,'SysAdvice':cwsysErrorRate,'StdAdvice':cwstdErrorRate},
+                        {'name': '完成时间', 'unit': '分钟', 'meandata': meanFinishTime,'stddata':stdFinishTime,'maxdata':maxFinishTime,'mindata':minErrorRate,'SysAdvice':cwsysFinishTime,'StdAdvice':cwstdFinishTime},
+                        {'name': '成功率', 'unit': '%', 'meandata': meanSuccessRate,'stddata':stdSuccessRate,'maxdata':maxSuccessRate,'mindata':minSuccessRate,'SysAdvice':cwsysSuccessRate,'StdAdvice':cwstdSuccessRate},
+                        {'name': '平均注视时间 ', 'unit': '毫秒', 'meandata': meanLookingTime,'stddata':stdLookingTime,'maxdata':maxLookingTime,'mindata':minLookingTime,'SysAdvice':cwsysLookingTime,'StdAdvice':cwstdLookingTime}]
         print(AssessAllUseProblems)
         Sorted_AssessAllUseProblems=AssessAllUseProblems.sort(key=lambda s:int(s['serious']))
         print("排序后")

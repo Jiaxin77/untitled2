@@ -334,19 +334,19 @@ body{
 #Information
 {
 	border:1px solid lightgrey;
-	width: 500px;
-	height: 200px;
+	width: 700px;
+	height: 400px;
 	position: relative;
 	padding: 30px;
 	top:100px;
-	left: 15%;
+	left: 5%;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
 
 
 }
-
+/*
 #Information .name
 {
 	display: inline-block;
@@ -373,6 +373,29 @@ body{
 	margin:0 auto;
 	font-weight: 700;
 
+}
+
+*/
+#Information table
+{
+    width: 700px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	border-collapse:collapse;
+}
+#Information table th
+{
+    border-top: 1.5px solid rgb(34, 170, 255);
+	border-bottom: 1.5px solid rgb(34, 170, 255);
+	font-weight: 500;
+	background-color:rgb(34, 170, 255,0.7);
+	color:white;
+}
+#Information table td
+{
+    border-top: 1.5px solid rgb(34, 170, 255);
+	border-bottom: 1.5px solid rgb(34, 170, 255);
+	background-color: rgb(34, 170, 255,0.1);
 }
 
 #AllHeuInfo
@@ -491,7 +514,6 @@ body{
 	border-bottom: 1.5px solid rgb(34, 170, 255);
 	background-color: rgb(34, 170, 255,0.1);
 }
-
 
 #QNaire
 {
