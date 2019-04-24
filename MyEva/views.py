@@ -25,6 +25,7 @@ import json
 import math
 import numpy
 import jieba
+import datetime
 import re
 from collections import Counter
 
@@ -468,12 +469,20 @@ def addQNaire(request):#新建问卷的问题
 
 
 def getAllSearchData():
+    GASDStartTime=datetime.datetime.now()
     AllSearchList=UserList.objects.all().values('SearchHistory')
     SearchData=[]
     for search in AllSearchList:
         if(search['SearchHistory']!=None):
             SearchData.append(search['SearchHistory'])
+    CFStartTime=datetime.datetime.now()
     htmlFrequency=countFrequency(SearchData)
+    CFEndTime = datetime.datetime.now()
+    print("CF总执行时间")
+    print((CFEndTime - CFStartTime).seconds)
+    GASDEndTime = datetime.datetime.now()
+    print("GASD总执行时间")
+    print((GASDEndTime - GASDStartTime).seconds)
     return  htmlFrequency
 
 def getUserRecommend():
@@ -493,13 +502,24 @@ def getUserRecommend():
 
 
 def chooseEva(request):#展示评估方案列表
+
+    chooseEvaStartTime=datetime.datetime.now()
+
     print("chooseEva")
     evalist=AssessList.objects.all()
     HtmlEvaList=[]
     global USER
     tempUser={'userid':USER.UserId,'username':USER.UserName,'userStatus':USER.Status}
+    WCResultsStartTime=datetime.datetime.now()
     WCResults=getAllSearchData()
+    WCResultsEndTime = datetime.datetime.now()
+    print("WCResults执行时间")
+    print((WCResultsEndTime - WCResultsStartTime).seconds)
+    RecommendStartTime=datetime.datetime.now()
     recommend=getUserRecommend()
+    RecommendEndTime=datetime.datetime.now()
+    print("Recommend执行时间")
+    print((RecommendEndTime - RecommendStartTime).seconds)
     HtmlAssessNameList=[]
     for eva in evalist:
         HtmlAssessNameList.append(eva.AssessName)
@@ -515,6 +535,9 @@ def chooseEva(request):#展示评估方案列表
         else:
             tempeva['condition']='End'
         HtmlEvaList.append(tempeva)
+    chooseEvaEndTime=datetime.datetime.now()
+    print("总执行时间")
+    print((chooseEvaEndTime-chooseEvaStartTime).seconds)
     return render(request,"chooseEva.html",{'EvaList':json.dumps(HtmlEvaList),'User':tempUser,'AssessNameList':HtmlAssessNameList,'WCResults':WCResults,'Recommend':recommend})
 
 
@@ -738,14 +761,26 @@ def deleteAssess(request):#删除评估方案
     return  render(request,"chooseEva.html")
 
 def countFrequency(answers):#计算词频
-    print(answers)
+    #print(answers)
     htmlFrequency = []
     if(answers!=[]):
         myTxt = ''.join(answers)
         # myTxt="李汶翰、嘉羿、管栎、胡春杨、陈宥维、夏瀚宇、施展、邓超元、连淮伟李汶翰、姚明明、管栎、何昶希、胡春杨、陈宥维、连淮伟、陈思键、冯俊杰李汶翰、嘉羿、管栎、胡春杨、连淮伟、夏瀚宇、何昶希、姚明明、冯俊杰、李汶翰、嘉羿、管栎、胡春杨、连淮伟、夏瀚宇、何昶希、姚明明、冯俊杰李汶翰、嘉羿、管栎、胡春杨、连淮伟、夏瀚宇、何昶希、姚明明、冯俊杰"
+        JiebaCutStartTime=datetime.datetime.now()
         myTxt_words = [x for x in jieba.cut(myTxt) if len(x) >= 2]
+        JiebaCutEndTime = datetime.datetime.now()
+        print("JiebaCut执行时间")
+        print((JiebaCutEndTime-JiebaCutStartTime).seconds)
+        CounterStartTime=datetime.datetime.now()
         c = Counter(myTxt_words).most_common(10)
+        CounterEndTime=datetime.datetime.now()
+        print("Counter执行时间")
+        print((CounterEndTime - CounterStartTime).seconds)
+
         print(json.dumps(c, ensure_ascii=False))
+
+
+
         for oneWord in c:
             temp = {'name': '', 'value': 0}
             temp['name'] = oneWord[0]
@@ -1319,16 +1354,16 @@ def fuzzySearch(userInput):
     resultAssess = []
     j = 0
     tempeva = {'id': 0, 'name': '', 'person': '', 'InShort': '', 'BeginTime': '', 'process': '', 'condition': ''}
-    print("result!!!!")
-    print(resultList)
+    #print("result!!!!")
+    #print(resultList)
     for result in resultList:
-        print(result)
+        #print(result)
         NameAssess = AssessList.objects.filter(AssessName=result)
-        print(NameAssess)
+        #print(NameAssess)
         OneDesAssess = AssessList.objects.filter(AssessOneDes=result)
-        print(OneDesAssess)
+        #print(OneDesAssess)
         DesAssess = AssessList.objects.filter(AssessDes=result)
-        print(DesAssess)
+        #print(DesAssess)
         if NameAssess.exists():
             for nameeva in NameAssess:
                 tempeva = {'id': 0, 'name': '', 'person': '', 'InShort': '', 'BeginTime': '', 'process': '',
@@ -1343,7 +1378,7 @@ def fuzzySearch(userInput):
                     tempeva['condition'] = 'ing'
                 else:
                     tempeva['condition'] = 'End'
-                print(tempeva)
+                #print(tempeva)
                 resultAssess.append(tempeva)
         if OneDesAssess.exists():
             for onedeseva in OneDesAssess:
@@ -1360,7 +1395,7 @@ def fuzzySearch(userInput):
                 else:
                     tempeva['condition'] = 'End'
                 resultAssess.append(tempeva)
-                print(tempeva)
+                #print(tempeva)
         if DesAssess.exists():
             for deseva in DesAssess:
                 tempeva = {'id': 0, 'name': '', 'person': '', 'InShort': '', 'BeginTime': '', 'process': '',
@@ -1375,10 +1410,10 @@ def fuzzySearch(userInput):
                     tempeva['condition'] = 'ing'
                 else:
                     tempeva['condition'] = 'End'
-                print(tempeva)
+                #print(tempeva)
                 resultAssess.append(tempeva)
     global USER
-    print(resultAssess)
+    #print(resultAssess)
     resultAssess = [dict(t) for t in set([tuple(d.items()) for d in resultAssess])]  # 去重
     return resultAssess
 
@@ -1407,7 +1442,7 @@ def fuzzyfinder(user_input, collection):
 
         regex = re.compile(pattern)  # Compiles a regex.
         for item in collection:
-            print(type(item))
+            #print(type(item))
             match = regex.search(item)  # Checks if the current item matches the regex.
             if match:
                 suggestions.append((len(match.group()), match.start(), item))
