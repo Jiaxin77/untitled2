@@ -242,6 +242,7 @@ var app=new Vue({
 	el:'#app',
 	data:{
 		InfoList:infoList,
+        SumInfoList:SumInfoList,
 		plans:PlanList,
 		AllUseProblems:allUseProblems,
 		UseProblemList:[],

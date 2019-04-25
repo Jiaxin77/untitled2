@@ -1043,6 +1043,9 @@ def AnalysisData(request):#分析评估数据
         AssessAllUseProblems=[]
         usernum = 0
 
+        Efficiency=[]#绩效
+        Fatigue=[]#疲劳度
+
         j=1
         for plan in thisPlans:
 
@@ -1122,6 +1125,7 @@ def AnalysisData(request):#分析评估数据
         cwstdLookingTime = ""
         cwsysBlinkingFre = ""
         cwstdBlinkingFre = ""
+
         if(len(ErrorRate)!=0):
             meanErrorRate=round(numpy.mean(ErrorRate),2)
             stdErrorRate=round(numpy.std(ErrorRate, ddof=1),2)
@@ -1153,6 +1157,8 @@ def AnalysisData(request):#分析评估数据
         StandardPerformanceData=IndexList.objects.filter(thisMethod="数据记录")
         for per in StandardPerformanceData:
             if(per.IndexName=="出错频率"):
+                ErrorRatePer=-((meanErrorRate-per.Standard)/per.Standard)#出错频率表现
+                Efficiency.append(ErrorRatePer)
                 if(meanErrorRate>AveragePerformanceData['ErrorRate']):
                     cwsysErrorRate="出错频率比评估系统内存储数据平均值高。"
                 elif(meanErrorRate<AveragePerformanceData['ErrorRate']):
@@ -1163,6 +1169,8 @@ def AnalysisData(request):#分析评估数据
                     cwstdErrorRate=per.LowerAdvice
 
             elif (per.IndexName == "完成时间"):
+                FinishTimePer=-((meanFinishTime-per.Standard)/per.Standard)#完成时间表现
+                Efficiency.append(FinishTimePer)
                 if (meanFinishTime > AveragePerformanceData['FinishTime']):
                     cwsysFinishTime = "完成时间比评估系统内存储数据平均值高。"
                 elif (meanFinishTime < AveragePerformanceData['FinishTime']):
@@ -1173,6 +1181,8 @@ def AnalysisData(request):#分析评估数据
                     cwstdFinishTime = per.LowerAdvice
 
             elif (per.IndexName == "成功率"):
+                SuccessRatePer=(meanSuccessRate-per.Standard)/per.Standard#成功率表现
+                Efficiency.append(SuccessRatePer)
                 if (meanSuccessRate > AveragePerformanceData['SuccessRate']):
                     cwsysSuccessRate = "成功率比评估系统内存储数据平均值高。"
                 elif (meanSuccessRate < AveragePerformanceData['SuccessRate']):
@@ -1182,6 +1192,8 @@ def AnalysisData(request):#分析评估数据
                 elif (meanSuccessRate < per.Standard):
                     cwstdSuccessRate = per.LowerAdvice
             elif (per.IndexName == "平均注视时间"):
+                LookingTimePer=(meanLookingTime-per.Standard)/per.Standard#平均注视时间表现
+                Fatigue.append(LookingTimePer)
                 if (meanLookingTime > AveragePerformanceData['LookingTime']):
                     cwsysLookingTime = "平均注视时间比评估系统内存储数据平均值高。"
                 elif (meanLookingTime < AveragePerformanceData['LookingTime']):
@@ -1191,6 +1203,8 @@ def AnalysisData(request):#分析评估数据
                 elif (meanLookingTime < per.Standard):
                     cwstdLookingTime = per.LowerAdvice
             elif (per.IndexName == "眨眼频率"):
+                BlinkingFrePer=(meanBlinkingFre-per.Standard)/per.Standard#眨眼频率表现
+                Fatigue.append(BlinkingFrePer)
                 if (meanBlinkingFre > AveragePerformanceData['BlinkingFre']):
                     cwsysBlinkingFre = "眨眼频率比评估系统内存储数据平均值高。"
                 elif (meanBlinkingFre < AveragePerformanceData['BlinkingFre']):
@@ -1200,6 +1214,29 @@ def AnalysisData(request):#分析评估数据
                 elif (meanBlinkingFre < per.Standard):
                     cwstdBlinkingFre = per.LowerAdvice
 
+        meanEfficiency=0
+        meanFatigue=0
+        stdEfficiencyAdvice=""
+        stdFatigueAdvice=""
+        if(Efficiency!=[]):
+            meanEfficiency=round(numpy.mean(Efficiency),2)
+            if(meanEfficiency>0):
+                stdEfficiencyAdvice = "该系统操作员绩效较高。"
+            elif(meanEfficiency<0):
+                stdEfficiencyAdvice = "该系统操作员绩效较低。"
+            else:
+                stdEfficiencyAdvice = "该系统操作员绩效符合平均水平。"
+        if(Fatigue!=[]):
+            meanFatigue = round(numpy.mean(Fatigue), 2)
+            if (meanFatigue > 0):
+                stdFatigueAdvice = "该系统操作员疲劳度较高。"
+            elif (meanFatigue < 0):
+                stdFatigueAdvice = "该系统操作员疲劳度较低。"
+            else:
+                stdFatigueAdvice = "该系统操作员疲劳度符合平均水平。"
+
+        HtmlSumInfoList=[{'name':'绩效','degree':meanEfficiency,'Advice':stdEfficiencyAdvice},
+                         { 'name':'疲劳度','degree':meanFatigue,'Advice':stdFatigueAdvice}]
         HtmlInfoList = [{'name': '出错频率', 'unit': '次/小时', 'meandata': meanErrorRate,'stddata':stdErrorRate,'maxdata':maxErrorRate,'mindata':minErrorRate,'SysAdvice':cwsysErrorRate,'StdAdvice':cwstdErrorRate},
                         {'name': '完成时间', 'unit': '分钟', 'meandata': meanFinishTime,'stddata':stdFinishTime,'maxdata':maxFinishTime,'mindata':minFinishTime,'SysAdvice':cwsysFinishTime,'StdAdvice':cwstdFinishTime},
                         {'name': '成功率', 'unit': '%', 'meandata': meanSuccessRate,'stddata':stdSuccessRate,'maxdata':maxSuccessRate,'mindata':minSuccessRate,'SysAdvice':cwsysSuccessRate,'StdAdvice':cwstdSuccessRate},
@@ -1209,7 +1246,7 @@ def AnalysisData(request):#分析评估数据
         Sorted_AssessAllUseProblems=AssessAllUseProblems.sort(key=lambda s:int(s['serious']),reverse=True)
         print("排序后")
         print(AssessAllUseProblems)
-        return  render(request,"EvaResult.html",{'PlanList':HtmlPlanList,'infoList':HtmlInfoList,'QNaireResults':QNaireResults,'allUseProblems':allUseProblems,'AssessUseProblems':AssessAllUseProblems})
+        return  render(request,"EvaResult.html",{'PlanList':HtmlPlanList,'infoList':HtmlInfoList,'SumInfoList':HtmlSumInfoList,'QNaireResults':QNaireResults,'allUseProblems':allUseProblems,'AssessUseProblems':AssessAllUseProblems})
     return render(request, "chooseEva.html")
 
 
