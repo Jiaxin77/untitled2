@@ -233,8 +233,8 @@
             <p hidden>模板评估id <input  id="ModelAssessId" type="text" name="assessid" v-model="chooseModel.AssessId"></p>
             <br>
             <div id="modelButtons">
-                <button id="cancel" @click="closeNewBox()">取消</button>
-                <button id="yes"  @click="submitFromModel()">确定</button>
+                <button id="cancel" @click="closeNewBox()" type="button">取消</button>
+                <button id="yes"  @click="submitFromModel()" type="button">确定</button>
             </div>
         </div>
     </form>

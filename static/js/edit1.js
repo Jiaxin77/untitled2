@@ -119,8 +119,36 @@ var app = new Vue({
 		ModelId:ModelId
 
 	},
+	mounted:function(){
+		this.detectedAll(this.datas);
+	},
 	methods:{
+		/*页面加载时检测*/
+		detectedAll:function(datas)
+		{
+			for(var ad=0;ad<datas.length;ad++)
+			{
+				var family=document.getElementById(datas[ad].name);//选择 设置其checked！
 
+				if(this.isAllChecked(datas[ad]))
+				{
+
+
+					family.checked = true;
+				}
+				for (var fir=0;fir<datas[ad].FirstList.length;fir++)
+				{
+					var father=document.getElementById(datas[ad].FirstList[fir].listTitle);
+
+					if(this.isTitleChecked(datas[ad].FirstList[fir]))
+					{
+
+						father.checked = true;
+					}
+
+				}
+			}
+		},
 /**
 * 当父标题状态变化时的处理方法
 * @param data [当前项的data]
@@ -150,11 +178,23 @@ changeTitleChecked : function (data,event) {
 */
 isTitleChecked : function (data) {
 	console.log("iTC"+data.listTitle);
-	var _selected = data.selected;
-	var _listItem = data.SecondList;
+	var _selected=[];
+	var _listItem=[];
+	for(var sel=0;sel<data.selected.length;sel++)
+	{
+		_selected.push(data.selected[sel].listTitle);
+	}
+	for(var lti=0;lti<data.SecondList.length;lti++)
+	{
+		_listItem.push(data.SecondList[lti].listTitle);
+	}
+	/*var _selected = data.selected;
+	var _listItem = data.SecondList;*/
+
 // 验证selected中是否含有全部的item的id 如果是 证明title要选中
 
 return _listItem.every(function (item) {
+
 	return _selected.indexOf(item) != -1;
 });
 },

@@ -1046,7 +1046,7 @@ def AnalysisData(request):#分析评估数据
                 HtmlPlanList.append(temp)
                 j = j + 1
                 # 列出可用性问题清单
-                thisHeus = HeuEvaResult.objects.filter(PlanId=plan).order_by('SeriousDegree')
+                thisHeus = HeuEvaResult.objects.filter(PlanId=plan).order_by('-SeriousDegree')
                 heucount = 1
                 useProblems = []
                 for heu in thisHeus:
@@ -1177,7 +1177,7 @@ def AnalysisData(request):#分析评估数据
                         {'name': '成功率', 'unit': '%', 'meandata': meanSuccessRate,'stddata':stdSuccessRate,'maxdata':maxSuccessRate,'mindata':minSuccessRate,'SysAdvice':cwsysSuccessRate,'StdAdvice':cwstdSuccessRate},
                         {'name': '平均注视时间 ', 'unit': '毫秒', 'meandata': meanLookingTime,'stddata':stdLookingTime,'maxdata':maxLookingTime,'mindata':minLookingTime,'SysAdvice':cwsysLookingTime,'StdAdvice':cwstdLookingTime}]
         print(AssessAllUseProblems)
-        Sorted_AssessAllUseProblems=AssessAllUseProblems.sort(key=lambda s:int(s['serious']))
+        Sorted_AssessAllUseProblems=AssessAllUseProblems.sort(key=lambda s:int(s['serious']),reverse=True)
         print("排序后")
         print(AssessAllUseProblems)
         return  render(request,"EvaResult.html",{'PlanList':HtmlPlanList,'infoList':HtmlInfoList,'QNaireResults':QNaireResults,'allUseProblems':allUseProblems,'AssessUseProblems':AssessAllUseProblems})

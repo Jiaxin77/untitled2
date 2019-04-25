@@ -35,7 +35,7 @@
 
 							}))
 							.then(function (response) {
-								//alert("保存成功，感谢您的填写！");
+								alert("保存成功，感谢您的填写！");
 								window.location.href = '/chooseEva/'
 								console.log(response);
 							})

@@ -330,6 +330,17 @@ var app=new Vue({
 					}
 					else if(this.plans[iplan].PlanType=="可用性测试")
 					{
+						Bar=document.getElementsByClassName('myBar')
+						for(var bar=0;bar<Bar.length;bar++)
+						{
+							Bar[bar].style.visibility="hidden";
+						}
+
+						Pie=document.getElementsByClassName('myPie')
+						for(var pie=0;pie<Pie.length;pie++)
+						{
+							Pie[pie].style.visibility="hidden";
+						}
 						for(var qnaire=0;qnaire<this.AllQNaireResults.length;qnaire++)
 						{
 							if(this.plans[iplan].PlanId==this.AllQNaireResults[qnaire].PlanId)

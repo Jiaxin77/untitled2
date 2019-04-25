@@ -182,16 +182,17 @@
 							console.log(error);
 						})*/
 
-               if (document.getElementById('ModelEvaNameInput').value==null)
+               if (document.getElementById('ModelEvaNameInput').value=="")
 				{
 					alert("名称不能为空！")
 				}
-				else if(document.getElementById('ModelEvaPerson').value==null)
+				else if(document.getElementById('ModelEvaPerson').value=="")
 				{
 					alert("参与人数不能为空！")
 				}
 				else
 				{
+
 					document.ModelEva.submit();
 				}
 
