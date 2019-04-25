@@ -69,7 +69,13 @@
 	name:"平均注视时间",
 	unit:"毫秒",
 	value:""
-}
+},
+		{
+			name:"眨眼频率",
+			unit:"次/分钟",
+			value:""
+
+		}
 ]
 /*
 var QNaires=[

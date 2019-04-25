@@ -919,7 +919,7 @@ def getEvaAnswer(request):#获取用户填的评估数据
                 print("录入数据记录！")
                 dataInfo=[]
                 dataInfo=info['myInfo'].split(',')
-                PerformanceRecord.objects.create(ErrorRate=int(dataInfo[0]),FinishTime=int(dataInfo[1]),SuccessRate=int(dataInfo[2]),LookingTime=int(dataInfo[3]),PlanId=thisPlan,UserId=USER)
+                PerformanceRecord.objects.create(ErrorRate=int(dataInfo[0]),FinishTime=int(dataInfo[1]),SuccessRate=int(dataInfo[2]),LookingTime=int(dataInfo[3]),BlinkingFre=int(dataInfo[4]),PlanId=thisPlan,UserId=USER)
         elif(PlanType=="可用性测试"):
                 Answers=info['QNaireInfo']
                 surveyId=thisPlan.PlanTypeId
@@ -991,10 +991,12 @@ def getAllPerformance():#全部评估数据的分析结果
      meanfinish=0
      meansuccessrate=0
      meanlookingtime=0
+     meanblinkingfre=0
      ErrorRate=[]
      FinishTime=[]
      SuccessRate=[]
      LookingTime=[]
+     BlinkingFre=[]
      for performance in AllPerformance:
          if(performance.ErrorRate!=0):
              ErrorRate.append(performance.ErrorRate)
@@ -1004,11 +1006,14 @@ def getAllPerformance():#全部评估数据的分析结果
              SuccessRate.append(performance.SuccessRate)
          if(performance.LookingTime!=0):
              LookingTime.append(performance.LookingTime)
+         if(performance.BlinkingFre!=0):
+             BlinkingFre.append(performance.BlinkingFre)
      meanerror=numpy.mean(ErrorRate)
      meanfinish=numpy.mean(FinishTime)
      meansuccessrate=numpy.mean(SuccessRate)
      meanlookingtime=numpy.mean(LookingTime)
-     AveragePerformanceData={'ErrorRate':meanerror,'FinishTime':meanfinish,'SuccessRate':meansuccessrate,'LookingTime':meanlookingtime}
+     meanblinkingfre=numpy.mean(BlinkingFre)
+     AveragePerformanceData={'ErrorRate':meanerror,'FinishTime':meanfinish,'SuccessRate':meansuccessrate,'LookingTime':meanlookingtime,'BlinkingFre':meanblinkingfre}
      return AveragePerformanceData
 
 
@@ -1034,6 +1039,7 @@ def AnalysisData(request):#分析评估数据
         FinishTime = []
         SuccessRate = []
         LookingTime = []
+        BlinkingFre = []
         AssessAllUseProblems=[]
         usernum = 0
 
@@ -1073,6 +1079,8 @@ def AnalysisData(request):#分析评估数据
                         SuccessRate.append(performance.SuccessRate)
                     if(performance.LookingTime!=0):
                         LookingTime.append(performance.LookingTime)
+                    if(performance.BlinkingFre!=0):
+                        BlinkingFre.append(performance.BlinkingFre)
             elif (str(plan.PlanTypeId).isdigit()):  # 可用性测试
                 temp = {"id": j, "PlanId": plan.PlanId, "PlanName": plan.PlanName, "PlanType": "可用性测试"}
                 HtmlPlanList.append(temp)
@@ -1088,18 +1096,22 @@ def AnalysisData(request):#分析评估数据
         meanFinishTime=0
         meanSuccessRate=0
         meanLookingTime=0
+        meanBlinkingFre=0
         maxErrorRate=0
         maxFinishTime=0
         maxSuccessRate=0
         maxLookingTime=0
+        maxBlinkingFre=0
         minErrorRate=0
         minFinishTime=0
         minSuccessRate=0
         minLookingTime=0
+        minBlinkingFre=0
         stdErrorRate=0
         stdFinishTime=0
         stdSuccessRate=0
         stdLookingTime=0
+        stdBlinkingFre=0
         cwsysErrorRate=""
         cwstdErrorRate=""
         cwsysFinishTime = ""
@@ -1108,6 +1120,8 @@ def AnalysisData(request):#分析评估数据
         cwstdSuccessRate = ""
         cwsysLookingTime = ""
         cwstdLookingTime = ""
+        cwsysBlinkingFre = ""
+        cwstdBlinkingFre = ""
         if(len(ErrorRate)!=0):
             meanErrorRate=round(numpy.mean(ErrorRate),2)
             stdErrorRate=round(numpy.std(ErrorRate, ddof=1),2)
@@ -1128,6 +1142,11 @@ def AnalysisData(request):#分析评估数据
             stdLookingTime=round(numpy.std(LookingTime),2)
             maxLookingTime=max(LookingTime)
             minLookingTime=min(LookingTime)
+        if(len(BlinkingFre)!=0):
+            meanBlinkingFre=round(numpy.mean(BlinkingFre),2)
+            stdBlinkingFre=round(numpy.std(BlinkingFre),2)
+            maxBlinkingFre=max(BlinkingFre)
+            minBlinkingFre=min(BlinkingFre)
 
         AveragePerformanceData=getAllPerformance()
         print(AveragePerformanceData)
@@ -1171,11 +1190,21 @@ def AnalysisData(request):#分析评估数据
                     cwstdLookingTime = per.HigherAdvice
                 elif (meanLookingTime < per.Standard):
                     cwstdLookingTime = per.LowerAdvice
+            elif (per.IndexName == "眨眼频率"):
+                if (meanBlinkingFre > AveragePerformanceData['BlinkingFre']):
+                    cwsysBlinkingFre = "眨眼频率比评估系统内存储数据平均值高。"
+                elif (meanBlinkingFre < AveragePerformanceData['BlinkingFre']):
+                    cwsysBlinkingFre = "眨眼频率比评估系统内存储数据平均值低。"
+                if (meanBlinkingFre > per.Standard):  # 比标准值高
+                    cwstdBlinkingFre = per.HigherAdvice
+                elif (meanBlinkingFre < per.Standard):
+                    cwstdBlinkingFre = per.LowerAdvice
 
         HtmlInfoList = [{'name': '出错频率', 'unit': '次/小时', 'meandata': meanErrorRate,'stddata':stdErrorRate,'maxdata':maxErrorRate,'mindata':minErrorRate,'SysAdvice':cwsysErrorRate,'StdAdvice':cwstdErrorRate},
-                        {'name': '完成时间', 'unit': '分钟', 'meandata': meanFinishTime,'stddata':stdFinishTime,'maxdata':maxFinishTime,'mindata':minErrorRate,'SysAdvice':cwsysFinishTime,'StdAdvice':cwstdFinishTime},
+                        {'name': '完成时间', 'unit': '分钟', 'meandata': meanFinishTime,'stddata':stdFinishTime,'maxdata':maxFinishTime,'mindata':minFinishTime,'SysAdvice':cwsysFinishTime,'StdAdvice':cwstdFinishTime},
                         {'name': '成功率', 'unit': '%', 'meandata': meanSuccessRate,'stddata':stdSuccessRate,'maxdata':maxSuccessRate,'mindata':minSuccessRate,'SysAdvice':cwsysSuccessRate,'StdAdvice':cwstdSuccessRate},
-                        {'name': '平均注视时间 ', 'unit': '毫秒', 'meandata': meanLookingTime,'stddata':stdLookingTime,'maxdata':maxLookingTime,'mindata':minLookingTime,'SysAdvice':cwsysLookingTime,'StdAdvice':cwstdLookingTime}]
+                        {'name': '平均注视时间 ', 'unit': '毫秒', 'meandata': meanLookingTime,'stddata':stdLookingTime,'maxdata':maxLookingTime,'mindata':minLookingTime,'SysAdvice':cwsysLookingTime,'StdAdvice':cwstdLookingTime},
+                        {'name': '眨眼频率 ', 'unit': '次/分钟', 'meandata': meanBlinkingFre,'stddata':stdBlinkingFre,'maxdata':maxBlinkingFre,'mindata':minBlinkingFre,'SysAdvice':cwsysBlinkingFre,'StdAdvice':cwstdBlinkingFre}]
         print(AssessAllUseProblems)
         Sorted_AssessAllUseProblems=AssessAllUseProblems.sort(key=lambda s:int(s['serious']),reverse=True)
         print("排序后")

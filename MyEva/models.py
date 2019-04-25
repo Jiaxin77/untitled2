@@ -154,6 +154,7 @@ class PerformanceRecord(models.Model):
     FinishTime = models.FloatField(default=0)
     SuccessRate = models.FloatField(default=0)
     LookingTime = models.FloatField(default=0)
+    BlinkingFre = models.FloatField(default=0)
     PlanId = models.ForeignKey('PlanList',on_delete=models.CASCADE)
     UserId = models.ForeignKey('UserList',on_delete=models.CASCADE)
 
