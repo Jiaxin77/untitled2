@@ -896,13 +896,7 @@ def getEvaAnswer(request):#获取用户填的评估数据
     global USER
 
     thisAssess=AssessList.objects.get(AssessId=AssessId)
-    assessedNum = math.ceil((thisAssess.AssessUseNum * thisAssess.AssessPro) / 100)  # 向上取整
-    assessedNum = assessedNum + 1
-    assessPro = assessedNum * 100 / thisAssess.AssessUseNum
-    if (assessPro > 100):
-        assessPro = 100
-    thisAssess.AssessPro = assessPro
-    thisAssess.save()
+
 
     for info in AllInfo:
         PlanId=info['Planid']
@@ -912,6 +906,11 @@ def getEvaAnswer(request):#获取用户填的评估数据
         thisIndex=IndexList.objects.get(IndexName=IndexName)
         if(PlanType=="启发式评估"):
                 UseTables=[]
+                nowUseTables=HeuEvaResult.objects.filter(PlanId=thisPlan,UserId=USER)
+                if nowUseTables.exists():
+                    print("您已填过该评估方案！不可重复填写！")
+                    messages.error(request, "您已填过该评估方案！不可重复填写！")
+                    return render(request, "evaPlan.html")
                 UseTables=info['UseTables']
                 for usetable in UseTables:
                     HeuEvaResult.objects.create(Interface=usetable['local'],HeuProblem=usetable['problem'],SeriousDegree=usetable['serious'],Advice=usetable['advice'],IndexId=thisIndex,PlanId=thisPlan,UserId=USER)
@@ -919,6 +918,11 @@ def getEvaAnswer(request):#获取用户填的评估数据
                 print("录入数据记录！")
                 dataInfo=[]
                 dataInfo=info['myInfo'].split(',')
+                nowPerformanceRecord=PerformanceRecord.objects.filter(PlanId=thisPlan,UserId=USER)
+                if nowPerformanceRecord.exists():
+                    print("您已填过该评估方案！不可重复填写！")
+                    messages.error(request, "您已填过该评估方案！不可重复填写！")
+                    return render(request, "evaPlan.html")
                 PerformanceRecord.objects.create(ErrorRate=int(dataInfo[0]),FinishTime=int(dataInfo[1]),SuccessRate=int(dataInfo[2]),LookingTime=int(dataInfo[3]),BlinkingFre=int(dataInfo[4]),PlanId=thisPlan,UserId=USER)
         elif(PlanType=="可用性测试"):
                 Answers=info['QNaireInfo']
@@ -928,7 +932,7 @@ def getEvaAnswer(request):#获取用户填的评估数据
                 if thisPaper.exists():
                     print("您已填过该评估方案！不可重复填写！")
                     messages.error(request, "您已填过该评估方案！不可重复填写！")
-                    return render(request, "chooseEva.html")
+                    return render(request, "evaPlan.html")
                 else:
                     # 增加一个填问卷的人
                     surveyedNum = math.ceil((thisSurvey.SurveyUseNum * thisSurvey.SurveyPro) / 100)
@@ -981,7 +985,14 @@ def getEvaAnswer(request):#获取用户填的评估数据
         else:
             print("暂未开发")
 
-
+    assessedNum = math.ceil((thisAssess.AssessUseNum * thisAssess.AssessPro) / 100)  # 向上取整
+    assessedNum = assessedNum + 1
+    assessPro = assessedNum * 100 / thisAssess.AssessUseNum
+    if (assessPro > 100):
+        assessPro = 100
+    thisAssess.AssessPro = assessPro
+    thisAssess.save()
+    messages.success(request, "填写评估方案成功！")
     return render(request,"evaPlan.html")
 #
 def getAllPerformance():#全部评估数据的分析结果

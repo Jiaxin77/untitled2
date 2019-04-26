@@ -175,5 +175,12 @@
 <script type="text/javascript" src="/static/js/axios.min.js"></script>
 
 <script type="text/javascript" src="/static/js/evaPlan.js"></script>
+ {% if messages %}
+        <script>
+            {% for msg in messages %}
+                alert('{{ msg.message }}');
+            {% endfor %}
+        </script>
+    {% endif %}
 
 </html>

@@ -393,6 +393,8 @@ var app=new Vue({
 						alert("保存成功！")
 						window.location.href = '/chooseEva/'
 						console.log(response);
+
+
 					})
 					.catch(function (error) {
 						console.log(error);

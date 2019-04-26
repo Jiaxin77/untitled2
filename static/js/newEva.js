@@ -104,9 +104,9 @@
 				{
 					alert("请选择评估类型！")
 				}
-				else if(document.getElementById('EvaPersonNum').value=="")
+				else if(document.getElementById('EvaPersonNum').value==""||isNaN(document.getElementById('EvaPersonNum').value)==true)
 				{
-					alert("参与人数不能为空！")
+					alert("请输入正确的参与人数！")
 				}
 				else
 				{
@@ -186,9 +186,9 @@
 				{
 					alert("名称不能为空！")
 				}
-				else if(document.getElementById('ModelEvaPerson').value=="")
+				else if(document.getElementById('ModelEvaPerson').value==""||isNaN(document.getElementById('ModelEvaPerson').value)==true)
 				{
-					alert("参与人数不能为空！")
+					alert("请输入正确的参与人数！")
 				}
 				else
 				{
