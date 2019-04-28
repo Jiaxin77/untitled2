@@ -133,6 +133,16 @@ li.now
 	background-color:  rgb(34, 170, 255);
 	color:white;
 }
+
+
+#choosedList
+{
+	position: relative;
+	width: 60%;
+	left: 20%;
+	right: 20%;
+}
+
 [v-cloak] {
   display:none !important;
 }

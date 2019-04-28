@@ -59,17 +59,20 @@
 		<div id="resultArea">
             <button @click="postIndexs()" id="okIndex" >确认指标</button>
 
+            <div id="choosedList">
 
 			<ul v-for = "vvv in datas">
 				<ul v-for =" uuu in vvv.FirstList">
 
 
                             <li v-for= "iii in uuu.selected">
-                               <span class="choosedIndex">{% verbatim %}{{ iii.listTitle }}{% endverbatim %}</span>
-                               <span class="choosedMethod">{% verbatim %}{{ iii.method }}{% endverbatim %}</span>
+                               <span class="choosedIndex"  style="width: 120px; text-align: right;display: inline-block;">{% verbatim %}{{ iii.listTitle }}{% endverbatim %}</span>
+                                ————
+                               <span class="choosedMethod" style="width: 80px; text-align: left;display: inline-block;">{% verbatim %}{{ iii.method }}{% endverbatim %}</span>
                             </li>
                 </ul>
             </ul>
+            </div>
 			</div>
 		</div>
 
