@@ -361,10 +361,21 @@
 
 
                 },
-                getid(eva)
+                getid:function(eva)
                 {
                     return eva.id;
                 },
+				openNewEva:function()
+				{
+					console.log("新建评估");
+					if(User.userStatus=="0")
+					{
+						alert("您没有此权限！");
+					}
+					else {
+						window.location.href = '/newEva/';
+					}
+				}
 
 
 

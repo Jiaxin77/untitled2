@@ -10,6 +10,7 @@ class UserList(models.Model):
     Password = models.CharField(max_length=50)
     Status = models.IntegerField(default=0)
     SearchHistory = models.CharField(max_length=2000,null=True)
+    online = models.BooleanField(default=False)
 
 
 #评估列表

@@ -36,9 +36,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def index(request):#测试页面用
-      return render(request, "results2.html")
+     return render(request, "results2.html")
 
 def logout(request):
+    global USER
+    USER.online=False
+    USER.save()
     return render(request,"login.html")
 
 
@@ -58,6 +61,8 @@ def login(request):#登录
                 if user.Password == password:
                     result = "登录成功"
                     USER = user
+                    user.online=True
+                    user.save()
                     #messages.success(request, "登录成功，页面跳转中...")
                     #return render(request, "chooseEva.html", {"user": username})
                     return HttpResponseRedirect(reverse('chooseEva'))
@@ -113,6 +118,7 @@ def indexandmethod(request):#指标与方法库
 def newEva(request):#转到新建评估界面
     HtmlModelList=getAllModels()
     global USER
+    #user=UserList.objects.get(online=True)
     tempUser = {'userid': USER.UserId, 'username': USER.UserName, 'userStatus': USER.Status}
     return render(request, "newEva.html",{'ModelList':HtmlModelList,'User':tempUser})
 
@@ -506,7 +512,7 @@ def chooseEva(request):#展示评估方案列表
     chooseEvaStartTime=datetime.datetime.now()
 
     print("chooseEva")
-    evalist=AssessList.objects.all()
+    evalist=AssessList.objects.all().select_related()
     HtmlEvaList=[]
     global USER
     tempUser={'userid':USER.UserId,'username':USER.UserName,'userStatus':USER.Status}
@@ -791,21 +797,34 @@ def countFrequency(answers):#计算词频
 def analysisQNaire(thisSurvey):#分析问卷结果
     thisPapers=PaperList.objects.filter(SurveyId=thisSurvey)
     thisQuestions=QuestionList.objects.filter(SurveyId=thisSurvey)
+    #AllAnswerList=AnswerList.objects.all().select_related()
     thisAnswers=[]
     for paper in thisPapers:
+        #answers=[]
         answers=AnswerList.objects.filter(PaperId=paper)
         for ans in answers:
             thisAnswers.append(ans)
     j=1
     HtmlAnswers=[]
+    #AllChoiceList=ChoiceList.objects.all().select_related()
+    #AllSCAList = SCAList.objects.all()#.select_related()
+    #AllMCAList = MCAList.objects.all()#.select_related()
+    #AllScaleAnswerList = ScaleAnswerList.objects.all()#.select_related()
+    #AllFIBAnswerList = FIBAnswerList.objects.all()#.select_related()
     for que in thisQuestions:
         if que.QuestionType == 1:#单选题
             thisSCQ=ChoiceList.objects.get(QuestionId=que)#获取题目
+            # #thisSCQ=[]
+            # for choicelist in AllChoiceList:
+            #     if(choicelist.QuestionId==que):
+            #         thisSCQ=choicelist
+
             chooseANum=0
             chooseBNum=0
             chooseCNum=0
             chooseDNum=0
             completePeople=0
+
             for thisAns in thisAnswers:
                 if thisAns.QuestionId==que:#是这道题的答案
                     completePeople=completePeople+1#有效回答人数+1
@@ -813,6 +832,7 @@ def analysisQNaire(thisSurvey):#分析问卷结果
                     #print(thisAns.QuestionId)
                     #print(thisAns.QuestionId.QueDescription)
                     choiced=SCAList.objects.get(AnswerId=thisAns)#获取具体答案
+
                     if(choiced.ChoiceAnswer=='A'):
                         chooseANum=chooseANum+1
                     elif(choiced.ChoiceAnswer=='B'):
@@ -826,6 +846,8 @@ def analysisQNaire(thisSurvey):#分析问卷结果
             j=j+1
         elif que.QuestionType == 2:#多选题
             thisMCQ=ChoiceList.objects.get(QuestionId=que)
+
+
             chooseANum=0
             chooseBNum=0
             chooseCNum=0
@@ -834,7 +856,10 @@ def analysisQNaire(thisSurvey):#分析问卷结果
             for thisAns in thisAnswers:
                 if thisAns.QuestionId==que:#是这道题的答案
                     completePeople=completePeople+1#有效回答人数+1
-                    choiced=MCAList.objects.get(AnswerId=thisAns)
+                    #choiced=MCAList.objects.get(AnswerId=thisAns)
+                    for mcalist in AllMCAList:
+                        if(mcalist.AnswerId==thisAns):
+                            choiced=mcalist
                     choicedAnswers=choiced.ChoiceAnswer.split(',')
                     for ca in choicedAnswers:
                         if(ca=='A'):
@@ -850,6 +875,7 @@ def analysisQNaire(thisSurvey):#分析问卷结果
             j=j+1
         elif que.QuestionType==4:#量表题
             thisScale=ScaleList.objects.get(QuestionId=que)
+            #thisScale = []
             chooseNum=[]
             for i in range(0,thisScale.DegreeNum):
                 chooseNum.append(0)
@@ -1433,15 +1459,28 @@ def fuzzySearch(userInput):
     tempeva = {'id': 0, 'name': '', 'person': '', 'InShort': '', 'BeginTime': '', 'process': '', 'condition': ''}
     #print("result!!!!")
     #print(resultList)
+    AllAssess = AssessList.objects.all().select_related()
     for result in resultList:
+        NameAssess=[]
+        OneDesAssess=[]
+        DesAssess=[]
+        for assess in AllAssess:
+            if(assess.AssessName==result):
+                NameAssess.append(assess)
+            if(assess.AssessOneDes==result):
+                OneDesAssess.append(assess)
+            if(assess.AssessDes==result):
+                DesAssess.append(assess)
         #print(result)
-        NameAssess = AssessList.objects.filter(AssessName=result)
-        #print(NameAssess)
-        OneDesAssess = AssessList.objects.filter(AssessOneDes=result)
-        #print(OneDesAssess)
-        DesAssess = AssessList.objects.filter(AssessDes=result)
-        #print(DesAssess)
-        if NameAssess.exists():
+
+        # NameAssess = AssessList.objects.filter(AssessName=result).select_related()
+        # #print(NameAssess)
+        # OneDesAssess = AssessList.objects.filter(AssessOneDes=result).select_related()
+        # #print(OneDesAssess)
+        # DesAssess = AssessList.objects.filter(AssessDes=result).select_related()
+        # #print(DesAssess)
+
+        if len(NameAssess)!=0:
             for nameeva in NameAssess:
                 tempeva = {'id': 0, 'name': '', 'person': '', 'InShort': '', 'BeginTime': '', 'process': '',
                            'condition': ''}
@@ -1457,7 +1496,7 @@ def fuzzySearch(userInput):
                     tempeva['condition'] = 'End'
                 #print(tempeva)
                 resultAssess.append(tempeva)
-        if OneDesAssess.exists():
+        if len(OneDesAssess)!=0:
             for onedeseva in OneDesAssess:
                 tempeva = {'id': 0, 'name': '', 'person': '', 'InShort': '', 'BeginTime': '', 'process': '',
                            'condition': ''}
@@ -1473,7 +1512,7 @@ def fuzzySearch(userInput):
                     tempeva['condition'] = 'End'
                 resultAssess.append(tempeva)
                 #print(tempeva)
-        if DesAssess.exists():
+        if len(DesAssess)!=0:
             for deseva in DesAssess:
                 tempeva = {'id': 0, 'name': '', 'person': '', 'InShort': '', 'BeginTime': '', 'process': '',
                            'condition': ''}

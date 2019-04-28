@@ -14,8 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
 from MyEva import views
+
 
 
 urlpatterns = [
@@ -42,5 +43,6 @@ urlpatterns = [
    path('setModel/',views.setModel,name="setModel"),
    path('deleteModel/',views.deleteModel,name="deleteModel"),
    path('newEvaFromModel/',views.newEvaFromModel,name="newEvaFromModel"),
-   path('searchAssess/',views.searchAssess,name="searchAssess")
+   path('searchAssess/',views.searchAssess,name="searchAssess"),
+   path('silk/',include("silk.urls"))
 ]

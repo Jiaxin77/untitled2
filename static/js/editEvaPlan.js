@@ -409,6 +409,7 @@ var app=new Vue({
 						this.QNaires.push(tempQNaire);
 					}
 				}
+				alert("增加问卷成功！");
 				console.log(this.QNaires,length);
 				console.log(this.QNaires);
 			},
