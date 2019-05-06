@@ -42,7 +42,7 @@
             <div id="mine" ><a href="{% url 'logout' %}">退出账户</a></div>
 
 		</div>
-		<!--<div id="out">	
+		<!--<div id="out">
 			<a href="#" >Log Out</a>
 		</div>-->
 	</div>
@@ -71,12 +71,12 @@
 		<div id="changeOrder">
 		<!--	<img src="css\img\tile.png">
 			<img src="css\img\list.png">
-		-->	
+		-->
 		</div>
 	</div>
 
 <div id="AllEvaluation" style="visibility: visible;">
-		
+
 		<div class="Eva" v-for="eva in assess">
 			<div class="evaPic">
 				<p>Task</p>
@@ -119,11 +119,11 @@
 
 
 		</div>
-	
+
 </div>
 
 <div id="IngEvaluation" style="visibility: hidden;">
-		
+
 		<div class="Eva" v-for="eva in assess" v-if="eva.condition=='ing'">
 			<div class="evaPic">
 				<p>Task</p>
@@ -164,11 +164,11 @@
 
 
 		</div>
-	
+
 </div>
 
 <div id="EndEvaluation" style="visibility: hidden;">
-		
+
 		<div class="Eva" v-for="eva in assess" v-if="eva.condition=='End'">
 			<div class="evaPic">
 				<p>Task</p>
@@ -208,7 +208,7 @@
 
 
 		</div>
-	
+
 </div>
 </div>
 
@@ -237,6 +237,6 @@
                 alert('{{ msg.message }}');
             {% endfor %}
         </script>
-    {% endif %}
+ {% endif %}
 
 </html>

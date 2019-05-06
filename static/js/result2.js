@@ -51,324 +51,305 @@
 	]
 */
 
-	Vue.filter('numFilter',function(value){
-		 let realVal = parseFloat(value).toFixed(2)
-		 return parseFloat(realVal)
-	})
-	var app=new Vue({
-		el:'#app',
-		data:{
-			myresults:ResultsData
-		},
-		mounted:function(){
-			this.loadResults();
-		},
-		methods:{
-			loadResults:function()
-			{
-				var domBar=[];
-				var myChartBar=[];
-				var appBar=[];
-				var optionBar=[];
+Vue.filter('numFilter', function (value) {
+    let realVal = parseFloat(value).toFixed(2)
+    return parseFloat(realVal)
+})
+var app = new Vue({
+    el: '#app',
+    data: {
+        myresults: ResultsData
+    },
+    mounted: function () {
+        this.loadResults();
+    },
+    methods: {
+        loadResults: function () {
+            var domBar = [];
+            var myChartBar = [];
+            var appBar = [];
+            var optionBar = [];
 
-				var domPie=[];
-				var myChartPie=[];
-				var appPie=[];
-				var optionPie=[];
+            var domPie = [];
+            var myChartPie = [];
+            var appPie = [];
+            var optionPie = [];
 
-				var domCloud=[];
-				var myChartCloud=[];
-				var appCloud=[];
-				var optionCloud=[];
-				for(var i=0;i<this.myresults.length;i++)
-				{
+            var domCloud = [];
+            var myChartCloud = [];
+            var appCloud = [];
+            var optionCloud = [];
+            for (var i = 0; i < this.myresults.length; i++) {
 
-					if(this.myresults[i].queType=="SingleChoose"||this.myresults[i].queType=="MultiChoose")
-					{
-						console.log('barPic'+i)
-					domBar[i]=document.getElementById('barPic'+i);
-					myChartBar[i]=echarts.init(domBar[i]);
-					appBar[i]={};
-					optionBar[i] = null;
-					appBar[i].title='';
-						optionBar[i]=
-						{
-							title:{
-								//text:this.myresults[i].title,
-							},
-							tooltip:{
-								trigger:'axis',
-								axisPointer:{
-									type:'shadow'
-								}
-							},
-							legend:{
-								data:['人数']
-							},
-							grid:{
-								left: '3%',
-								right: '4%',
-								bottom: '3%',
-								containLabel: true,
-								
-							},
-							xAxis:{
-								type:'value',
-								boundaryGap:[0,1]
-							},
-							yAxis:{
-								type:'category',
-								data:[this.myresults[i].chooseA,this.myresults[i].chooseB,this.myresults[i].chooseC,this.myresults[i].chooseD]
-							},
-							series:[
-							{
-								name:'人数',
-								type:'bar',
-								data:this.myresults[i].results
-							}
-							]
-						};
-						if (optionBar[i] && typeof optionBar[i] === "object") {
-							myChartBar[i].setOption(optionBar[i], true);
-						}
+                if (this.myresults[i].queType == "SingleChoose" || this.myresults[i].queType == "MultiChoose") {
+                    console.log('barPic' + i)
+                    domBar[i] = document.getElementById('barPic' + i);
+                    myChartBar[i] = echarts.init(domBar[i]);
+                    appBar[i] = {};
+                    optionBar[i] = null;
+                    appBar[i].title = '';
+                    optionBar[i] =
+                        {
+                            title: {
+                                //text:this.myresults[i].title,
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'shadow'
+                                }
+                            },
+                            legend: {
+                                data: ['人数']
+                            },
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true,
+
+                            },
+                            xAxis: {
+                                type: 'value',
+                                boundaryGap: [0, 1]
+                            },
+                            yAxis: {
+                                type: 'category',
+                                data: [this.myresults[i].chooseA, this.myresults[i].chooseB, this.myresults[i].chooseC, this.myresults[i].chooseD]
+                            },
+                            series: [
+                                {
+                                    name: '人数',
+                                    type: 'bar',
+                                    data: this.myresults[i].results
+                                }
+                            ]
+                        };
+                    if (optionBar[i] && typeof optionBar[i] === "object") {
+                        myChartBar[i].setOption(optionBar[i], true);
+                    }
 
 
+                    domPie[i] = document.getElementById('piePic' + i);
+                    myChartPie[i] = echarts.init(domPie[i]);
+                    appPie[i] = {};
+                    optionPie[i] = null;
+                    optionPie[i] = {
+                        title: {
+                            //text:this.myresults[i].title,
+                            x: 'center'
+                        },
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        },
+                        legend: {
+                            orient: 'vertical',
+                            left: 'left',
+                            data: [this.myresults[i].chooseA, this.myresults[i].chooseB, this.myresults[i].chooseC, this.myresults[i].chooseD]
+                        },
+                        series: [
+                            {
+                                name: '人数',
+                                type: 'pie',
+                                radius: '55%',
+                                center: ['50%', '60%'],
+                                data: [
+                                    {
+                                        value: this.myresults[i].results[0], name: this.myresults[i].chooseA
+                                    },
+                                    {
+                                        value: this.myresults[i].results[1], name: this.myresults[i].chooseB
+                                    },
+                                    {
+                                        value: this.myresults[i].results[2], name: this.myresults[i].chooseC
+                                    },
+                                    {
+                                        value: this.myresults[i].results[3], name: this.myresults[i].chooseD
+                                    }
+                                ],
+                                itemStyle: {
+                                    emphasis: {
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 0,
+                                        shadowColor: 'rgba(0,0,0,0.5)'
+                                    }
+                                }
+                            }]
+                    }
+                    if (optionPie[i] && typeof optionPie[i] === "object") {
+                        myChartPie[i].setOption(optionPie[i], true);
+                    }
+                } else if (this.myresults[i].queType == "Scale") {
 
-						domPie[i]=document.getElementById('piePic'+i);
-						myChartPie[i]=echarts.init(domPie[i]);
-						appPie[i]={};
-						optionPie[i]=null;
-						optionPie[i]={
-							title:{
-								//text:this.myresults[i].title,
-								x:'center'
-							},
-							tooltip:{
-								trigger:'item',
-								formatter:"{a} <br/>{b} : {c} ({d}%)"
-							},
-							legend:{
-								orient:'vertical',
-								left:'left',
-								data:[this.myresults[i].chooseA,this.myresults[i].chooseB,this.myresults[i].chooseC,this.myresults[i].chooseD]
-							},
-							series:[
-							{
-								name:'人数',
-								type:'pie',
-								radius:'55%',
-								center:['50%','60%'],
-								data:[
-								{
-									value:this.myresults[i].results[0],name:this.myresults[i].chooseA
-								},
-								{
-									value:this.myresults[i].results[1],name:this.myresults[i].chooseB
-								},
-								{
-									value:this.myresults[i].results[2],name:this.myresults[i].chooseC
-								},
-								{
-									value:this.myresults[i].results[3],name:this.myresults[i].chooseD
-								}
-								],
-								itemStyle:{
-									emphasis:{
-										shadowBlur:10,
-										shadowOffsetX:0,
-										shadowColor:'rgba(0,0,0,0.5)'
-									}
-								}
-							}]
-						}
-						if(optionPie[i]&&typeof optionPie[i] === "object")
-						{
-							myChartPie[i].setOption(optionPie[i],true);
-						}
-					}
-					
-					else if(this.myresults[i].queType=="Scale")
-					{
-
-					console.log('barPic'+i)
-					domBar[i]=document.getElementById('barPic'+i);
-					myChartBar[i]=echarts.init(domBar[i]);
-					appBar[i]={};
-					optionBar[i] = null;
-					appBar[i].title='';
-						optionBar[i]=
-						{
-							title:{
-								//text:this.myresults[i].title,
-							},
-							tooltip:{
-								trigger:'axis',
-								axisPointer:{
-									type:'shadow'
-								}
-							},
-							legend:{
-								data:['人数']
-							},
-							grid:{
-								left: '3%',
-								right: '4%',
-								bottom: '3%',
-								containLabel: true
-							},
-							xAxis:{
-								type:'value',
-								boundaryGap:[0,1]
-							},
-							yAxis:{
-								type:'category',
-								data:this.myresults[i].ScaleDegree
-							},
-							series:[
-							{
-								name:'人数',
-								type:'bar',
-								data:this.myresults[i].results
-							}
-							]
-						};
-						if (optionBar[i] && typeof optionBar[i] === "object") {
-							myChartBar[i].setOption(optionBar[i], true);
-						}
+                    console.log('barPic' + i)
+                    domBar[i] = document.getElementById('barPic' + i);
+                    myChartBar[i] = echarts.init(domBar[i]);
+                    appBar[i] = {};
+                    optionBar[i] = null;
+                    appBar[i].title = '';
+                    optionBar[i] =
+                        {
+                            title: {
+                                //text:this.myresults[i].title,
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'shadow'
+                                }
+                            },
+                            legend: {
+                                data: ['人数']
+                            },
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+                            xAxis: {
+                                type: 'value',
+                                boundaryGap: [0, 1]
+                            },
+                            yAxis: {
+                                type: 'category',
+                                data: this.myresults[i].ScaleDegree
+                            },
+                            series: [
+                                {
+                                    name: '人数',
+                                    type: 'bar',
+                                    data: this.myresults[i].results
+                                }
+                            ]
+                        };
+                    if (optionBar[i] && typeof optionBar[i] === "object") {
+                        myChartBar[i].setOption(optionBar[i], true);
+                    }
 
 
+                    domPie[i] = document.getElementById('piePic' + i);
+                    myChartPie[i] = echarts.init(domPie[i]);
+                    appPie[i] = {};
+                    Piedata = [];
+                    for (var j = 0; j < this.myresults[i].ScaleDegree.length; j++) {
+                        var temp = {};
+                        temp.value = this.myresults[i].results[j];
+                        temp.name = this.myresults[i].ScaleDegree[j];
+                        Piedata.push(temp);
+                    }
+                    optionPie[i] = null;
+                    optionPie[i] = {
+                        title: {
+                            //text:this.myresults[i].title,
+                            x: 'center'
+                        },
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        },
+                        legend: {
+                            orient: 'vertical',
+                            left: 'left',
+                            data: this.myresults[i].ScaleDegree
+                        },
+                        series: [
+                            {
+                                name: '人数',
+                                type: 'pie',
+                                radius: '55%',
+                                center: ['50%', '60%'],
+                                data: Piedata,
+                                itemStyle: {
+                                    emphasis: {
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 0,
+                                        shadowColor: 'rgba(0,0,0,0.5)'
+                                    }
+                                }
+                            }]
+                    }
+                    if (optionPie[i] && typeof optionPie[i] === "object") {
+                        myChartPie[i].setOption(optionPie[i], true);
+                    }
+                } else if (this.myresults[i].queType == "FillInBlank") {
+                    console.log('wordcloud' + i);
+                    domCloud[i] = document.getElementById('wordcloud' + i);
+                    myChartCloud[i] = echarts.init(domCloud[i]);
+                    optionCloud[i] = null;
+                    optionCloud[i] = {
+                        title: {
+                            x: 'center'
+                        },
+                        tooltip: {
+                            show: true
+                        },
+                        series: [
+                            {
+                                name: '词语云图',
+                                type: 'wordCloud',
+                                sizeRange: [10, 50],
+                                shape: 'circle',
+                                left: null,
+                                top: null,
+                                width: '70%',
+                                height: '100%',
+                                right: null,
+                                bottom: null,
+                                gridSize: 1,
+                                drawOutOfBound: true,
+                                rotationRange: [-90, 90],
 
+                                textPadding: 0,
+                                autoSize: {
+                                    enable: true,
+                                    miniSize: 1,
 
-						domPie[i]=document.getElementById('piePic'+i);
-						myChartPie[i]=echarts.init(domPie[i]);
-						appPie[i]={};
-						Piedata=[];
-						for(var j=0;j<this.myresults[i].ScaleDegree.length;j++)
-						{
-							var temp={};
-							temp.value=this.myresults[i].results[j];
-							temp.name=this.myresults[i].ScaleDegree[j];
-							Piedata.push(temp);
-						}
-						optionPie[i]=null;
-						optionPie[i]={
-							title:{
-								//text:this.myresults[i].title,
-								x:'center'
-							},
-							tooltip:{
-								trigger:'item',
-								formatter:"{a} <br/>{b} : {c} ({d}%)"
-							},
-							legend:{
-								orient:'vertical',
-								left:'left',
-								data:this.myresults[i].ScaleDegree
-							},
-							series:[
-							{
-								name:'人数',
-								type:'pie',
-								radius:'55%',
-								center:['50%','60%'],
-								data:Piedata,
-								itemStyle:{
-									emphasis:{
-										shadowBlur:10,
-										shadowOffsetX:0,
-										shadowColor:'rgba(0,0,0,0.5)'
-									}
-								}
-							}]
-						}
-						if(optionPie[i]&&typeof optionPie[i] === "object")
-						{
-							myChartPie[i].setOption(optionPie[i],true);
-						}
-					}
-					else if(this.myresults[i].queType=="FillInBlank")
-					{
-						console.log('wordcloud'+i);
-						domCloud[i]=document.getElementById('wordcloud'+i);
-						myChartCloud[i]=echarts.init(domCloud[i]);
-						optionCloud[i]=null;
-						optionCloud[i]={
-							title:{
-								x:'center'
-							},
-							tooltip:{
-								show:true
-							},
-							series:[
-							{
-								name:'词语云图',
-								type:'wordCloud',
-								sizeRange:[10,50],
-								shape:'circle',
-								left:null,
-								top:null,
-								width:'70%',
-								height:'100%',
-								right:null,
-								bottom:null,
-								gridSize: 1,
-								drawOutOfBound:true,
-								rotationRange:[-90,90],
+                                },
+                                textStyle: {
+                                    normal: {
+                                        color: function () {
+                                            return 'rgb(' + [
+                                                Math.round(Math.random() * 160),
+                                                Math.round(Math.random() * 160),
+                                                Math.round(Math.random() * 160)
+                                            ].join(',') + ')';
+                                        }
+                                    },
+                                    emphasis: {
+                                        shadowBlur: 10,
+                                        shadowColor: '#333'
+                                    }
+                                },
+                                data: this.myresults[i].WCResults
+                            }]
+                    }
+                    if (optionCloud[i] && typeof optionCloud[i] === "object") {
+                        myChartCloud[i].setOption(optionCloud[i], true);
+                    }
 
-								textPadding:0,
-								autoSize:{
-									enable:true,
-									miniSize:1,
+                }
 
-								},
-								textStyle:{
-									normal:{
-										color:function(){
-											return 'rgb('+[
-												Math.round(Math.random()*160),
-												Math.round(Math.random()*160),
-												Math.round(Math.random()*160)
-											].join(',')+')';
-										}
-									},
-									emphasis:{
-										shadowBlur:10,
-										shadowColor:'#333'
-									}
-								},
-								data:this.myresults[i].WCResults
-							}]
-						}
-						if (optionCloud[i] && typeof optionCloud[i] === "object") {
-							myChartCloud[i].setOption(optionCloud[i], true);
-						}
+            }
 
-					}
-
-				}
-
-			},
-			getBar:function(index)
-			{
-				return "barPic"+index;
-			},
-			getPie:function(index)
-			{
-				return "piePic"+index;
-			},
-			chooseBar:function(index)
-			{
-				document.getElementById('barPic'+index).style.visibility="visible";
-				document.getElementById('piePic'+index).style.visibility="hidden";
-			},
-			choosePie:function(index)
-			{
-				document.getElementById('barPic'+index).style.visibility="hidden";
-				document.getElementById('piePic'+index).style.visibility="visible";
-			},
-			getWordCloud:function(index)
-			{
-				return "wordcloud"+index;
-			}
-		}
-	})
+        },
+        getBar: function (index) {
+            return "barPic" + index;
+        },
+        getPie: function (index) {
+            return "piePic" + index;
+        },
+        chooseBar: function (index) {
+            document.getElementById('barPic' + index).style.visibility = "visible";
+            document.getElementById('piePic' + index).style.visibility = "hidden";
+        },
+        choosePie: function (index) {
+            document.getElementById('barPic' + index).style.visibility = "hidden";
+            document.getElementById('piePic' + index).style.visibility = "visible";
+        },
+        getWordCloud: function (index) {
+            return "wordcloud" + index;
+        }
+    }
+})

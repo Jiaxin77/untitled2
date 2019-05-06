@@ -35,7 +35,7 @@
 			<div id="set">设置</div>-->
             <div id="mine" ><a href="{% url 'logout' %}">退出账户</a></div>
 		</div>
-		<!--<div id="out">	
+		<!--<div id="out">
 			<a href="#" >Log Out</a>
 		</div>-->
 	</div>
@@ -101,10 +101,10 @@
 			</div>
 
 			<div id="QNaire">
-				
+
 				<div class="preview"  id="previewDiv">
 					<!--<div id="htmlButtons">
-						<button id="cancel">取消</button>	
+						<button id="cancel">取消</button>
 						<button id="submit">提交</button>
 					</div>
 					-->
@@ -135,14 +135,14 @@
 						<div v-else-if="que.type=='FillInBlank'">
 							<div class="previewTitle">
 								{% verbatim %}{{ que.id }}{% endverbatim %}.  {% verbatim %}{{ que.title }}{% endverbatim %}
-							</div>	
+							</div>
 							<input type="text" name="blank" style="width: 300px;height: 25px;" v-model="que.answer" placeholder="请回答问题">
 						</div>
 
 						<div v-else-if="que.type=='Scale'">
 							<div class="previewTitle">
 								{% verbatim %}{{ que.id }}{% endverbatim %}.  {% verbatim %}{{ que.title }}{% endverbatim %}
-							</div>	
+							</div>
 							<div class="scaleContent">
 								<span> {% verbatim %}{{ que.lowest }}{% endverbatim %}</span>
 								<div  class="step" v-for="n in que.ScaleCount">

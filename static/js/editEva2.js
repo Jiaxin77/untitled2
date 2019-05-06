@@ -1,8 +1,3 @@
-
-
-
-
-
 /*
 var Index=[
 	{
@@ -87,131 +82,116 @@ var Index=[
 	}
 	];
 */
-	var IndexInform={
-		indexName:"",
-		EvaMethod:"",
-		EvaObject:"",
-		dataSource:"",
-		dataDeal:""
-	};
-
-	
+var IndexInform = {
+    indexName: "",
+    EvaMethod: "",
+    EvaObject: "",
+    dataSource: "",
+    dataDeal: ""
+};
 
 
-var app=new Vue({
-	el:'#app',
-	data:{
-		people:[],
-		myIndex:Index,
-		IndexInfo:IndexInform,
-		IndexBox:[],
-        Assess:assess,
-        thisMethods:thismethods,
-        Description:"",
-        Object:""
+var app = new Vue({
+    el: '#app',
+    data: {
+        people: [],
+        myIndex: Index,
+        IndexInfo: IndexInform,
+        IndexBox: [],
+        Assess: assess,
+        thisMethods: thismethods,
+        Description: "",
+        Object: ""
 
-	},
-		//在页面刚加载时就执行的函数——Vue生命周期
-		mounted()
-		{
-			this.initData();
-		},
-		methods:{
-			initData:function()
-			{
-				for (var i=0;i<this.myIndex.length;i++)
-				{
-					for(var j=0;j<this.myIndex[i].FirstList.length;j++)
-					{
-						for(var z=0;z<this.myIndex[i].FirstList[j].selected.length;z++)
-						{
-							var item={};
-							item.indexName=this.myIndex[i].FirstList[j].selected[z].listTitle;
-							item.EvaMethod=this.myIndex[i].FirstList[j].selected[z].method;
-							item.EvaObject=this.myIndex[i].name+"的"+this.myIndex[i].FirstList[j].listTitle;
-							var methodsName=[];
-							methodsName=item.EvaMethod.split(",");
-							console.log()
-							item.dataSource=[];
-							item.dataDeal=[];
-							for (var m=0;m<methodsName.length;m++)
-                            {
-                                var name;
-                                name=methodsName[m];
-                                for(var t=0;t<this.thisMethods.length;t++)
-                                {
-                                    if(this.thisMethods[t].MethodName==name)
-                                    {
-                                        item.dataSource.push(this.thisMethods[t].dataSource);
-                                        item.dataDeal.push(this.thisMethods[t].dealData);
-                                        console.log(this.thisMethods[t].people);
-                                        if(this.people.length==0)
-                                        {
-                                            this.people.push(this.thisMethods[t].people);
-                                        }
-                                        else
-                                        {
-                                        for(var p=0;p<this.people.length;p++)
-                                        {
-                                            if (this.people.indexOf(this.thisMethods[t].people)==-1)
-                                            {
+    },
+    //在页面刚加载时就执行的函数——Vue生命周期
+    mounted() {
+        this.initData();
+    },
+    methods: {
+        initData: function () {
+            for (var i = 0; i < this.myIndex.length; i++) {
+                for (var j = 0; j < this.myIndex[i].FirstList.length; j++) {
+                    for (var z = 0; z < this.myIndex[i].FirstList[j].selected.length; z++) {
+                        var item = {};
+                        item.indexName = this.myIndex[i].FirstList[j].selected[z].listTitle;
+                        item.EvaMethod = this.myIndex[i].FirstList[j].selected[z].method;
+                        item.EvaObject = this.myIndex[i].name + "的" + this.myIndex[i].FirstList[j].listTitle;
+                        var methodsName = [];
+                        methodsName = item.EvaMethod.split(",");
+                        console.log()
+                        item.dataSource = [];
+                        item.dataDeal = [];
+                        for (var m = 0; m < methodsName.length; m++) {
+                            var name;
+                            name = methodsName[m];
+                            for (var t = 0; t < this.thisMethods.length; t++) {
+                                if (this.thisMethods[t].MethodName == name) {
+                                    item.dataSource.push(this.thisMethods[t].dataSource);
+                                    item.dataDeal.push(this.thisMethods[t].dealData);
+                                    console.log(this.thisMethods[t].people);
+                                    if (this.people.length == 0) {
+                                        this.people.push(this.thisMethods[t].people);
+                                    } else {
+                                        for (var p = 0; p < this.people.length; p++) {
+                                            if (this.people.indexOf(this.thisMethods[t].people) == -1) {
                                                 console.log("添加人员");
                                                 this.people.push(this.thisMethods[t].people);
                                             }
-                                        }}
+                                        }
                                     }
                                 }
-
                             }
-							/*
-							if(item.EvaMethod=="启发式评估法")
-							{
 
-								item.dataSource="启发式评估表格";
-								item.dataDeal="收集数据";
-							}
-							else if(item.EvaMethod=="可用性测试")
-							{
-								item.dataSource="问卷调查";
-								item.dataDeal="整理统计";
-							}
-							else
-							{
-								item.dataSource="暂未记录";
-								item.dataDeal="暂未记录";
-							}
-							*/
+                        }
+                        /*
+                        if(item.EvaMethod=="启发式评估法")
+                        {
 
-							this.IndexBox.push(item);
+                            item.dataSource="启发式评估表格";
+                            item.dataDeal="收集数据";
+                        }
+                        else if(item.EvaMethod=="可用性测试")
+                        {
+                            item.dataSource="问卷调查";
+                            item.dataDeal="整理统计";
+                        }
+                        else
+                        {
+                            item.dataSource="暂未记录";
+                            item.dataDeal="暂未记录";
+                        }
+                        */
 
-						}
-					}
-				}
-				
-			},
-            postInfomation:function()
-            {
-                    axios.post('/postAssessInfo/',
+                        this.IndexBox.push(item);
 
-					JSON.stringify({
-						description:this.Description,
-                        object:this.Object,
-                        Assess:this.Assess
-
-					}))
-					.then(function(response) {
-						//alert("保存成功，感谢您的填写！");
-						//window.location.href='/showEvaInfo/?assess='+Assess.AssessId
-                        window.location.href='/getAssessPlan/?assess='+app.Assess.AssessId
-                        alert("保存成功！")
-						console.log(response);
-					})
-					.catch(function(error){
-						//window.location.href='/chooseEva/'
-						console.log(error);
-			})
+                    }
+                }
             }
 
-		}
-	})
+        },
+        postInfomation: function () {
+            axios.post('/postAssessInfo/',
+
+                JSON.stringify({
+                    description: this.Description,
+                    object: this.Object,
+                    Assess: this.Assess
+
+                }))
+                .then(function (response) {
+                    //alert("保存成功，感谢您的填写！");
+                    //window.location.href='/showEvaInfo/?assess='+Assess.AssessId
+                    window.location.href = '/getAssessPlan/?assess=' + app.Assess.AssessId
+                    alert("保存成功！")
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    //window.location.href='/chooseEva/'
+                    console.log(error);
+                })
+        }
+
+    }
+})
 

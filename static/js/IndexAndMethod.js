@@ -17,16 +17,16 @@
  				];
 */
 
-		Vue.component('tab-posts',{
-		data:function(){
-			return{
-				posts:IndexMessage,
-				selectedPost:null
-			}
-		},
-		template:'#myTemplate'
+Vue.component('tab-posts', {
+    data: function () {
+        return {
+            posts: IndexMessage,
+            selectedPost: null
+        }
+    },
+    template: '#myTemplate'
 
-	});
+});
 /*
 	var MethodMessage=[
 	{
@@ -46,37 +46,33 @@
 	}
 	];
 */
-	Vue.component('tab-archive',{
-		data:function(){
-			return{
-				posts:MethodMessage,
-				selectedPost:null
-			}
-		},
-		template:'#myTemplate'
+Vue.component('tab-archive', {
+    data: function () {
+        return {
+            posts: MethodMessage,
+            selectedPost: null
+        }
+    },
+    template: '#myTemplate'
 
-	});
+});
 
-	var DCD=new Vue({
-		el:'#dynamic-component-demo',
-		data:{
-			currentTab:'Posts',
-			tabs:['指标库','方法库']
-		},
-		computed:
-		{
-			currentTabComponent:function()
-			{
-				if(this.currentTab=="指标库")
-				{
-					return 'tab-posts';
-				}
-				else if(this.currentTab=="方法库")
-				{
-					return 'tab-archive';
-				}
+var DCD = new Vue({
+    el: '#dynamic-component-demo',
+    data: {
+        currentTab: 'Posts',
+        tabs: ['指标库', '方法库']
+    },
+    computed:
+        {
+            currentTabComponent: function () {
+                if (this.currentTab == "指标库") {
+                    return 'tab-posts';
+                } else if (this.currentTab == "方法库") {
+                    return 'tab-archive';
+                }
 
-			}
-		}
-	});
+            }
+        }
+});
 

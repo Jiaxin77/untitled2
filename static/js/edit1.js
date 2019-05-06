@@ -112,159 +112,148 @@ var Alldatas=[
 
 */
 var app = new Vue({
-	el: '#app',
-	data: {
-	    datas:Alldatas,
-		mySelected:[],
-		ModelId:ModelId
+    el: '#app',
+    data: {
+        datas: Alldatas,
+        mySelected: [],
+        ModelId: ModelId
 
-	},
-	mounted:function(){
-		this.detectedAll(this.datas);
-	},
-	methods:{
-		/*页面加载时检测*/
-		detectedAll:function(datas)
-		{
-			for(var ad=0;ad<datas.length;ad++)
-			{
-				var family=document.getElementById(datas[ad].name);//选择 设置其checked！
+    },
+    mounted: function () {
+        this.detectedAll(this.datas);
+    },
+    methods: {
+        /*页面加载时检测*/
+        detectedAll: function (datas) {
+            for (var ad = 0; ad < datas.length; ad++) {
+                var family = document.getElementById(datas[ad].name);//选择 设置其checked！
 
-				if(this.isAllChecked(datas[ad]))
-				{
+                if (this.isAllChecked(datas[ad])) {
 
 
-					family.checked = true;
-				}
-				for (var fir=0;fir<datas[ad].FirstList.length;fir++)
-				{
-					var father=document.getElementById(datas[ad].FirstList[fir].listTitle);
+                    family.checked = true;
+                }
+                for (var fir = 0; fir < datas[ad].FirstList.length; fir++) {
+                    var father = document.getElementById(datas[ad].FirstList[fir].listTitle);
 
-					if(this.isTitleChecked(datas[ad].FirstList[fir]))
-					{
+                    if (this.isTitleChecked(datas[ad].FirstList[fir])) {
 
-						father.checked = true;
-					}
+                        father.checked = true;
+                    }
 
-				}
-			}
-		},
-/**
-* 当父标题状态变化时的处理方法
-* @param data [当前项的data]
-* @param event [当前项的event]
-*/
-changeTitleChecked : function (data,event) {
-	console.log("CTC"+data.listTitle);
-	if (event.target.checked === true) {
-		data.SecondList.forEach(function (item) {
-			data.selected.indexOf(item) === -1 && data.selected.push(item);
-			
-		})
-		app.mySelected.push(data.selected);
-	}else {
+                }
+            }
+        },
+        /**
+         * 当父标题状态变化时的处理方法
+         * @param data [当前项的data]
+         * @param event [当前项的event]
+         */
+        changeTitleChecked: function (data, event) {
+            console.log("CTC" + data.listTitle);
+            if (event.target.checked === true) {
+                data.SecondList.forEach(function (item) {
+                    data.selected.indexOf(item) === -1 && data.selected.push(item);
 
-		data.selected = [];
-		app.mySelected=[];
-		app.mySelected.push(data.selected);
-	}
-	console.log(data.selected);
+                })
+                app.mySelected.push(data.selected);
+            } else {
 
-},
-/**
-* 判断父标题选择状态
-* @param data [当前项的data]
-* @returns {boolean}
-*/
-isTitleChecked : function (data) {
-	console.log("iTC"+data.listTitle);
-	var _selected=[];
-	var _listItem=[];
-	for(var sel=0;sel<data.selected.length;sel++)
-	{
-		_selected.push(data.selected[sel].listTitle);
-	}
-	for(var lti=0;lti<data.SecondList.length;lti++)
-	{
-		_listItem.push(data.SecondList[lti].listTitle);
-	}
-	/*var _selected = data.selected;
-	var _listItem = data.SecondList;*/
+                data.selected = [];
+                app.mySelected = [];
+                app.mySelected.push(data.selected);
+            }
+            console.log(data.selected);
+
+        },
+        /**
+         * 判断父标题选择状态
+         * @param data [当前项的data]
+         * @returns {boolean}
+         */
+        isTitleChecked: function (data) {
+            console.log("iTC" + data.listTitle);
+            var _selected = [];
+            var _listItem = [];
+            for (var sel = 0; sel < data.selected.length; sel++) {
+                _selected.push(data.selected[sel].listTitle);
+            }
+            for (var lti = 0; lti < data.SecondList.length; lti++) {
+                _listItem.push(data.SecondList[lti].listTitle);
+            }
+            /*var _selected = data.selected;
+            var _listItem = data.SecondList;*/
 
 // 验证selected中是否含有全部的item的id 如果是 证明title要选中
 
-return _listItem.every(function (item) {
+            return _listItem.every(function (item) {
 
-	return _selected.indexOf(item) != -1;
-});
-},
+                return _selected.indexOf(item) != -1;
+            });
+        },
 
-/**
-* 全选框change事件的回调处理方法
-* @param event 
-*/
-changeAllChecked : function (event,data) {
-	console.log("CAC"+data.name);
-	if (event.target.checked === true) {
-		data.FirstList.forEach(function (father) {
-			father.SecondList.forEach(function (item) {
-				father.selected.indexOf(item) === -1 && father.selected.push(item);
-				
-			})
-			app.mySelected.push(father.selected);
-		})
-		
-	}else {
-		data.FirstList.forEach(function (father) {
-			father.selected = [];
-			app.mySelected=[];
-			app.mySelected.push(father.selected);
-		})
-	}
-	console.log(app.mySelected);
+        /**
+         * 全选框change事件的回调处理方法
+         * @param event
+         */
+        changeAllChecked: function (event, data) {
+            console.log("CAC" + data.name);
+            if (event.target.checked === true) {
+                data.FirstList.forEach(function (father) {
+                    father.SecondList.forEach(function (item) {
+                        father.selected.indexOf(item) === -1 && father.selected.push(item);
 
-},
+                    })
+                    app.mySelected.push(father.selected);
+                })
 
-/**
-* 判断全选框选择状态
-* @returns {boolean}
-*/
-isAllChecked : function (data) {
-	var _listItem = data.FirstList;
-	return _listItem.every(function(item)
-	{
-		return item.selected.length===item.SecondList.length;
-	});
-},
-        postIndexs:function()
-        {
+            } else {
+                data.FirstList.forEach(function (father) {
+                    father.selected = [];
+                    app.mySelected = [];
+                    app.mySelected.push(father.selected);
+                })
+            }
+            console.log(app.mySelected);
 
-                console.log("提交");
-                console.log(app.datas);
-                    axios.post('/getEvaInfo/',
+        },
 
-					JSON.stringify({
-						Indexs:app.datas,
-                        Assess:Assess,
-						 ModelId:ModelId
+        /**
+         * 判断全选框选择状态
+         * @returns {boolean}
+         */
+        isAllChecked: function (data) {
+            var _listItem = data.FirstList;
+            return _listItem.every(function (item) {
+                return item.selected.length === item.SecondList.length;
+            });
+        },
+        postIndexs: function () {
 
-					}))
-					.then(function(response) {
-						//alert("保存成功，感谢您的填写！");
-						window.location.href='/showEvaInfo/?assess='+Assess.AssessId
-                        alert("保存成功！")
-						console.log(response);
-					})
-					.catch(function(error){
-						//window.location.href='/chooseEva/'
-						console.log(error);
-			})
+            console.log("提交");
+            console.log(app.datas);
+            axios.post('/getEvaInfo/',
+
+                JSON.stringify({
+                    Indexs: app.datas,
+                    Assess: Assess,
+                    ModelId: ModelId
+
+                }))
+                .then(function (response) {
+                    //alert("保存成功，感谢您的填写！");
+                    window.location.href = '/showEvaInfo/?assess=' + Assess.AssessId
+                    alert("保存成功！")
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    //window.location.href='/chooseEva/'
+                    console.log(error);
+                })
         }
 
 
-
-
-}
+    }
 })
 
 

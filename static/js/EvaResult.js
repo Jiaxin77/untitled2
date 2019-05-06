@@ -238,476 +238,433 @@ var allUseProblems=[
 ]
 */
 
-var app=new Vue({
-	el:'#app',
-	data:{
-		InfoList:infoList,
-        SumInfoList:SumInfoList,
-		plans:PlanList,
-		AllUseProblems:allUseProblems,
-		UseProblemList:[],
-		myresults:[],
-		AllQNaireResults:QNaireResults,
-		activePlan:1,
-		AllUseProblemList:AssessUseProblems
+var app = new Vue({
+    el: '#app',
+    data: {
+        InfoList: infoList,
+        SumInfoList: SumInfoList,
+        plans: PlanList,
+        AllUseProblems: allUseProblems,
+        UseProblemList: [],
+        myresults: [],
+        AllQNaireResults: QNaireResults,
+        activePlan: 1,
+        AllUseProblemList: AssessUseProblems
 
-	},
-	mounted:function(){
-		//this.loadResults();
-		this.clickPlan(1);
-	},
-	methods:
-	{
-		GetAllUseProblems:function()
-		{
-			this.activePlan=-1;
-			document.getElementById('HeuInfo').style.visibility="hidden";
-			document.getElementById('Information').style.visibility="hidden";
-			document.getElementById('QNaire').style.visibility="hidden";
-			document.getElementById('modelQNaire').style.visibility="hidden";
-			document.getElementById('AllHeuInfo').style.visibility="visible";
-			document.getElementById('AllHeuInfo').className='active';
-		},
-		clickPlan:function(id)
-		{
-			
-			
-			for(var iplan=0;iplan<this.plans.length;iplan++)
-			{
-
-				if(id==this.plans[iplan].id)
-				{
-					this.activePlan=id;
-					if(this.plans[iplan].PlanType=="启发式评估")
-					{
-						for(var use=0;use<this.AllUseProblems.length;use++)
-						{
-							if(this.plans[iplan].PlanId==this.AllUseProblems[use].PlanId)
-							{
-								this.UseProblemList=this.AllUseProblems[use].useProblems;
-							}
-
-						}
-						document.getElementById('HeuInfo').style.visibility="visible";
-						document.getElementById('Information').style.visibility="hidden";
-						document.getElementById('QNaire').style.visibility="hidden";
-						document.getElementById('modelQNaire').style.visibility="hidden";
-						document.getElementById('AllHeuInfo').style.visibility="hidden";
-						document.getElementById('AllHeuInfo').className="unactive";
-						Bar=document.getElementsByClassName('myBar')
-						for(var bar=0;bar<Bar.length;bar++)
-						{
-							Bar[bar].style.visibility="hidden";
-						}
-						
-						Pie=document.getElementsByClassName('myPie')
-						for(var pie=0;pie<Pie.length;pie++)
-						{
-							Pie[pie].style.visibility="hidden";
-						}
-
-					}
-					else if(this.plans[iplan].PlanType=="数据记录")
-					{			
-
-						document.getElementById('HeuInfo').style.visibility="hidden";
-						document.getElementById('Information').style.visibility="visible";
-						document.getElementById('QNaire').style.visibility="hidden";
-						document.getElementById('modelQNaire').style.visibility="hidden";
-						document.getElementById('AllHeuInfo').style.visibility="hidden";
-						document.getElementById('AllHeuInfo').className="unactive";
-						Bar=document.getElementsByClassName('myBar')
-						for(var bar=0;bar<Bar.length;bar++)
-						{
-							Bar[bar].style.visibility="hidden";
-						}
-						
-						Pie=document.getElementsByClassName('myPie')
-						for(var pie=0;pie<Pie.length;pie++)
-						{
-							Pie[pie].style.visibility="hidden";
-						}
-
-					}
-					else if(this.plans[iplan].PlanType=="可用性测试")
-					{
-						Bar=document.getElementsByClassName('myBar')
-						for(var bar=0;bar<Bar.length;bar++)
-						{
-							Bar[bar].style.visibility="hidden";
-						}
-
-						Pie=document.getElementsByClassName('myPie')
-						for(var pie=0;pie<Pie.length;pie++)
-						{
-							Pie[pie].style.visibility="hidden";
-						}
-						for(var qnaire=0;qnaire<this.AllQNaireResults.length;qnaire++)
-						{
-							if(this.plans[iplan].PlanId==this.AllQNaireResults[qnaire].PlanId)
-							{
-
-								this.myresults=this.AllQNaireResults[qnaire].ResultsData;
-							}
-
-						}
-						this.start();
-						//this.loadResults();
-
-						document.getElementById('HeuInfo').style.visibility="hidden";
-						document.getElementById('Information').style.visibility="hidden";
-						document.getElementById('QNaire').style.visibility="visible";
-						document.getElementById('modelQNaire').style.visibility="hidden";
-						document.getElementById('AllHeuInfo').style.visibility="hidden";
-						document.getElementById('AllHeuInfo').className="unactive";
-						for(var bar=0;bar<Bar.length;bar++)
-						{
-							Bar[bar].style.visibility="visible";
-						}
-						
-
-					}
-					else if(this.plans[i].PlanType=="主观感知")
-					{
-						document.getElementById('HeuInfo').style.visibility="hidden";
-						document.getElementById('Information').style.visibility="hidden";
-						document.getElementById('QNaire').style.visibility="hidden";
-						document.getElementById('modelQNaire').style.visibility="visible";
-						document.getElementById('AllHeuInfo').style.visibility="hidden";
-						document.getElementById('AllHeuInfo').className="unactive";
-						Bar=document.getElementsByClassName('myBar')
-						for(var bar=0;bar<Bar.length;bar++)
-						{
-							Bar[bar].style.visibility="hidden";
-						}
-						
-						Pie=document.getElementsByClassName('myPie')
-						for(var pie=0;pie<Pie.length;pie++)
-						{
-							Pie[pie].style.visibility="hidden";
-						}
-					}
-				}
-			}
-		},
-		 start: function () {
-  
-  				 let _this=this
-   				setTimeout(function()  {
-
-    			_this.loadResults()
-
-   				}, 4);
-
-  		},
-		loadResults:function()
-		{
-			var domBar=[];
-			var myChartBar=[];
-			var appBar=[];
-			var optionBar=[];
-
-			var domPie=[];
-			var myChartPie=[];
-			var appPie=[];
-			var optionPie=[];
-
-			var domCloud=[];
-			var myChartCloud=[];
-			var appCloud=[];
-			var optionCloud=[];
-			for(var i=0;i<this.myresults.length;i++)
-			{
-
-				if(this.myresults[i].queType=="SingleChoose"||this.myresults[i].queType=="MultiChoose")
-				{
-					console.log('barPic'+i)
-					domBar[i]=document.getElementById('barPic'+i);
-					myChartBar[i]=echarts.init(domBar[i]);
-					appBar[i]={};
-					optionBar[i] = null;
-					appBar[i].title='';
-					optionBar[i]=
-					{
-						title:{
-								//text:this.myresults[i].title,
-							},
-							tooltip:{
-								trigger:'axis',
-								axisPointer:{
-									type:'shadow'
-								}
-							},
-							legend:{
-								data:['人数']
-							},
-							grid:{
-								left: '3%',
-								right: '4%',
-								bottom: '3%',
-								containLabel: true,
-								
-							},
-							xAxis:{
-								type:'value',
-								boundaryGap:[0,1]
-							},
-							yAxis:{
-								type:'category',
-								data:[this.myresults[i].chooseA,this.myresults[i].chooseB,this.myresults[i].chooseC,this.myresults[i].chooseD]
-							},
-							series:[
-							{
-								name:'人数',
-								type:'bar',
-								data:this.myresults[i].results
-							}
-							]
-						};
-						if (optionBar[i] && typeof optionBar[i] === "object") {
-							myChartBar[i].setOption(optionBar[i], true);
-						}
+    },
+    mounted: function () {
+        //this.loadResults();
+        this.clickPlan(1);
+    },
+    methods:
+        {
+            GetAllUseProblems: function () {
+                this.activePlan = -1;
+                document.getElementById('HeuInfo').style.visibility = "hidden";
+                document.getElementById('Information').style.visibility = "hidden";
+                document.getElementById('QNaire').style.visibility = "hidden";
+                document.getElementById('modelQNaire').style.visibility = "hidden";
+                document.getElementById('AllHeuInfo').style.visibility = "visible";
+                document.getElementById('AllHeuInfo').className = 'active';
+            },
+            clickPlan: function (id) {
 
 
+                for (var iplan = 0; iplan < this.plans.length; iplan++) {
 
-						domPie[i]=document.getElementById('piePic'+i);
-						myChartPie[i]=echarts.init(domPie[i]);
-						appPie[i]={};
-						optionPie[i]=null;
-						optionPie[i]={
-							title:{
-								//text:this.myresults[i].title,
-								x:'center'
-							},
-							tooltip:{
-								trigger:'item',
-								formatter:"{a} <br/>{b} : {c} ({d}%)"
-							},
-							legend:{
-								orient:'vertical',
-								left:'left',
-								data:[this.myresults[i].chooseA,this.myresults[i].chooseB,this.myresults[i].chooseC,this.myresults[i].chooseD]
-							},
-							series:[
-							{
-								name:'人数',
-								type:'pie',
-								radius:'55%',
-								center:['50%','60%'],
-								data:[
-								{
-									value:this.myresults[i].results[0],name:this.myresults[i].chooseA
-								},
-								{
-									value:this.myresults[i].results[1],name:this.myresults[i].chooseB
-								},
-								{
-									value:this.myresults[i].results[2],name:this.myresults[i].chooseC
-								},
-								{
-									value:this.myresults[i].results[3],name:this.myresults[i].chooseD
-								}
-								],
-								itemStyle:{
-									emphasis:{
-										shadowBlur:10,
-										shadowOffsetX:0,
-										shadowColor:'rgba(0,0,0,0.5)'
-									}
-								}
-							}]
-						}
-						if(optionPie[i]&&typeof optionPie[i] === "object")
-						{
-							myChartPie[i].setOption(optionPie[i],true);
-						}
-					}
-					
-					else if(this.myresults[i].queType=="Scale")
-					{
+                    if (id == this.plans[iplan].id) {
+                        this.activePlan = id;
+                        if (this.plans[iplan].PlanType == "启发式评估") {
+                            for (var use = 0; use < this.AllUseProblems.length; use++) {
+                                if (this.plans[iplan].PlanId == this.AllUseProblems[use].PlanId) {
+                                    this.UseProblemList = this.AllUseProblems[use].useProblems;
+                                }
 
-						console.log('barPic'+i)
-						domBar[i]=document.getElementById('barPic'+i);
-						myChartBar[i]=echarts.init(domBar[i]);
-						appBar[i]={};
-						optionBar[i] = null;
-						appBar[i].title='';
-						optionBar[i]=
-						{
-							title:{
-								//text:this.myresults[i].title,
-							},
-							tooltip:{
-								trigger:'axis',
-								axisPointer:{
-									type:'shadow'
-								}
-							},
-							legend:{
-								data:['人数']
-							},
-							grid:{
-								left: '3%',
-								right: '4%',
-								bottom: '3%',
-								containLabel: true
-							},
-							xAxis:{
-								type:'value',
-								boundaryGap:[0,1]
-							},
-							yAxis:{
-								type:'category',
-								data:this.myresults[i].ScaleDegree
-							},
-							series:[
-							{
-								name:'人数',
-								type:'bar',
-								data:this.myresults[i].results
-							}
-							]
-						};
-						if (optionBar[i] && typeof optionBar[i] === "object") {
-							myChartBar[i].setOption(optionBar[i], true);
-						}
+                            }
+                            document.getElementById('HeuInfo').style.visibility = "visible";
+                            document.getElementById('Information').style.visibility = "hidden";
+                            document.getElementById('QNaire').style.visibility = "hidden";
+                            document.getElementById('modelQNaire').style.visibility = "hidden";
+                            document.getElementById('AllHeuInfo').style.visibility = "hidden";
+                            document.getElementById('AllHeuInfo').className = "unactive";
+                            Bar = document.getElementsByClassName('myBar')
+                            for (var bar = 0; bar < Bar.length; bar++) {
+                                Bar[bar].style.visibility = "hidden";
+                            }
+
+                            Pie = document.getElementsByClassName('myPie')
+                            for (var pie = 0; pie < Pie.length; pie++) {
+                                Pie[pie].style.visibility = "hidden";
+                            }
+
+                        } else if (this.plans[iplan].PlanType == "数据记录") {
+
+                            document.getElementById('HeuInfo').style.visibility = "hidden";
+                            document.getElementById('Information').style.visibility = "visible";
+                            document.getElementById('QNaire').style.visibility = "hidden";
+                            document.getElementById('modelQNaire').style.visibility = "hidden";
+                            document.getElementById('AllHeuInfo').style.visibility = "hidden";
+                            document.getElementById('AllHeuInfo').className = "unactive";
+                            Bar = document.getElementsByClassName('myBar')
+                            for (var bar = 0; bar < Bar.length; bar++) {
+                                Bar[bar].style.visibility = "hidden";
+                            }
+
+                            Pie = document.getElementsByClassName('myPie')
+                            for (var pie = 0; pie < Pie.length; pie++) {
+                                Pie[pie].style.visibility = "hidden";
+                            }
+
+                        } else if (this.plans[iplan].PlanType == "可用性测试") {
+                            Bar = document.getElementsByClassName('myBar')
+                            for (var bar = 0; bar < Bar.length; bar++) {
+                                Bar[bar].style.visibility = "hidden";
+                            }
+
+                            Pie = document.getElementsByClassName('myPie')
+                            for (var pie = 0; pie < Pie.length; pie++) {
+                                Pie[pie].style.visibility = "hidden";
+                            }
+                            for (var qnaire = 0; qnaire < this.AllQNaireResults.length; qnaire++) {
+                                if (this.plans[iplan].PlanId == this.AllQNaireResults[qnaire].PlanId) {
+
+                                    this.myresults = this.AllQNaireResults[qnaire].ResultsData;
+                                }
+
+                            }
+                            this.start();
+                            //this.loadResults();
+
+                            document.getElementById('HeuInfo').style.visibility = "hidden";
+                            document.getElementById('Information').style.visibility = "hidden";
+                            document.getElementById('QNaire').style.visibility = "visible";
+                            document.getElementById('modelQNaire').style.visibility = "hidden";
+                            document.getElementById('AllHeuInfo').style.visibility = "hidden";
+                            document.getElementById('AllHeuInfo').className = "unactive";
+                            for (var bar = 0; bar < Bar.length; bar++) {
+                                Bar[bar].style.visibility = "visible";
+                            }
 
 
+                        } else if (this.plans[i].PlanType == "主观感知") {
+                            document.getElementById('HeuInfo').style.visibility = "hidden";
+                            document.getElementById('Information').style.visibility = "hidden";
+                            document.getElementById('QNaire').style.visibility = "hidden";
+                            document.getElementById('modelQNaire').style.visibility = "visible";
+                            document.getElementById('AllHeuInfo').style.visibility = "hidden";
+                            document.getElementById('AllHeuInfo').className = "unactive";
+                            Bar = document.getElementsByClassName('myBar')
+                            for (var bar = 0; bar < Bar.length; bar++) {
+                                Bar[bar].style.visibility = "hidden";
+                            }
+
+                            Pie = document.getElementsByClassName('myPie')
+                            for (var pie = 0; pie < Pie.length; pie++) {
+                                Pie[pie].style.visibility = "hidden";
+                            }
+                        }
+                    }
+                }
+            },
+            start: function () {
+
+                let _this = this
+                setTimeout(function () {
+
+                    _this.loadResults()
+
+                }, 4);
+
+            },
+            loadResults: function () {
+                var domBar = [];
+                var myChartBar = [];
+                var appBar = [];
+                var optionBar = [];
+
+                var domPie = [];
+                var myChartPie = [];
+                var appPie = [];
+                var optionPie = [];
+
+                var domCloud = [];
+                var myChartCloud = [];
+                var appCloud = [];
+                var optionCloud = [];
+                for (var i = 0; i < this.myresults.length; i++) {
+
+                    if (this.myresults[i].queType == "SingleChoose" || this.myresults[i].queType == "MultiChoose") {
+                        console.log('barPic' + i)
+                        domBar[i] = document.getElementById('barPic' + i);
+                        myChartBar[i] = echarts.init(domBar[i]);
+                        appBar[i] = {};
+                        optionBar[i] = null;
+                        appBar[i].title = '';
+                        optionBar[i] =
+                            {
+                                title: {
+                                    //text:this.myresults[i].title,
+                                },
+                                tooltip: {
+                                    trigger: 'axis',
+                                    axisPointer: {
+                                        type: 'shadow'
+                                    }
+                                },
+                                legend: {
+                                    data: ['人数']
+                                },
+                                grid: {
+                                    left: '3%',
+                                    right: '4%',
+                                    bottom: '3%',
+                                    containLabel: true,
+
+                                },
+                                xAxis: {
+                                    type: 'value',
+                                    boundaryGap: [0, 1]
+                                },
+                                yAxis: {
+                                    type: 'category',
+                                    data: [this.myresults[i].chooseA, this.myresults[i].chooseB, this.myresults[i].chooseC, this.myresults[i].chooseD]
+                                },
+                                series: [
+                                    {
+                                        name: '人数',
+                                        type: 'bar',
+                                        data: this.myresults[i].results
+                                    }
+                                ]
+                            };
+                        if (optionBar[i] && typeof optionBar[i] === "object") {
+                            myChartBar[i].setOption(optionBar[i], true);
+                        }
 
 
-						domPie[i]=document.getElementById('piePic'+i);
-						myChartPie[i]=echarts.init(domPie[i]);
-						appPie[i]={};
-						Piedata=[];
-						for(var j=0;j<this.myresults[i].ScaleDegree.length;j++)
-						{
-							var temp={};
-							temp.value=this.myresults[i].results[j];
-							temp.name=this.myresults[i].ScaleDegree[j];
-							Piedata.push(temp);
-						}
-						optionPie[i]=null;
-						optionPie[i]={
-							title:{
-								//text:this.myresults[i].title,
-								x:'center'
-							},
-							tooltip:{
-								trigger:'item',
-								formatter:"{a} <br/>{b} : {c} ({d}%)"
-							},
-							legend:{
-								orient:'vertical',
-								left:'left',
-								data:this.myresults[i].ScaleDegree
-							},
-							series:[
-							{
-								name:'人数',
-								type:'pie',
-								radius:'55%',
-								center:['50%','60%'],
-								data:Piedata,
-								itemStyle:{
-									emphasis:{
-										shadowBlur:10,
-										shadowOffsetX:0,
-										shadowColor:'rgba(0,0,0,0.5)'
-									}
-								}
-							}]
-						}
-						if(optionPie[i]&&typeof optionPie[i] === "object")
-						{
-							myChartPie[i].setOption(optionPie[i],true);
-						}
-					}
-					else if(this.myresults[i].queType=="FillInBlank")
-					{
-						console.log('wordcloud'+i);
-						domCloud[i]=document.getElementById('wordcloud'+i);
-						myChartCloud[i]=echarts.init(domCloud[i]);
-						optionCloud[i]=null;
-						optionCloud[i]={
-							title:{
-								x:'center'
-							},
-							tooltip:{
-								show:true
-							},
-							series:[
-							{
-								name:'词语云图',
-								type:'wordCloud',
-								sizeRange:[10,50],
-								shape:'circle',
-								left:null,
-								top:null,
-								width:'70%',
-								height:'100%',
-								right:null,
-								bottom:null,
-								gridSize: 1,
-								drawOutOfBound:true,
-								rotationRange:[-90,90],
+                        domPie[i] = document.getElementById('piePic' + i);
+                        myChartPie[i] = echarts.init(domPie[i]);
+                        appPie[i] = {};
+                        optionPie[i] = null;
+                        optionPie[i] = {
+                            title: {
+                                //text:this.myresults[i].title,
+                                x: 'center'
+                            },
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: "{a} <br/>{b} : {c} ({d}%)"
+                            },
+                            legend: {
+                                orient: 'vertical',
+                                left: 'left',
+                                data: [this.myresults[i].chooseA, this.myresults[i].chooseB, this.myresults[i].chooseC, this.myresults[i].chooseD]
+                            },
+                            series: [
+                                {
+                                    name: '人数',
+                                    type: 'pie',
+                                    radius: '55%',
+                                    center: ['50%', '60%'],
+                                    data: [
+                                        {
+                                            value: this.myresults[i].results[0], name: this.myresults[i].chooseA
+                                        },
+                                        {
+                                            value: this.myresults[i].results[1], name: this.myresults[i].chooseB
+                                        },
+                                        {
+                                            value: this.myresults[i].results[2], name: this.myresults[i].chooseC
+                                        },
+                                        {
+                                            value: this.myresults[i].results[3], name: this.myresults[i].chooseD
+                                        }
+                                    ],
+                                    itemStyle: {
+                                        emphasis: {
+                                            shadowBlur: 10,
+                                            shadowOffsetX: 0,
+                                            shadowColor: 'rgba(0,0,0,0.5)'
+                                        }
+                                    }
+                                }]
+                        }
+                        if (optionPie[i] && typeof optionPie[i] === "object") {
+                            myChartPie[i].setOption(optionPie[i], true);
+                        }
+                    } else if (this.myresults[i].queType == "Scale") {
 
-								textPadding:0,
-								autoSize:{
-									enable:true,
-									miniSize:1,
+                        console.log('barPic' + i)
+                        domBar[i] = document.getElementById('barPic' + i);
+                        myChartBar[i] = echarts.init(domBar[i]);
+                        appBar[i] = {};
+                        optionBar[i] = null;
+                        appBar[i].title = '';
+                        optionBar[i] =
+                            {
+                                title: {
+                                    //text:this.myresults[i].title,
+                                },
+                                tooltip: {
+                                    trigger: 'axis',
+                                    axisPointer: {
+                                        type: 'shadow'
+                                    }
+                                },
+                                legend: {
+                                    data: ['人数']
+                                },
+                                grid: {
+                                    left: '3%',
+                                    right: '4%',
+                                    bottom: '3%',
+                                    containLabel: true
+                                },
+                                xAxis: {
+                                    type: 'value',
+                                    boundaryGap: [0, 1]
+                                },
+                                yAxis: {
+                                    type: 'category',
+                                    data: this.myresults[i].ScaleDegree
+                                },
+                                series: [
+                                    {
+                                        name: '人数',
+                                        type: 'bar',
+                                        data: this.myresults[i].results
+                                    }
+                                ]
+                            };
+                        if (optionBar[i] && typeof optionBar[i] === "object") {
+                            myChartBar[i].setOption(optionBar[i], true);
+                        }
 
-								},
-								textStyle:{
-									normal:{
-										color:function(){
-											return 'rgb('+[
-											Math.round(Math.random()*160),
-											Math.round(Math.random()*160),
-											Math.round(Math.random()*160)
-											].join(',')+')';
-										}
-									},
-									emphasis:{
-										shadowBlur:10,
-										shadowColor:'#333'
-									}
-								},
-								data:this.myresults[i].WCResults
-							}]
-						}
-						if (optionCloud[i] && typeof optionCloud[i] === "object") {
-							myChartCloud[i].setOption(optionCloud[i], true);
-						}
 
-					}
+                        domPie[i] = document.getElementById('piePic' + i);
+                        myChartPie[i] = echarts.init(domPie[i]);
+                        appPie[i] = {};
+                        Piedata = [];
+                        for (var j = 0; j < this.myresults[i].ScaleDegree.length; j++) {
+                            var temp = {};
+                            temp.value = this.myresults[i].results[j];
+                            temp.name = this.myresults[i].ScaleDegree[j];
+                            Piedata.push(temp);
+                        }
+                        optionPie[i] = null;
+                        optionPie[i] = {
+                            title: {
+                                //text:this.myresults[i].title,
+                                x: 'center'
+                            },
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: "{a} <br/>{b} : {c} ({d}%)"
+                            },
+                            legend: {
+                                orient: 'vertical',
+                                left: 'left',
+                                data: this.myresults[i].ScaleDegree
+                            },
+                            series: [
+                                {
+                                    name: '人数',
+                                    type: 'pie',
+                                    radius: '55%',
+                                    center: ['50%', '60%'],
+                                    data: Piedata,
+                                    itemStyle: {
+                                        emphasis: {
+                                            shadowBlur: 10,
+                                            shadowOffsetX: 0,
+                                            shadowColor: 'rgba(0,0,0,0.5)'
+                                        }
+                                    }
+                                }]
+                        }
+                        if (optionPie[i] && typeof optionPie[i] === "object") {
+                            myChartPie[i].setOption(optionPie[i], true);
+                        }
+                    } else if (this.myresults[i].queType == "FillInBlank") {
+                        console.log('wordcloud' + i);
+                        domCloud[i] = document.getElementById('wordcloud' + i);
+                        myChartCloud[i] = echarts.init(domCloud[i]);
+                        optionCloud[i] = null;
+                        optionCloud[i] = {
+                            title: {
+                                x: 'center'
+                            },
+                            tooltip: {
+                                show: true
+                            },
+                            series: [
+                                {
+                                    name: '词语云图',
+                                    type: 'wordCloud',
+                                    sizeRange: [10, 50],
+                                    shape: 'circle',
+                                    left: null,
+                                    top: null,
+                                    width: '70%',
+                                    height: '100%',
+                                    right: null,
+                                    bottom: null,
+                                    gridSize: 1,
+                                    drawOutOfBound: true,
+                                    rotationRange: [-90, 90],
 
-				}
+                                    textPadding: 0,
+                                    autoSize: {
+                                        enable: true,
+                                        miniSize: 1,
 
-			},
-			getBar:function(index)
-			{
-				return "barPic"+index;
-			},
-			getPie:function(index)
-			{
-				return "piePic"+index;
-			},
-			chooseBar:function(index)
-			{
-				document.getElementById('barPic'+index).style.visibility="visible";
-				document.getElementById('piePic'+index).style.visibility="hidden";
-			},
-			choosePie:function(index)
-			{
-				document.getElementById('barPic'+index).style.visibility="hidden";
-				document.getElementById('piePic'+index).style.visibility="visible";
-			},
-			getWordCloud:function(index)
-			{
-				return "wordcloud"+index;
-			}
+                                    },
+                                    textStyle: {
+                                        normal: {
+                                            color: function () {
+                                                return 'rgb(' + [
+                                                    Math.round(Math.random() * 160),
+                                                    Math.round(Math.random() * 160),
+                                                    Math.round(Math.random() * 160)
+                                                ].join(',') + ')';
+                                            }
+                                        },
+                                        emphasis: {
+                                            shadowBlur: 10,
+                                            shadowColor: '#333'
+                                        }
+                                    },
+                                    data: this.myresults[i].WCResults
+                                }]
+                        }
+                        if (optionCloud[i] && typeof optionCloud[i] === "object") {
+                            myChartCloud[i].setOption(optionCloud[i], true);
+                        }
 
-		}
+                    }
 
-	})
+                }
+
+            },
+            getBar: function (index) {
+                return "barPic" + index;
+            },
+            getPie: function (index) {
+                return "piePic" + index;
+            },
+            chooseBar: function (index) {
+                document.getElementById('barPic' + index).style.visibility = "visible";
+                document.getElementById('piePic' + index).style.visibility = "hidden";
+            },
+            choosePie: function (index) {
+                document.getElementById('barPic' + index).style.visibility = "hidden";
+                document.getElementById('piePic' + index).style.visibility = "visible";
+            },
+            getWordCloud: function (index) {
+                return "wordcloud" + index;
+            }
+
+        }
+
+})
 
