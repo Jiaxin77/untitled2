@@ -151,6 +151,8 @@ def getIndexInfo(choosedIndexList):  # 获取指标信息
                     tempFather['SecondList'].append(tempIndex)
                     l = l + 1
                     if (str(member.IndexId) in choosedIndexList):
+                        print(member.IndexId)
+                        print(tempIndex['listTitle'])
                         tempFather['selected'].append(tempIndex)
             tempFamily['FirstList'].append(tempFather)
             k = k + 1
@@ -209,7 +211,8 @@ def newPlan(Assess, Indexs, Methods, ModelId):  # 为评估增加预设方案
                 indexNum = indexNum + 1
                 thisMethods = selectedIndex['method'].split(",")
                 indexId = IndexList.objects.get(IndexName=selectedIndex['listTitle'])
-                indexIdList.append(indexId)
+                print(indexId.IndexName)
+                indexIdList.append(str(indexId.IndexId))
                 for thismethod in thisMethods:
                     tempPlanName = "针对" + selectedIndex['listTitle'] + "的" + thismethod
                     PlanList.objects.create(PlanName=tempPlanName, PlanTypeId=thismethod, AssessId=thisAssess)
@@ -235,8 +238,13 @@ def newPlan(Assess, Indexs, Methods, ModelId):  # 为评估增加预设方案
     temppeople = list(set(temppeople))
     thisAssess.AssessIndexNum = indexNum
     thisAssess.People = temppeople
-    thisAssess.AssessIndexId = indexIdList
+
+
+    thisAssess.AssessIndexId = ";".join(indexIdList)
     thisAssess.save()
+    print("存入数量")
+    #print(len(thisAssess.AssessIndexId))
+
     print("建立方案完毕")
     return True
 
@@ -310,7 +318,7 @@ def getAssessPlan(request):  # 获取方案用于新建方案的人查看（不�
                     tempQue['queId'] = que.QuestionId
                     tempQue['title'] = que.QueDescription
                     HtmlQuestionsList.append(tempQue)
-                    q = q + 1
+                    #q = q + 1
             print(HtmlQuestionsList)
             tempQNaire = {"PlanId": plan.PlanId, "Question": HtmlQuestionsList}
             HtmlQNaires.append(tempQNaire)
@@ -569,6 +577,12 @@ def getFillAssess(request):  # 录入评估数据
     print(readOnly)
     # 先get到assess的id
     Assess = AssessList.objects.get(AssessId=assessId)
+    global USER
+    if (USER.SearchHistory != None):
+        USER.SearchHistory = USER.SearchHistory + ";" + Assess.AssessName
+    else:
+        USER.SearchHistory = Assess.AssessName
+    USER.save()
     if Assess.AssessType == 0:  # 录入问卷
         HtmlQuestionsList = []
         Survey = SurveyList.objects.get(AssessId=Assess.AssessId)
@@ -623,7 +637,7 @@ def getFillAssess(request):  # 录入评估数据
                 tempQue['queId'] = que.QuestionId
                 tempQue['title'] = que.QueDescription
                 HtmlQuestionsList.append(tempQue)
-                j = j + 1
+
         print(HtmlQuestionsList)
         return render(request, "FillQNaire.html",
                       {'QuestionList': json.dumps(HtmlQuestionsList), 'SurveyId': Survey.SurveyId,
@@ -694,7 +708,7 @@ def getFillAssess(request):  # 录入评估数据
                         tempQue['queId'] = que.QuestionId
                         tempQue['title'] = que.QueDescription
                         HtmlQuestionsList.append(tempQue)
-                        q = q + 1
+                        #q = q + 1
                 print(HtmlQuestionsList)
                 tempQNaire = {"PlanId": plan.PlanId, "Question": HtmlQuestionsList}
                 HtmlQNaires.append(tempQNaire)
@@ -1467,12 +1481,17 @@ def newEvaFromModel(request):  # 从模板新建
                 tempQue['queId'] = que.QuestionId
                 tempQue['title'] = que.QueDescription
                 HtmlQuestionsList.append(tempQue)
-                j = j + 1
+                #j = j + 1
         print(HtmlQuestionsList)
         return render(request, "newQNaire.html", {'AllQuestions': HtmlQuestionsList, 'QNaire': tempQNaire})
     elif (originAssess.AssessType == 1):  # 是综合评估
-        IndexIdList = originAssess.AssessIndexId
-        HtmlIndexList = getIndexInfo(IndexIdList)  # 获取了指标
+        print(originAssess.AssessIndexId)
+        MyIndexIdList = originAssess.AssessIndexId.split(";")
+        print("从模板获取到的")
+        print(MyIndexIdList)
+        #print(len(originAssess.AssessIndexId))
+        #print(len(MyIndexIdList))
+        HtmlIndexList = getIndexInfo(MyIndexIdList)  # 获取了指标
         AssessList.objects.create(AssessName=newAssessName, AssessOneDes=newAssessDetail, AssessType=1,
                                   AssessUseNum=newAssessUseNum,
                                   UserId=USER)

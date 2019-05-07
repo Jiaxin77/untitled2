@@ -229,18 +229,29 @@ body {
     text-align: left;
 }
 
+
 .FIBtable tr:nth-child(odd) {
     border: 1px solid lightgrey;
     background-color: white;
+
 }
 
 .FIBtable tr:nth-child(even) {
     border: 1px solid lightgrey;
     background-color: lightgrey;
+
+}
+
+.FIBtable td
+{
+    position: relative;
+    width: 100%;
+    text-align: center;
+
 }
 
 .FIBtable tbody {
-    display: block;
+    /*display: block;*/
     height: 200px;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;

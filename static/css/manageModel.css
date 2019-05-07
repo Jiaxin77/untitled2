@@ -238,9 +238,10 @@ body {
 .more {
     position: relative;
     left: 10%;
-    top: 22%;
-    width: 200px;
-    height: 100px;
+    right: 10%;
+    top: 12%;
+    width: 80%;
+    height: 20px;
 
     text-align: center;
     font-size: 12px;

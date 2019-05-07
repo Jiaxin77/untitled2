@@ -407,6 +407,7 @@ body {
     height: 120px;
     width: 100px;
     background-color: white;
+    z-index:3;
 
 }
 

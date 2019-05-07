@@ -298,7 +298,7 @@ body {
 }
 
 .FIBtable tbody {
-    display: block;
+    /*display: block;*/
     height: 200px;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;

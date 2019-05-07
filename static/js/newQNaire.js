@@ -63,7 +63,16 @@ var app = new Vue({
 
             var item = {};
             console.log(app.questions.length);
-            item.id = app.questions.length + 1;
+            QuestionId=1;
+            for(var qi=0;qi<app.questions.length;qi++)
+            {
+                if(app.questions[qi].type!="Paragraph")
+                {
+                    QuestionId=QuestionId+1;
+                }
+            }
+            //item.id = app.questions.length + 1;
+            item.id=QuestionId;
             item.title = "";
             item.type = "SingleChoose";
             item.ChooseA = "";
@@ -78,7 +87,16 @@ var app = new Vue({
 
         addMultiChoose: function () {
             var item = {};
-            item.id = app.questions.length + 1;
+             QuestionId=1;
+            for(var qi=0;qi<app.questions.length;qi++)
+            {
+                if(app.questions[qi].type!="Paragraph")
+                {
+                    QuestionId=QuestionId+1;
+                }
+            }
+            //item.id = app.questions.length + 1;
+            item.id=QuestionId;
             item.title = "";
             item.type = "MultiChoose";
             item.ChooseA = "";
@@ -91,7 +109,16 @@ var app = new Vue({
 
         addFillInBlank: function () {
             var item = {};
-            item.id = app.questions.length + 1;
+             QuestionId=1;
+            for(var qi=0;qi<app.questions.length;qi++)
+            {
+                if(app.questions[qi].type!="Paragraph")
+                {
+                    QuestionId=QuestionId+1;
+                }
+            }
+            //item.id = app.questions.length + 1;
+            item.id=QuestionId;
             item.title = "";
             item.type = "FillInBlank";
             this.FIB = item;
@@ -100,7 +127,16 @@ var app = new Vue({
 
         addScale: function () {
             var item = {};
-            item.id = app.questions.length + 1;
+             QuestionId=1;
+            for(var qi=0;qi<app.questions.length;qi++)
+            {
+                if(app.questions[qi].type!="Paragraph")
+                {
+                    QuestionId=QuestionId+1;
+                }
+            }
+            //item.id = app.questions.length + 1;
+            item.id=QuestionId;
             item.title = "";
             item.type = "Scale";
             item.lowest = "";
