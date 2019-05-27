@@ -64,8 +64,6 @@ def login(request):  # 登录
                     USER = user
                     user.online = True
                     user.save()
-                    # messages.success(request, "登录成功，页面跳转中...")
-                    # return render(request, "chooseEva.html", {"user": username})
                     return HttpResponseRedirect(reverse('chooseEva'))
                 else:
                     messages.error(request, "密码错误")
@@ -379,9 +377,6 @@ def savePlanQNaire(request):  # 存储新建方案中的新建问卷
 
 
 def postAssessInfo(request):  # 提交方案描述 评估对象等信息
-    # description: app.Description,
-    # object: app.Object,
-    # Assess: app.Assess
     Messages = json.loads(request.body)
     EvaDes = Messages['description']
     EvaObject = Messages['object']
@@ -402,17 +397,7 @@ def getEvaInfo(request):  # 新建评估中 获取选择的指标
     ASSESS = Messages['Assess']
     INDEXS = Messages['Indexs']  # 复杂嵌套数据用request.body
     ModelId = Messages['ModelId']  # 有无模板，模板编号
-    # 指标id存储Assess中
-    # thisAssess=AssessList.objects.get(AssessId=ASSESS['AssessId'])
-    # tempIndexStr=""
-    # for family in INDEXS:
-    #     for father in family['FirstList']:
-    #         for selectedIndex in father['selected']:
-    #             thisIndex=IndexList.objects.get(IndexName=selectedIndex['listTitle'])
-    #             thisIndexId=thisIndex.IndexId
-    #             tempIndexStr=tempIndexStr+","+str(thisIndexId)
-    # thisAssess.AssessIndexId=tempIndexStr
-    # thisAssess.save()
+
     methods = MethodList.objects.all()
     htmlMethods = []
     for method in methods:
@@ -570,8 +555,6 @@ def chooseEva(request):  # 展示评估方案列表
 
 
 def getFillAssess(request):  # 录入评估数据
-    # assessId = json.loads(request.body)
-    # print(json.loads(request.body))
     assessId = json.loads(request.GET['assess'])
     readOnly = json.loads(request.GET['readOnly'])
     print(readOnly)
@@ -826,11 +809,6 @@ def analysisQNaire(thisSurvey):  # 分析问卷结果
             thisAnswers.append(ans)
     j = 1
     HtmlAnswers = []
-    # AllChoiceList=ChoiceList.objects.all().select_related()
-    # AllSCAList = SCAList.objects.all()#.select_related()
-    # AllMCAList = MCAList.objects.all()#.select_related()
-    # AllScaleAnswerList = ScaleAnswerList.objects.all()#.select_related()
-    # AllFIBAnswerList = FIBAnswerList.objects.all()#.select_related()
     for que in thisQuestions:
         if que.QuestionType == 1:  # 单选题
             thisSCQ = ChoiceList.objects.get(QuestionId=que)  # 获取题目
@@ -848,9 +826,6 @@ def analysisQNaire(thisSurvey):  # 分析问卷结果
             for thisAns in thisAnswers:
                 if thisAns.QuestionId == que:  # 是这道题的答案
                     completePeople = completePeople + 1  # 有效回答人数+1
-                    # print(thisAns.AnswerId)
-                    # print(thisAns.QuestionId)
-                    # print(thisAns.QuestionId.QueDescription)
                     choiced = SCAList.objects.get(AnswerId=thisAns)  # 获取具体答案
 
                     if (choiced.ChoiceAnswer == 'A'):
@@ -1405,14 +1380,7 @@ def newEvaFromModel(request):  # 从模板新建
     newAssessName = request.POST.get("name", None)
     newAssessDetail = request.POST.get("detail", None)
     newAssessUseNum = request.POST.get("person", None)
-
-    # Messages = json.loads(request.body)
-    # model = Messages['Model']
-    # newAssess=Messages['newAssess']
     global USER
-    # print(Messages)
-    # print(model)
-    # originAssessId=model['AssessId']
     originAssess = AssessList.objects.get(AssessId=originAssessId)
     thisModel = ModelList.objects.get(AssessId=originAssess)
     thisModel.ModelType = 2  # 设为历史模板
@@ -1536,14 +1504,6 @@ def fuzzySearch(userInput):
             if (assess.AssessDes == result):
                 DesAssess.append(assess)
         # print(result)
-
-        # NameAssess = AssessList.objects.filter(AssessName=result).select_related()
-        # #print(NameAssess)
-        # OneDesAssess = AssessList.objects.filter(AssessOneDes=result).select_related()
-        # #print(OneDesAssess)
-        # DesAssess = AssessList.objects.filter(AssessDes=result).select_related()
-        # #print(DesAssess)
-
         if len(NameAssess) != 0:
             for nameeva in NameAssess:
                 tempeva = {'id': 0, 'name': '', 'person': '', 'InShort': '', 'BeginTime': '', 'process': '',

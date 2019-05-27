@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>EvaPlan 编辑评估时的编辑界面 </title>
+    <title>编辑评估</title>
     <link rel="stylesheet" type="text/css" href="/static/css/editEvaPlan.css">
     <script>
         var PlanList ={{ plans|safe }}
@@ -157,47 +157,36 @@
 
                         <div v-if="que.type=='SingleChoose'">
                             <div class="previewTitle">
-                                {% verbatim %}{{ que.id }}{% endverbatim %}. <span>[单选题]</span> {% verbatim %}{{
-                                que.title }}{% endverbatim %}
+                                {% verbatim %}{{ que.id }}{% endverbatim %}. <span>[单选题]</span> {% verbatim %}{{ que.title }}{% endverbatim %}
                             </div>
 
-                            <input v-if="que.ChooseA!=''" name="choose" type="radio" value="A"/>{% verbatim %}{{
-                            que.ChooseA }}{% endverbatim %}<br>
+                            <input v-if="que.ChooseA!=''" name="choose" type="radio" value="A"/>{% verbatim %}{{ que.ChooseA }}{% endverbatim %}<br>
 
-                            <input v-if="que.ChooseB!=''" name="choose" type="radio" value="B"/>{% verbatim %}{{
-                            que.ChooseB }}{% endverbatim %}<br>
-                            <input v-if="que.ChooseC!=''" name="choose" type="radio" value="C"/>{% verbatim %}{{
-                            que.ChooseC }}{% endverbatim %}<br>
-                            <input v-if="que.ChooseD!=''" name="choose" type="radio" value="D"/>{% verbatim %}{{
-                            que.ChooseD }}{% endverbatim %}<br>
+                            <input v-if="que.ChooseB!=''" name="choose" type="radio" value="B"/>{% verbatim %}{{ que.ChooseB }}{% endverbatim %}<br>
+                            <input v-if="que.ChooseC!=''" name="choose" type="radio" value="C"/>{% verbatim %}{{ que.ChooseC }}{% endverbatim %}<br>
+                            <input v-if="que.ChooseD!=''" name="choose" type="radio" value="D"/>{% verbatim %}{{ que.ChooseD }}{% endverbatim %}<br>
                         </div>
 
                         <div v-else-if="que.type=='MultiChoose'">
                             <div class="previewTitle">
-                                {% verbatim %}{{ que.id }}{% endverbatim %}. <span>[多选题]</span> {% verbatim %}{{
-                                que.title }}{% endverbatim %}
+                                {% verbatim %}{{ que.id }}{% endverbatim %}. <span>[多选题]</span> {% verbatim %}{{ que.title }}{% endverbatim %}
                             </div>
-                            <input v-if="que.ChooseA!=''" name="choose" type="checkbox" value="A"/>{% verbatim %}{{
-                            que.ChooseA }}{% endverbatim %}<br>
-                            <input v-if="que.ChooseB!=''" name="choose" type="checkbox" value="B"/>{% verbatim %}{{
-                            que.ChooseB }}{% endverbatim %}<br>
-                            <input v-if="que.ChooseC!=''" name="choose" type="checkbox" value="C"/>{% verbatim %}{{
-                            que.ChooseC }}{% endverbatim %}<br>
-                            <input v-if="que.ChooseD!=''" name="choose" type="checkbox" value="D"/>{% verbatim %}{{
-                            que.ChooseD }}{% endverbatim %}<br>
+                            <input v-if="que.ChooseA!=''" name="choose" type="checkbox" value="A"/>{% verbatim %}{{ que.ChooseA }}{% endverbatim %}<br>
+                            <input v-if="que.ChooseB!=''" name="choose" type="checkbox" value="B"/>{% verbatim %}{{ que.ChooseB }}{% endverbatim %}<br>
+                            <input v-if="que.ChooseC!=''" name="choose" type="checkbox" value="C"/>{% verbatim %}{{ que.ChooseC }}{% endverbatim %}<br>
+                            <input v-if="que.ChooseD!=''" name="choose" type="checkbox" value="D"/>{% verbatim %}{{ que.ChooseD }}{% endverbatim %}<br>
                         </div>
 
                         <div v-else-if="que.type=='FillInBlank'">
                             <div class="previewTitle">
-                                {% verbatim %}{{ que.id }}{% endverbatim %}. {% verbatim %}{{ que.title }}{% endverbatim
-                                %}
+                                {% verbatim %}{{ que.id }}. {{ que.title }}{% endverbatim %}
                             </div>
                             <input type="text" name="blank" style="width: 300px;height: 25px;" placeholder="请回答问题">
                         </div>
 
                         <div v-else-if="que.type=='Scale'">
                             <div class="previewTitle">
-                                {% verbatim %}{{ que.id }}{% endverbatim %}. {% verbatim %}{{ que.title }}{% endverbatim %}
+                                {% verbatim %}{{ que.id }}. {{ que.title }}{% endverbatim %}
                             </div>
                             <div class="scaleContent">
                                 <span> {% verbatim %}{{ que.lowest }}{% endverbatim %}</span>
